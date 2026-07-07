@@ -45,7 +45,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | Detected / needed | Specialist | Backing source |
 |---|---|---|
 | Svelte, `@sveltejs/kit` | `sveltekit-builder` | Svelte MCP |
-| React Router 7, `@react-router/*` | `react-router-builder` | Context7 (react-router v7) |
+| React Router, `@react-router/*` / `react-router` | `react-router-builder` | vendored `react-router` skill → installed docs → Context7 |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |

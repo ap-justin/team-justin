@@ -14,6 +14,7 @@ Claude Code reads `~/.claude/agents/*.md` and `~/.claude/skills/*/SKILL.md`. Thi
 ```
 ~/.claude/agents                    -> ~/projects/claude-eng-team/agents
 ~/.claude/skills/engineering-team   -> ~/projects/claude-eng-team/skills/engineering-team
+~/.claude/skills/react-router       -> ~/projects/claude-eng-team/skills/react-router   # vendored official skill
 ```
 Edit here, version in git; Claude Code picks up changes on the next session.
 

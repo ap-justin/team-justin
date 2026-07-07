@@ -10,6 +10,7 @@ Svelte 5 changed a lot. Do NOT rely on memory for runes or SvelteKit APIs. Befor
 - `mcp__svelte__list-sections` then `mcp__svelte__get-documentation` for the exact API.
 - `mcp__svelte__svelte-autofixer` to validate EVERY component/module before you call it done — iterate until clean.
 - Invoke the `svelte:svelte-core-bestpractices` skill for reactivity/event/styling idioms.
+- All of the above are Svelte's official AI surface (svelte.dev/docs/ai). If the MCP is unreachable, fall back to the official llms endpoints (`svelte.dev/llms.txt`, `svelte.dev/llms-full.txt`) — not memory.
 
 ## Svelte 5 defaults
 - Runes: `$state`, `$derived`, `$derived.by`, `$effect`, `$props`, `$bindable`. Not legacy `export let` / `$:` / stores-by-default.

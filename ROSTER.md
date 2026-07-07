@@ -1,4 +1,4 @@
-# Roster — v0.2.1
+# Roster — v0.3.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -6,8 +6,8 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | Agent | Role | Backing source |
 |---|---|---|
 | `design-director` | Design system + direction (plan, no code) | `frontend-design:frontend-design`, `design-taste-frontend` skills |
-| `sveltekit-builder` | Fullstack Svelte 5 / SvelteKit | Svelte MCP |
-| `react-router-builder` | React Router 7 (framework mode) | Context7 (react-router v7) |
+| `sveltekit-builder` | Fullstack Svelte 5 / SvelteKit | Svelte MCP + `svelte:*` skills (official AI surface) |
+| `react-router-builder` | React Router (framework/data/declarative/RSC) | vendored official `react-router` skill → installed docs → Context7 |
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
 | `taste-reviewer` | Adversarial anti-slop design review | `design-taste-frontend` skill |
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |
@@ -15,6 +15,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 ## Reused, not owned
 Built-ins: `Explore` (codebase mapping), `Plan` (architecture).
 Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`.
+Vendored official skill: `react-router` (see `SOURCES.md` → Vendored resources). Optional official subagent: `svelte:svelte-file-editor`.
 
 ## Planned (add as the team matures)
 - `astro-builder` — content-heavy sites. Backing: Context7 (`astro`). Mint when Astro work recurs.
