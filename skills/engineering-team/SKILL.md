@@ -26,7 +26,7 @@ State the mode in one line before proceeding. Also judge **triviality**: a typo/
 4. For a small, well-scoped change you may implement inline in the main thread (keeps repo context). Delegate only when the work is large or needs a specialist's depth.
 
 ## Step 2 (greenfield) — scope
-1. Pin the subject, audience, and the one job of the thing (see `frontend-design` skill if it's a UI). Pick the stack from the brief.
+1. Pin the subject, audience, and the one job of the thing (see `frontend-design:frontend-design` skill if it's a UI). Pick the stack from the brief.
 2. Consider grilling (Step 2.5) before architecting.
 3. Then spawn **`Plan`** (built-in) for the architecture, scaffold, and route implementation (Step 3).
 
@@ -47,7 +47,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | Svelte, `@sveltejs/kit` | `sveltekit-builder` | Svelte MCP |
 | React Router 7, `@react-router/*` | `react-router-builder` | Context7 (react-router v7) |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
-| design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design`, `design-taste-frontend` skills |
+| design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 

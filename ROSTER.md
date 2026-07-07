@@ -1,11 +1,11 @@
-# Roster — v0.2.0
+# Roster — v0.2.1
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
 ## Current specialists (`agents/`)
 | Agent | Role | Backing source |
 |---|---|---|
-| `design-director` | Design system + direction (plan, no code) | `frontend-design`, `design-taste-frontend` skills |
+| `design-director` | Design system + direction (plan, no code) | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | `sveltekit-builder` | Fullstack Svelte 5 / SvelteKit | Svelte MCP |
 | `react-router-builder` | React Router 7 (framework mode) | Context7 (react-router v7) |
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
