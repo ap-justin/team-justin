@@ -1,4 +1,4 @@
-# Roster — v0.4.0
+# Roster — v0.5.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -6,6 +6,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | Agent | Role | Backing source |
 |---|---|---|
 | `design-director` | Design system + direction (plan, no code) | `frontend-design:frontend-design`, `design-taste-frontend` skills |
+| `graphic-designer` | Generates/enhances web-ready image assets from the plan | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |
 | `sveltekit-builder` | Fullstack Svelte 5 / SvelteKit | Svelte MCP + `svelte:*` skills (official AI surface) |
 | `react-router-builder` | React Router (framework/data/declarative/RSC) | vendored official `react-router` skill → installed docs → Context7 |
 | `nextjs-builder` | Fullstack Next.js App Router | `vercel:nextjs` + `vercel:*` skills + Vercel MCP → Context7 |
@@ -21,7 +22,7 @@ Agents inherit the session model unless pinned via a `model:` frontmatter field.
 | Agent(s) | `model:` | Why |
 |---|---|---|
 | `engineering-team` lead | inherit (main thread) | routes/integrates/verifies; Opus 4.8 suffices. Not settable via frontmatter |
-| `design-director`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier |
+| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation |
 | `code-reviewer` | **opus** (pinned) | adversarial bug-finding stays strong even if the session drops to a cheaper model |
 | `taste-reviewer` | **sonnet** (pinned) | anti-slop review is pattern-matching; cheaper tier is enough |
 
@@ -34,7 +35,7 @@ Vendored official skill: `react-router` (see `SOURCES.md` → Vendored resources
 
 ## Planned (add as the team matures)
 - `astro-builder` — content-heavy sites. Backing: Context7 (`astro`). Mint when Astro work recurs.
-- `graphic-designer` — asset generation (hero art, textures, logos, OG images). Backing: image-gen MCP/tool. Tools should include the environment's `generate_image` / image MCP. Hand generated assets to the builder.
+- **Video generation** (Veo) for `graphic-designer` — hero loops, motion accents. Backing: extend `scripts/gen-asset.ts` with a Veo path. Add when a project needs motion; expect mp4 + poster-frame + web-encode handling.
 
 ## Growing the team
 Adding a specialist is a versioned change:

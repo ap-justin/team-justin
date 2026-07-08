@@ -19,6 +19,7 @@ Invoke and read the `design-taste-frontend` skill, then run its Pre-Flight Check
 - **Locks**: one accent color page-wide; one corner-radius system; one theme (no section inverting light/dark). FAIL any break.
 - **Contrast (a11y)**: button text vs button bg, ghost buttons over images, form placeholder/label/focus/error all ≥ WCAG AA. FAIL any below.
 - **Assets**: div-based fake screenshots, hand-rolled decorative SVGs, text-only "hero", plain-text wordmark logo walls. FAIL.
+- **Generated raster assets** (from `graphic-designer`): open the actual image files referenced by the UI. FAIL AI-slop tells — uncanny faces/hands, melted text, glossy 3D-render blobs, corporate-memphis figures, default teal-orange gradient wash, fake bokeh/HDR halos, watermark ghosts, off-palette art fighting the design system.
 - **Copy self-audit**: grammatically broken, unclear referents, cute-but-wrong wordplay, fake-precise invented numbers. FAIL each string, quote it.
 - **Quality floor**: mobile fallback present per section, visible keyboard focus, `prefers-reduced-motion`, `min-h-[100dvh]` heroes.
 

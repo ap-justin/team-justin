@@ -2,6 +2,11 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.5.0 — graphic-designer (image asset generation)
+- `graphic-designer`: generates + enhances web-ready image assets (hero art, textures, backgrounds, icons, OG images) from `design-director`'s plan. Executor only — takes the locked palette/vibe, never re-decides the design system or writes app code. inherits (→ opus) for prompt craft + slop curation.
+- Backing = committed script `scripts/gen-asset.ts` (`@google/genai`, Gemini 2.5 Flash Image default / Imagen via `--model`, edit mode via `--input`), invoked with Bash; needs `GOOGLE_API_KEY`. Script owns a `sharp` optimization pass → emits `avif`/`webp` at requested sizes, drop-in for the builder. Team repo now has a `package.json` (deps: `@google/genai`, `sharp`, `tsx`). Video (Veo) deferred to ROSTER → Planned.
+- Wiring: `SOURCES.md` row (Google GenAI → gen script + Context7 `/googleapis/js-genai`); `ROSTER.md` moves it Planned→Current + model-tier row; `engineering-team` routing gains a generated-asset row (`design-director → graphic-designer → builder → taste-reviewer`); `taste-reviewer` remit extended to fail AI-slop in generated raster assets.
+
 ## v0.4.1 — model tiers
 - `code-reviewer` pinned to `opus` (adversarial bug-finding stays strong even if the session drops to a cheaper model); `taste-reviewer` pinned to `sonnet` (anti-slop review is pattern-matching). All other agents + the lead inherit the session model. Policy documented in `ROSTER.md` → Model tiers. No prior agent declared a `model:` field.
 

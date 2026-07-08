@@ -51,6 +51,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` | `vercel:performance-optimizer` + `vercel:*` skills |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
+| needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `design-director` → `graphic-designer` → builder → `taste-reviewer` | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 
