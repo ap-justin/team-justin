@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.4.0 — Next.js, Sanity, and web-perf specialists
+- `nextjs-builder`: fullstack Next.js App Router (Server/Client Components, Server Actions, route handlers, streaming, caching). Backed by `vercel:nextjs` + `vercel:next-cache-components`/`shadcn`/`react-best-practices` + Vercel MCP, Context7 fallback. Router-aware (App vs Pages).
+- `sanity-builder`: Sanity content model, GROQ + TypeGen, Portable Text, Studio, and frontend integration. Backed by `sanity:*` skills + Sanity MCP (`get_schema` before any doc op); owns schema/queries/typed data, hands layout to the framework builder.
+- `vercel-perf-optimizer`: post-build web-perf pass — CWV, rendering strategy, caching, bundle, image/font. Backed by `vercel:performance-optimizer` + `vercel:next-cache-components`/`runtime-cache` + Vercel MCP runtime logs. Diagnoses on real data, proves before/after, tunes not redesigns.
+- `SOURCES.md`: Next.js, web-performance, and Sanity now route to their named specialists; Vercel row narrowed to deploy/AI/Functions. `ROSTER.md` + `engineering-team` SKILL routing table updated.
+
 ## v0.3.0 — first-class official sources
 - Vendored React Router's **official** agent skill (`skills/react-router/`, from `remix-run/react-router/.agents/skills/react-router`, MIT) — mode-aware (framework/data/declarative/RSC) SKILL.md + 4 reference files. Symlinked at `~/.claude/skills/react-router`.
 - `react-router-builder` now uses that skill first (defers to installed `node_modules/react-router/docs/` as truth), a repo's own vendored skill if present, then Context7 as fallback — no more Context7-as-primary for RR.

@@ -11,8 +11,10 @@ Agents: consult the row for the stack you're working in. The PM (`engineering-te
 | **React Router** (framework / data / declarative / RSC) | **`react-router` skill** (vendored, official) → installed docs → Context7 | Invoke the `react-router` skill (mode-aware); it defers to `node_modules/react-router/docs/` as truth. Context7 (`react-router` v7) is the fallback. Prefer a repo's own `.agents/skills/react-router` if present. |
 | **Postgres + drivers** (Drizzle / Prisma / postgres.js / pg / Kysely) | **Context7** | Resolve the exact driver id before writing queries/migrations. |
 | **Auth** (Better Auth) | **Better Auth MCP** | `mcp__better-auth__search_docs` → `get_doc`. |
-| **Vercel** (deploy, AI SDK, Next, Functions, Workflow, AI Gateway) | **`vercel:*` skills** + Vercel MCP | e.g. `vercel:ai-sdk`, `vercel:nextjs`, `vercel:deployments-cicd`, `vercel:vercel-cli`. |
-| **Sanity CMS** | **`sanity:*` skills** + Sanity MCP | `sanity:sanity-best-practices`, `get_schema` before querying. |
+| **Next.js** (App Router) → `nextjs-builder` | **`vercel:*` skills** + Vercel MCP | `vercel:nextjs`, `vercel:next-cache-components`, `vercel:shadcn`, `vercel:react-best-practices`; Context7 (`next.js`) fallback. |
+| **Web performance** (CWV, caching, rendering, bundle) → `vercel-perf-optimizer` | **`vercel:*` skills** + Vercel MCP | `vercel:performance-optimizer`, `vercel:next-cache-components`, `vercel:runtime-cache`; MCP `get_runtime_logs`/`get_deployment_build_logs` for real data. |
+| **Vercel** (deploy, AI SDK, Functions, Workflow, AI Gateway) | **`vercel:*` skills** + Vercel MCP | e.g. `vercel:ai-sdk`, `vercel:deployments-cicd`, `vercel:vercel-cli`. |
+| **Sanity CMS** → `sanity-builder` | **`sanity:*` skills** + Sanity MCP | `sanity:sanity-best-practices`, `sanity:content-modeling-best-practices`; `get_schema` before querying. |
 | **Cloudflare** (Workers, D1, KV, R2, Hyperdrive) | **Cloudflare MCP** | `mcp__claude_ai_Cloudflare_Developer_Platform__*` + `search_cloudflare_documentation`. |
 | **Integrations** (Linear, Notion, Drive, PayPal, Stripe) | their **official MCP** | Use the connected MCP server, not scraped docs. |
 | **Astro** *(planned specialist)* | **Context7** (`astro`) + astro docs | Until a dedicated `astro-builder` exists, use the general path + Context7. |

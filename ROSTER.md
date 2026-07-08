@@ -1,4 +1,4 @@
-# Roster — v0.3.0
+# Roster — v0.4.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -8,6 +8,9 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | `design-director` | Design system + direction (plan, no code) | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | `sveltekit-builder` | Fullstack Svelte 5 / SvelteKit | Svelte MCP + `svelte:*` skills (official AI surface) |
 | `react-router-builder` | React Router (framework/data/declarative/RSC) | vendored official `react-router` skill → installed docs → Context7 |
+| `nextjs-builder` | Fullstack Next.js App Router | `vercel:nextjs` + `vercel:*` skills + Vercel MCP → Context7 |
+| `sanity-builder` | Sanity content model, GROQ, TypeGen, integration | `sanity:*` skills + Sanity MCP |
+| `vercel-perf-optimizer` | Web perf: CWV, caching, rendering, bundle (post-build) | `vercel:performance-optimizer` + `vercel:*` skills + Vercel MCP |
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
 | `taste-reviewer` | Adversarial anti-slop design review | `design-taste-frontend` skill |
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |

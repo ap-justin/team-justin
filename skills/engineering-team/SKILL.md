@@ -46,6 +46,9 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 |---|---|---|
 | Svelte, `@sveltejs/kit` | `sveltekit-builder` | Svelte MCP |
 | React Router, `@react-router/*` / `react-router` | `react-router-builder` | vendored `react-router` skill → installed docs → Context7 |
+| Next.js, `next` (App Router) | `nextjs-builder` | `vercel:nextjs` + `vercel:*` skills → Context7 |
+| Sanity, `sanity` / `@sanity/*` / `next-sanity` | `sanity-builder` | `sanity:*` skills + Sanity MCP |
+| slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` | `vercel:performance-optimizer` + `vercel:*` skills |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
