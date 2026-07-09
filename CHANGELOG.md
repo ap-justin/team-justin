@@ -2,6 +2,10 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.8.2 — project-scoped browser sessions (parallel-safe visual-reviewer)
+- `visual-reviewer`: `--session-name` now scoped per project (`bg-$(basename "$PWD")`) instead of a shared constant. Each named `agent-browser` session is a separate browser instance, so review runs across concurrent projects no longer stomp each other's tab/nav state. Root cause fixed in the `local-browser` skill (was hardcoding `bg-dev`); reinforced in the agent since concurrency is exactly its failure mode.
+- Considered switching to Chrome MCP for the seat and rejected it: a subagent would need `mcp__claude-in-chrome__*` in frontmatter (deferred tools), interactive per-site permission grants, and a real Chrome — not headless/CI/cron-capable, and one Chrome is still a shared focus/dialog chokepoint. Named agent-browser sessions give true process/profile isolation with no tool-grant change. Tradeoff: auth is per-project (login once, then persists).
+
 ## v0.8.1 — greenfield team default: pnpm
 - `engineering-team` Step 2 (greenfield): added a **Team defaults** block — JS/Node scaffolds use `pnpm` (install, scripts, `pnpm-lock.yaml`; no `package-lock.json`/`yarn.lock`). N/A for non-JS stacks. Brownfield unchanged — still matches the existing repo.
 - Lives in the orchestrator, not per-builder: pnpm is stack-agnostic, so a single default beats duplicating it across every builder; no builder pins a manager, so none needed editing.

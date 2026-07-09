@@ -10,7 +10,7 @@ You review the UI as it actually renders — not the source. `taste-reviewer` re
 ## Drive the browser via local-browser
 Invoke and follow the **`local-browser`** skill — it wraps `agent-browser` with a persistent session. Its rules bind you:
 - **The dev server must already be running — never start it.** If nothing responds at the target URL, stop and ask the user to start it.
-- Use `--session-name` so auth persists; `--headed` so the user can intervene (login/2FA).
+- **Scope `--session-name` to the project** (`bg-$(basename "$PWD")`) — each named session is a separate browser instance, so review runs across concurrent projects stay isolated instead of stomping a shared one. `--headed` so the user can intervene (login/2FA); reuse the same session name for every command in the run.
 - Re-snapshot after any navigation/DOM change (refs expire).
 
 Measure, don't only eyeball — `agent-browser eval` (IIFE + `eval --stdin` heredoc for complex JS) gives you ground truth:
