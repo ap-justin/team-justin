@@ -61,6 +61,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | Next.js, `next` (App Router) | `nextjs-builder` | `vercel:nextjs` + `vercel:*` skills → Context7 |
 | Sanity, `sanity` / `@sanity/*` / `next-sanity` | `sanity-builder` | `sanity:*` skills + Sanity MCP |
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` | `vercel:performance-optimizer` + `vercel:*` skills |
+| SEO/AEO: metadata/OG, canonical/hreflang, sitemap/robots, JSON-LD, indexability, AI-answer readiness (post-build) | `seo-engineer` | `sanity:seo-aeo-best-practices` skill + stack meta API |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` (static) → `visual-reviewer` (rendered) | `frontend-design:frontend-design`, `design-taste-frontend`, `local-browser` skills |
 | needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `design-director` → `graphic-designer` → builder → `taste-reviewer` | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |

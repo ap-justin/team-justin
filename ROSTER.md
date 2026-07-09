@@ -1,4 +1,4 @@
-# Roster — v0.9.0
+# Roster — v0.10.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -12,6 +12,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | `nextjs-builder` | Fullstack Next.js App Router | `vercel:nextjs` + `vercel:*` skills + Vercel MCP → Context7 |
 | `sanity-builder` | Sanity content model, GROQ, TypeGen, integration | `sanity:*` skills + Sanity MCP |
 | `vercel-perf-optimizer` | Web perf: CWV, caching, rendering, bundle (post-build) | `vercel:performance-optimizer` + `vercel:*` skills + Vercel MCP |
+| `seo-engineer` | Technical SEO + AEO: metadata/OG, canonical/hreflang, sitemaps/robots, JSON-LD, indexability, AI-answer readiness (audits + applies markup fixes; post-build) | `sanity:seo-aeo-best-practices` skill + the stack's meta API (Context7 / Vercel) |
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
 | `taste-reviewer` | Adversarial anti-slop design review (static source) | `design-taste-frontend` skill |
 | `visual-reviewer` | Meticulous rendered-UI review in a live browser (viewports, states, measured) | `local-browser` skill (`agent-browser`) |
@@ -26,7 +27,7 @@ Agents inherit the session model unless pinned via a `model:` frontmatter field.
 | Agent(s) | `model:` | Why |
 |---|---|---|
 | `engineering-team` lead | inherit (main thread) | routes/integrates/verifies; Opus 4.8 suffices. Not settable via frontmatter |
-| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer`, `test-writer`, `planner` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures. `planner` decomposition quality gates all downstream parallelism — keep it on the coding tier |
+| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer`, `seo-engineer`, `test-writer`, `planner` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures. `seo-engineer` applies markup fixes + must get JSON-LD/canonical/hreflang correct. `planner` decomposition quality gates all downstream parallelism — keep it on the coding tier |
 | `code-reviewer` | **opus** (pinned) | adversarial bug-finding stays strong even if the session drops to a cheaper model |
 | `architecture-reviewer` | **opus** (pinned) | seam/coupling judgment is the hardest review; keep it on the top tier regardless of session model |
 | `visual-reviewer` | **opus** (pinned) | multimodal — reads screenshots + reasons over measurements; needs the vision-capable top tier regardless of session model |
