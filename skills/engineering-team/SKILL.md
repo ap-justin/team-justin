@@ -43,6 +43,14 @@ You know the `/grilling` skill and when it earns its cost. For non-trivial work,
 
 When you do grill: one question at a time, each with your recommended answer, relentless until shared understanding of every load-bearing decision; the user can cut it short anytime. Placement is why brownfield grills AFTER `Explore` — if a question is answerable from the codebase, answer it from the code instead of asking (grilling's own rule). Output: a sharpened brief / resolved-decision record that becomes the source of truth for Plan and the specialists, and supersedes `design-director`'s single clarifying question.
 
+## Step 2.6 — persist the plan when it outgrows one context (`planner`)
+Most work goes straight from grilling/`Plan` to a builder. But when the change **won't fit one context window** — spans many sessions or parallel agents, or you want a durable plan that survives resets — spawn **`planner`** to write the plan of record to the tracker (GitHub Issues via `TRACKER.md`):
+- **Have a discussed feature, no written spec** → `planner` (to-spec mode) publishes the PRD.
+- **Have a plan/spec, need parallelizable work** → `planner` (to-tickets mode) publishes tracer-bullet slices with `blocked_by` edges; you then dispatch the **frontier** (unblocked tickets) to builders — worktree-isolated for parallel slices.
+- **Too big/foggy to slice up front** → `planner` (wayfinder mode) charts a map + initial investigation tickets; work it one ticket per session.
+
+`planner` is **AFK** — it synthesizes and publishes, but the human loops stay yours: grill first (Step 2.5) to hand it a sharp brief, and take its **open questions** back to the user before building. It returns drafts (not published) when a decision is unresolved. Skip this step entirely for anything that fits one session — it's overhead you don't need for a normal feature/fix.
+
 ## Step 3 — stack routing (pick the right agent for the codebase)
 Detect from `package.json` / config, then delegate to the matching specialist. Pass each the FULL relevant context + its official source.
 
@@ -60,6 +68,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) | `codebase-design` skill |
 | structural-integrity gate on a change (boundary erosion, coupling drift) | `architecture-reviewer` (review mode, after builder) | `codebase-design` skill |
 | write/update/fix tests; add coverage; test a feature or fix | `test-writer` | project testing skill/docs first → `/tdd` + Context7 per runner |
+| work too big for one context / needs a durable plan of record / decompose a spec into parallelizable slices | `planner` (see Step 2.6) | vendored `to-spec`/`to-tickets`/`wayfinder` + `TRACKER.md` |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 
 ## Step 4 — review & verify (reuse built-ins/skills)

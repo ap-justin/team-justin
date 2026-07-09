@@ -1,4 +1,4 @@
-# Roster — v0.8.1
+# Roster — v0.9.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -18,6 +18,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |
 | `architecture-reviewer` | Structural integrity: seams, interface depth, coupling (design-time + review-time) | `codebase-design` skill |
 | `test-writer` | Writes/updates/fixes tests; portable principles, defers to (and captures) per-repo testing conventions | `/tdd` skill + Context7 per runner; project testing skill/docs |
+| `planner` | Persisted plan of record for work bigger than one context: spec, tracer-bullet ticket graph, or wayfinder map on the tracker (AFK synthesis+publish; lead owns the human loop) | vendored `to-spec`/`to-tickets`/`wayfinder` skills + `TRACKER.md` (GitHub Issues) |
 
 ## Model tiers
 Agents inherit the session model unless pinned via a `model:` frontmatter field. Policy — spend on correctness (lead, implementers, code review), economize where the work is pattern-matching.
@@ -25,7 +26,7 @@ Agents inherit the session model unless pinned via a `model:` frontmatter field.
 | Agent(s) | `model:` | Why |
 |---|---|---|
 | `engineering-team` lead | inherit (main thread) | routes/integrates/verifies; Opus 4.8 suffices. Not settable via frontmatter |
-| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer`, `test-writer` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures |
+| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer`, `test-writer`, `planner` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures. `planner` decomposition quality gates all downstream parallelism — keep it on the coding tier |
 | `code-reviewer` | **opus** (pinned) | adversarial bug-finding stays strong even if the session drops to a cheaper model |
 | `architecture-reviewer` | **opus** (pinned) | seam/coupling judgment is the hardest review; keep it on the top tier regardless of session model |
 | `visual-reviewer` | **opus** (pinned) | multimodal — reads screenshots + reasons over measurements; needs the vision-capable top tier regardless of session model |
@@ -35,8 +36,9 @@ Fable 5 is the premium tier ($10/$50) — reserve for long autonomous multi-file
 
 ## Reused, not owned
 Built-ins: `Explore` (codebase mapping), `Plan` (architecture).
-Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`.
-Vendored official skill: `react-router` (see `SOURCES.md` → Vendored resources). Optional official subagent: `svelte:svelte-file-editor`.
+Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`, `/writing-great-skills` (authoring standard for this repo — see Growing the team).
+Vendored official skills: `react-router` (backs `react-router-builder`); `to-spec`/`to-tickets`/`wayfinder` (back `planner`) — see `SOURCES.md` → Vendored resources. Optional official subagent: `svelte:svelte-file-editor`.
+Tracker substrate: `TRACKER.md` (GitHub Issues via `gh`) — the planner's plan-of-record store; replaces `/setup-matt-pocock-skills`.
 
 ## Planned (add as the team matures)
 - `astro-builder` — content-heavy sites. Backing: Context7 (`astro`). Mint when Astro work recurs.
@@ -44,7 +46,7 @@ Vendored official skill: `react-router` (see `SOURCES.md` → Vendored resources
 
 ## Growing the team
 Adding a specialist is a versioned change:
-1. Write `agents/<name>.md` — single responsibility, official-source-first, quality floor. Copy the shape of an existing specialist.
+1. Write `agents/<name>.md` against the **`/writing-great-skills`** standard (invocation model, information hierarchy, single source of truth, aggressive pruning) — single responsibility, official-source-first, quality floor. Copy the shape of an existing specialist.
 2. Wire it to its official source: add a row to `SOURCES.md`.
 3. Add a row here in **Current specialists**, and to the routing table in the `engineering-team` skill.
 4. Bump `CHANGELOG.md` and `VERSION` (minor bump for a new agent).
