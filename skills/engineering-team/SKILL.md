@@ -50,7 +50,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | Sanity, `sanity` / `@sanity/*` / `next-sanity` | `sanity-builder` | `sanity:*` skills + Sanity MCP |
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` | `vercel:performance-optimizer` + `vercel:*` skills |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
-| design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
+| design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` (static) → `visual-reviewer` (rendered) | `frontend-design:frontend-design`, `design-taste-frontend`, `local-browser` skills |
 | needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `design-director` → `graphic-designer` → builder → `taste-reviewer` | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
 | module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) | `codebase-design` skill |
@@ -61,7 +61,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 ## Step 4 — review & verify (reuse built-ins/skills)
 - Structure: for a refactor or a new module boundary, spawn `architecture-reviewer` in **design mode** BEFORE the builder (settle the seam/interface), and in **review mode** after (gate boundary integrity). Skip for trivial or purely additive changes.
 - Correctness: spawn `code-reviewer`, or invoke `/code-review` on the diff in-thread.
-- Design work: `taste-reviewer` (anti-slop).
+- Design work: `taste-reviewer` (static anti-slop on source) and, when a dev server is running, `visual-reviewer` (meticulous rendered-UI pass — viewports, states, measured). Static check is cheap and always applicable; run the visual pass for anything visually load-bearing.
 - Tests: spawn `test-writer` for anything beyond a trivial assertion — it discovers the repo's testing conventions (or captures them if unwritten), owns the write→run→fix loop, and can fan out across files. It invokes `/tdd` itself for test-first work. Run the repo's existing suite to confirm.
 - Behavior: `/verify` or `/run` to confirm it actually works.
 - Loop fixes back to the builder; max 2 loops, then surface remaining issues.

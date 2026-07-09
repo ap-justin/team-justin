@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.8.0 — visual-reviewer (rendered-UI review seat)
+- `visual-reviewer`: reviews the UI as it actually renders, not the source — the gap `taste-reviewer` (static) left open. Drives a live browser via the `local-browser` skill (`agent-browser`), sweeps desktop/tablet/mobile viewports and interactive states (hover/focus/active/disabled/loading/empty/error), and cites **measured** evidence (`getBoundingClientRect` for alignment/overflow, `getComputedStyle` for contrast/tokens) plus screenshots (vision). Report-only; pinned `opus` (multimodal). Dev server must already be running — never starts it.
+- Completes the review set: `code-reviewer` (correctness) · `architecture-reviewer` (structure) · `taste-reviewer` (static slop) · `visual-reviewer` (rendered pixels). Visual-regression diffing (Percy/Playwright snapshots) noted as a separate CI concern, out of scope.
+- `taste-reviewer` fixes: (1) added a boundary note — it stays static, hands live-render findings to `visual-reviewer`; (2) **removed the hardcoded "Target stack is Svelte"** and its stray `local-browser` line — it now detects the repo's stack and applies framework-agnostic rules + the matching stack's specifics. Left over from the team's Svelte-first origins; wrong now that the roster spans React/Next/RR/etc.
+- Wiring: `agents/visual-reviewer.md`; `SOURCES.md` rendered-UI row (`local-browser`); `ROSTER.md` specialist + opus-tier rows, header → v0.8.0; `engineering-team` design routing (`… → taste-reviewer (static) → visual-reviewer (rendered)`) + Step 4 note.
+
 ## v0.7.0 — test-writer (generic, project-deferring test seat)
 - `test-writer`: fills the team's test gap (previously only the reused `/tdd` skill). Generic and portable — its *what-makes-a-good-test* judgment travels; its *how-this-repo-tests* judgment is learned from the repo every run. Owns the write→run→fix loop; inherits (→ opus), builder-class tools.
 - Local sources first: discovers the repo's testing knowledge (a `.claude/skills/*test*` / `TESTING.md`, then config/setup, then existing tests) and follows it verbatim before writing. Verifies runner API via Context7, never memory; invokes `/tdd` for red-green discipline. If no testing knowledge is written down, it **captures** it into a project testing skill/doc so it compounds (knowledge-steward step) — and updates it when it learns something new.
