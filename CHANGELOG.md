@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.7.0 — test-writer (generic, project-deferring test seat)
+- `test-writer`: fills the team's test gap (previously only the reused `/tdd` skill). Generic and portable — its *what-makes-a-good-test* judgment travels; its *how-this-repo-tests* judgment is learned from the repo every run. Owns the write→run→fix loop; inherits (→ opus), builder-class tools.
+- Local sources first: discovers the repo's testing knowledge (a `.claude/skills/*test*` / `TESTING.md`, then config/setup, then existing tests) and follows it verbatim before writing. Verifies runner API via Context7, never memory; invokes `/tdd` for red-green discipline. If no testing knowledge is written down, it **captures** it into a project testing skill/doc so it compounds (knowledge-steward step) — and updates it when it learns something new.
+- Design note: this supersedes the idea of promoting a project-local test skill to a project-local agent. One portable agent + per-repo testing skills is the clean layering — e.g. `better-giving/.claude/skills/test-writer` becomes exactly the local knowledge this agent defers to; nothing there needs deleting.
+- Wiring: `agents/test-writer.md`; `SOURCES.md` testing row (local-first → `/tdd` + Context7); `ROSTER.md` specialist + inherit-tier rows, header → v0.7.0; `engineering-team` routing row + Step 4 note (spawn for non-trivial tests, it invokes `/tdd` itself).
+
 ## v0.6.0 — architecture-reviewer (structural integrity seat)
 - `architecture-reviewer`: the missing structure seat, completing the review trio (`code-reviewer`=correctness, `taste-reviewer`=design/UX, `architecture-reviewer`=boundaries). Report/spec only, never edits. Pinned `opus` — seam/coupling judgment is the hardest review.
 - Two modes: **design mode** (before a builder — settle the seam + emit an interface spec) and **review mode** (after — gate boundary erosion: shallow modules, leaked implementation, coupling drift, overloaded interfaces, testability/AI-navigability). Distinct from the reused built-in `Plan` (impl sequencing) — this owns module depth, not the build order.

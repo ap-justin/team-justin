@@ -55,13 +55,14 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
 | module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) | `codebase-design` skill |
 | structural-integrity gate on a change (boundary erosion, coupling drift) | `architecture-reviewer` (review mode, after builder) | `codebase-design` skill |
+| write/update/fix tests; add coverage; test a feature or fix | `test-writer` | project testing skill/docs first → `/tdd` + Context7 per runner |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 
 ## Step 4 — review & verify (reuse built-ins/skills)
 - Structure: for a refactor or a new module boundary, spawn `architecture-reviewer` in **design mode** BEFORE the builder (settle the seam/interface), and in **review mode** after (gate boundary integrity). Skip for trivial or purely additive changes.
 - Correctness: spawn `code-reviewer`, or invoke `/code-review` on the diff in-thread.
 - Design work: `taste-reviewer` (anti-slop).
-- Tests: `/tdd` for new features; run the repo's existing suite.
+- Tests: spawn `test-writer` for anything beyond a trivial assertion — it discovers the repo's testing conventions (or captures them if unwritten), owns the write→run→fix loop, and can fan out across files. It invokes `/tdd` itself for test-first work. Run the repo's existing suite to confirm.
 - Behavior: `/verify` or `/run` to confirm it actually works.
 - Loop fixes back to the builder; max 2 loops, then surface remaining issues.
 
