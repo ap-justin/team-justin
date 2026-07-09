@@ -30,6 +30,10 @@ State the mode in one line before proceeding. Also judge **triviality**: a typo/
 2. Consider grilling (Step 2.5) before architecting.
 3. Then spawn **`Plan`** (built-in) for the architecture, scaffold, and route implementation (Step 3).
 
+### Team defaults (greenfield only)
+Applied when scaffolding a new project; brownfield always matches the existing repo instead.
+- **Package manager (JS/Node): `pnpm`** — install, scripts, lockfile (`pnpm-lock.yaml`). Don't emit `package-lock.json`/`yarn.lock`. N/A for non-JS stacks.
+
 ## Step 2.5 — grilling (PM judgment, not a gate)
 You know the `/grilling` skill and when it earns its cost. For non-trivial work, before Plan/build, decide:
 - **High ambiguity or high blast radius** (vague brief, many unstated decisions, risky/irreversible change) → run a `/grilling` session.

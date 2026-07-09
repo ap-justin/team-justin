@@ -2,6 +2,10 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.8.1 — greenfield team default: pnpm
+- `engineering-team` Step 2 (greenfield): added a **Team defaults** block — JS/Node scaffolds use `pnpm` (install, scripts, `pnpm-lock.yaml`; no `package-lock.json`/`yarn.lock`). N/A for non-JS stacks. Brownfield unchanged — still matches the existing repo.
+- Lives in the orchestrator, not per-builder: pnpm is stack-agnostic, so a single default beats duplicating it across every builder; no builder pins a manager, so none needed editing.
+
 ## v0.8.0 — visual-reviewer (rendered-UI review seat)
 - `visual-reviewer`: reviews the UI as it actually renders, not the source — the gap `taste-reviewer` (static) left open. Drives a live browser via the `local-browser` skill (`agent-browser`), sweeps desktop/tablet/mobile viewports and interactive states (hover/focus/active/disabled/loading/empty/error), and cites **measured** evidence (`getBoundingClientRect` for alignment/overflow, `getComputedStyle` for contrast/tokens) plus screenshots (vision). Report-only; pinned `opus` (multimodal). Dev server must already be running — never starts it.
 - Completes the review set: `code-reviewer` (correctness) · `architecture-reviewer` (structure) · `taste-reviewer` (static slop) · `visual-reviewer` (rendered pixels). Visual-regression diffing (Percy/Playwright snapshots) noted as a separate CI concern, out of scope.
