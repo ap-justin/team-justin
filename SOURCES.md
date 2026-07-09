@@ -18,6 +18,7 @@ Agents: consult the row for the stack you're working in. The PM (`engineering-te
 | **Cloudflare** (Workers, D1, KV, R2, Hyperdrive) | **Cloudflare MCP** | `mcp__claude_ai_Cloudflare_Developer_Platform__*` + `search_cloudflare_documentation`. |
 | **Integrations** (Linear, Notion, Drive, PayPal, Stripe) | their **official MCP** | Use the connected MCP server, not scraped docs. |
 | **Image/asset generation** → `graphic-designer` | **`scripts/gen-asset.ts`** (`@google/genai`) + Context7 (`/googleapis/js-genai`) | Run the committed gen script (`npm --prefix ~/projects/claude-eng-team run gen-asset -- …`); needs `GOOGLE_API_KEY`. Verify model ids/params via Context7, never memory. |
+| **Module/interface design + structural integrity** → `architecture-reviewer` | **`codebase-design` skill** + Context7 | Invoke `codebase-design` for the deep-module vocabulary (seams, interface depth, coupling); Context7 for framework-specific seam rules (what belongs in a loader vs component, etc.). |
 | **Astro** *(planned specialist)* | **Context7** (`astro`) + astro docs | Until a dedicated `astro-builder` exists, use the general path + Context7. |
 
 **When a stack has no row:** use Context7 as the fallback, and tell the PM so it can add a row here (and, if the stack recurs, recommend minting a dedicated specialist — see `ROSTER.md`).

@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.6.0 — architecture-reviewer (structural integrity seat)
+- `architecture-reviewer`: the missing structure seat, completing the review trio (`code-reviewer`=correctness, `taste-reviewer`=design/UX, `architecture-reviewer`=boundaries). Report/spec only, never edits. Pinned `opus` — seam/coupling judgment is the hardest review.
+- Two modes: **design mode** (before a builder — settle the seam + emit an interface spec) and **review mode** (after — gate boundary erosion: shallow modules, leaked implementation, coupling drift, overloaded interfaces, testability/AI-navigability). Distinct from the reused built-in `Plan` (impl sequencing) — this owns module depth, not the build order.
+- Backing = `codebase-design` skill (deep-module vocabulary), Context7 per stack for framework-specific seam rules.
+- Wiring: `SOURCES.md` row (`codebase-design` skill); `ROSTER.md` specialist + model-tier rows, header → v0.6.0; `engineering-team` routing gains two rows (design-mode / review-mode) + a Step 4 note to run it before the builder for refactors/new boundaries and after as a gate.
+
 ## v0.5.1 — gen-asset arg hardening
 - `scripts/gen-asset.ts`: `parseArgs` now greedily joins tokens until the next `--flag`, so a multi-word `--prompt` survives even when the shell/npm drops its quotes (previously truncated to the first word). Validated end-to-end: real Gemini 2.5 Flash Image call → `sharp` → on-prompt 1024² avif.
 

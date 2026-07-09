@@ -53,9 +53,12 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` | `frontend-design:frontend-design`, `design-taste-frontend` skills |
 | needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `design-director` → `graphic-designer` → builder → `taste-reviewer` | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
+| module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) | `codebase-design` skill |
+| structural-integrity gate on a change (boundary erosion, coupling drift) | `architecture-reviewer` (review mode, after builder) | `codebase-design` skill |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 
 ## Step 4 — review & verify (reuse built-ins/skills)
+- Structure: for a refactor or a new module boundary, spawn `architecture-reviewer` in **design mode** BEFORE the builder (settle the seam/interface), and in **review mode** after (gate boundary integrity). Skip for trivial or purely additive changes.
 - Correctness: spawn `code-reviewer`, or invoke `/code-review` on the diff in-thread.
 - Design work: `taste-reviewer` (anti-slop).
 - Tests: `/tdd` for new features; run the repo's existing suite.

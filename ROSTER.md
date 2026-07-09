@@ -1,4 +1,4 @@
-# Roster — v0.5.0
+# Roster — v0.6.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -15,6 +15,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
 | `taste-reviewer` | Adversarial anti-slop design review | `design-taste-frontend` skill |
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |
+| `architecture-reviewer` | Structural integrity: seams, interface depth, coupling (design-time + review-time) | `codebase-design` skill |
 
 ## Model tiers
 Agents inherit the session model unless pinned via a `model:` frontmatter field. Policy — spend on correctness (lead, implementers, code review), economize where the work is pattern-matching.
@@ -24,6 +25,7 @@ Agents inherit the session model unless pinned via a `model:` frontmatter field.
 | `engineering-team` lead | inherit (main thread) | routes/integrates/verifies; Opus 4.8 suffices. Not settable via frontmatter |
 | `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation |
 | `code-reviewer` | **opus** (pinned) | adversarial bug-finding stays strong even if the session drops to a cheaper model |
+| `architecture-reviewer` | **opus** (pinned) | seam/coupling judgment is the hardest review; keep it on the top tier regardless of session model |
 | `taste-reviewer` | **sonnet** (pinned) | anti-slop review is pattern-matching; cheaper tier is enough |
 
 Fable 5 is the premium tier ($10/$50) — reserve for long autonomous multi-file runs, not routing or routine builds. Drop implementers to `sonnet` only for cost/volume-sensitive work.
