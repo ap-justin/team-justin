@@ -2,6 +2,13 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.11.0 — ambient hero video (Veo) for graphic-designer
+- **`graphic-designer` gains video**: ambient hero *video* backgrounds via Veo — the slow, looping, atmospheric wash behind a hero that reads as "expensive" for near-zero layout cost. Moves Veo from ROSTER → Planned into a shipped capability.
+- **Backing**: extended `scripts/gen-asset.ts` with a `--video` path (Veo via `@google/genai`, async generate → poll → download) + an `ffmpeg` post-pass that emits drop-in loop assets: `*.webm` (vp9) + `*.mp4` (h264 fallback) + `*-poster.avif/.webp` (first frame, so the hero paints instantly and reduced-motion users get a still). Audio stripped — ambient = silent. Flags: `--video`, `--model veo-*`, `--aspect`, `--vwidth`, `--person-generation`, `--poster-formats`.
+- **The media/motion seam holds**: the seat delivers files + a stacking/wiring note; playback (`<video>` muted/loop/autoplay, `<source>` order, scrim, `prefers-reduced-motion`) stays builder code. Static mesh/aurora + grain remains the fallback when a brief can't take video.
+- **Hardened by first real run** (amores-engineering hero): `personGeneration` is now model-aware — Veo 3.1 preview only accepts `allow_all` (rejects `dont_allow`/`allow_adult`); older Veo keeps `dont_allow`. Documented that Veo model availability is key/project-dependent with the 3.1 fallback ladder (`veo-3.1-lite/fast/generate-preview`).
+- Wiring: `scripts/gen-asset.ts` `--video` path; `agents/graphic-designer.md` ambient-video section + scope + gen-script reference; `SOURCES.md` ambient-video row; `ROSTER.md` graphic-designer row + header → v0.11.0.
+
 ## v0.10.0 — seo-engineer seat (technical SEO + AEO)
 - **`seo-engineer`**: post-build specialist that makes existing pages discoverable, crawlable, and citable — metadata/Open Graph, canonical/hreflang, `sitemap.xml`/`robots.txt`, JSON-LD structured data, indexability footguns, and content structured for AI answer surfaces (Google AI Overviews, ChatGPT, Perplexity). Audits by layer (indexability / discovery / rich presentation / answerability), then **applies targeted markup fixes** — modeled on `vercel-perf-optimizer` (report + apply, minimal diff), not a report-only reviewer.
 - **Backing**: the already-installed **`sanity:seo-aeo-best-practices`** skill (general SEO/AEO despite the `sanity:` namespace) for the checklist, plus the stack's own meta API for the mechanism (Next.js Metadata API / `sitemap.ts` / `robots.ts` via `vercel:nextjs`; `<svelte:head>` / Astro head via Context7). JSON-LD validated against schema.org. Reused, not vendored.

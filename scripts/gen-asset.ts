@@ -21,11 +21,18 @@
 //     --input ./client-photo.jpg --prompt "remove background, warm studio light" \
 //     --out ~/projects/fastlane/static/product.avif
 //
+//   # ambient hero VIDEO background (Veo). emits mp4 + webm + poster (avif/webp):
+//   npm --prefix ~/projects/claude-eng-team run gen-asset -- \
+//     --video --prompt "slow drifting aurora haze over deep charcoal, no people, no text" \
+//     --out ~/projects/studio/static/hero.mp4 --vwidth 1600 --aspect 16:9
+//
 // env: GOOGLE_API_KEY (or GEMINI_API_KEY) — a Google AI Studio key.
+// video path also needs `ffmpeg`/`ffprobe` on PATH (web-encode + poster frame).
 //
 import { GoogleGenAI } from '@google/genai';
 import sharp from 'sharp';
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdirSync, unlinkSync, statSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { dirname, extname, join, basename } from 'node:path';
 
 // --- args -----------------------------------------------------------------
@@ -65,6 +72,26 @@ const sizes = (args.sizes ?? '')
   .map((s) => parseInt(s.trim(), 10))
   .filter((n) => Number.isFinite(n) && n > 0);
 const quality = parseInt(args.quality ?? '72', 10);
+
+// --- video (veo) opts -----------------------------------------------------
+// video path is chosen by --video or by passing a veo-* model. everything below
+// only applies to that path; the image path ignores it.
+const isVideo = args.video === 'true' || model.startsWith('veo');
+// veo-3.0-fast is the cheap default for ambient loops; override with --model veo-*.
+const videoModel = model.startsWith('veo') ? model : 'veo-3.0-fast-generate-001';
+const aspect = args.aspect ?? '16:9';
+// ambient hero bg wants no people, but the accepted personGeneration values differ
+// by model: veo-3.1 preview only accepts 'allow_all' (it rejects dont_allow AND
+// allow_adult), while older veo accepts 'dont_allow'. default per model so a
+// no-people run doesn't hit a hard API rejection; the prompt still forbids people.
+const personGeneration =
+  args['person-generation'] ?? (videoModel.includes('veo-3.1') ? 'allow_all' : 'dont_allow');
+const vwidth = parseInt(args.vwidth ?? '', 10); // optional: scale video to this width (keeps aspect)
+// poster is a still image, so it gets image formats regardless of the --out (.mp4) ext.
+const posterFormats = (args['poster-formats'] ?? 'avif,webp')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 if (!prompt || !outPath) {
   console.error(
@@ -155,12 +182,94 @@ async function optimizeAndWrite(raw: Buffer): Promise<string[]> {
   return written;
 }
 
+// --- video: generate (veo) + web-encode -----------------------------------
+
+// veo is a long-running async operation: kick it off, poll until done, then
+// pull the mp4 bytes from the returned uri.
+async function generateVideo(): Promise<Buffer> {
+  let op = await ai.models.generateVideos({
+    model: videoModel,
+    prompt,
+    config: { numberOfVideos: 1, aspectRatio: aspect, personGeneration },
+  });
+  while (!op.done) {
+    await new Promise((r) => setTimeout(r, 10000));
+    process.stderr.write('.');
+    op = await ai.operations.getVideosOperation({ operation: op });
+  }
+  process.stderr.write('\n');
+
+  const vid = op.response?.generatedVideos?.[0];
+  const uri = vid?.video?.uri;
+  if (!uri) {
+    const reason = op.response?.raiMediaFilteredReasons?.[0] ?? 'n/a';
+    throw new Error(`veo returned no video (rai: ${reason})`);
+  }
+  // ai-studio download uris need the api key appended as a query param.
+  const resp = await fetch(uri.includes('key=') ? uri : `${uri}&key=${apiKey}`);
+  if (!resp.ok) throw new Error(`video download failed: ${resp.status} ${resp.statusText}`);
+  return Buffer.from(await resp.arrayBuffer());
+}
+
+const kb = (f: string) => `${f} (${(statSync(f).size / 1024).toFixed(0)} KB)`;
+
+// transcodes the raw veo mp4 into drop-in hero-loop assets: a webm (vp9, small,
+// listed first in <video>), an mp4 (h264, universal fallback), and a poster
+// still so the hero paints instantly while the video buffers. audio is stripped
+// — ambient backgrounds are silent — and playback is muted+loop on the builder side.
+async function encodeVideo(raw: Buffer): Promise<string[]> {
+  const dir = dirname(outPath);
+  mkdirSync(dir, { recursive: true });
+  const stem = basename(outPath, extname(outPath));
+  const srcFile = join(dir, `${stem}.src.mp4`);
+  writeFileSync(srcFile, raw);
+  const scale = Number.isFinite(vwidth) && vwidth > 0 ? ['-vf', `scale=${vwidth}:-2`] : [];
+  const written: string[] = [];
+
+  const webm = join(dir, `${stem}.webm`);
+  execFileSync(
+    'ffmpeg',
+    ['-y', '-i', srcFile, '-an', ...scale, '-c:v', 'libvpx-vp9', '-b:v', '0', '-crf', '34', webm],
+    { stdio: 'ignore' },
+  );
+  written.push(kb(webm));
+
+  const mp4 = join(dir, `${stem}.mp4`);
+  execFileSync(
+    'ffmpeg',
+    // faststart moves the moov atom to the front so playback can begin before full download.
+    ['-y', '-i', srcFile, '-an', ...scale, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '24', '-movflags', '+faststart', mp4],
+    { stdio: 'ignore' },
+  );
+  written.push(kb(mp4));
+
+  // grab the first frame, then optimize it through the same sharp path the image assets use.
+  const posterPng = join(dir, `${stem}.poster.png`);
+  execFileSync('ffmpeg', ['-y', '-i', srcFile, '-frames:v', '1', ...scale, posterPng], { stdio: 'ignore' });
+  const posterRaw = readFileSync(posterPng);
+  for (const fmt of posterFormats) {
+    const file = join(dir, `${stem}-poster.${fmt}`);
+    const buf = await sharp(posterRaw).toFormat(fmt as keyof sharp.FormatEnum, { quality }).toBuffer();
+    writeFileSync(file, buf);
+    written.push(`${file} (${(buf.length / 1024).toFixed(0)} KB)`);
+  }
+
+  unlinkSync(posterPng);
+  unlinkSync(srcFile);
+  return written;
+}
+
 // --- run ------------------------------------------------------------------
 
 try {
-  console.error(`generating with ${model}${inputPath ? ' (edit mode)' : ''}…`);
-  const raw = await generate();
-  const written = await optimizeAndWrite(raw);
+  let written: string[];
+  if (isVideo) {
+    console.error(`generating video with ${videoModel} (veo is async — this can take a few minutes)…`);
+    written = await encodeVideo(await generateVideo());
+  } else {
+    console.error(`generating with ${model}${inputPath ? ' (edit mode)' : ''}…`);
+    written = await optimizeAndWrite(await generate());
+  }
   console.error('wrote:');
   for (const w of written) console.error(`  ${w}`);
 } catch (err) {
