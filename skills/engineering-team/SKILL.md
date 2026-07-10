@@ -72,7 +72,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) | `codebase-design` skill |
 | structural-integrity gate on a change (boundary erosion, coupling drift) | `architecture-reviewer` (review mode, after builder) | `codebase-design` skill |
 | write/update/fix tests; add coverage; test a feature or fix | `test-writer` | project testing skill/docs first → `/tdd` + Context7 per runner |
-| "what should we build next" / roadmap / prioritize competing asks (upstream of planning) | `product-manager` (see Step 2.55) | Product Management plugin + `TRACKER.md` |
+| "what should we build next" / roadmap / prioritize competing asks (upstream of planning) | `product-manager` (see Step 2.55) | vendored Product-Management skills + `TRACKER.md` |
 | work too big for one context / needs a durable plan of record / decompose a spec into parallelizable slices | `planner` (see Step 2.6) | vendored `to-spec`/`to-tickets`/`wayfinder` + `TRACKER.md` |
 | **no specialist matches** | general path + **recommend a new specialist** (below) | Context7 fallback |
 
@@ -80,6 +80,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 - Structure: for a refactor or a new module boundary, spawn `architecture-reviewer` in **design mode** BEFORE the builder (settle the seam/interface), and in **review mode** after (gate boundary integrity). Skip for trivial or purely additive changes.
 - Correctness: spawn `code-reviewer`, or invoke `/code-review` on the diff in-thread.
 - Design work: `taste-reviewer` (static anti-slop on source) and, when a dev server is running, `visual-reviewer` (meticulous rendered-UI pass — viewports, states, measured). Static check is cheap and always applicable; run the visual pass for anything visually load-bearing.
+- Accessibility: for user-facing UI, run `/accessibility-review` (vendored WCAG 2.1 AA audit — contrast, keyboard, focus, touch targets, SR/ARIA), typically via `visual-reviewer` once the page renders. The a11y sibling of the two design reviews; skip only for non-UI or internal-tooling changes.
 - Tests: spawn `test-writer` for anything beyond a trivial assertion — it discovers the repo's testing conventions (or captures them if unwritten), owns the write→run→fix loop, and can fan out across files. It invokes `/tdd` itself for test-first work. Run the repo's existing suite to confirm.
 - Behavior: `/verify` or `/run` to confirm it actually works.
 - Loop fixes back to the builder; max 2 loops, then surface remaining issues.
