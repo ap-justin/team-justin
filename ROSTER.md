@@ -1,6 +1,11 @@
-# Roster — v0.15.1
+# Roster — v0.15.2
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
+
+## Scope — where this team stops
+Engineering-led, cross-functional at the top. The team spans **product-development**: engineering (core) + design + the upstream product layer that feeds it. `product-manager` and `planner` are **upstream adapters** — they turn goals into a prioritized roadmap and a spec/ticket graph that hand *into* engineering; they don't run a separate org. `design-director`/`graphic-designer` feed the build; `seo-engineer` is technical growth on shipped pages.
+
+The team stops at product-development. **Company functions are out of scope and stay uninstalled**: sales, marketing campaigns/content, finance, legal, support, ops/HR. This is the same discipline as v0.14.0 (vendor only the upstream skills that feed the build; don't drag in whole plugins). Adding a seat is fine (see *Growing the team*); adding a *business function* is a different product — don't.
 
 ## Current specialists (`agents/`)
 | Agent | Role | Backing source |

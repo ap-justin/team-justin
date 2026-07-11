@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.15.2 — bound the scope: product-development, engineering-led
+The roster had crept past pure engineering (design, `product-manager`, `planner`, `seo-engineer`) toward company-shaped. Named the boundary on purpose rather than renaming the team.
+- **New `ROSTER.md` → Scope section**: the team spans **product-development, engineering-led** — engineering (core) + design + the upstream product layer as *adapters* that hand into the build. It **stops** there; company functions (sales, marketing campaigns, finance, legal, support, ops/HR) are out of scope and stay uninstalled — same discipline as v0.14.0. Adding a seat is fine; adding a business function is a different product.
+- **`SKILL.md` scope line** up top so the lead states the same boundary and doesn't reach for out-of-scope functions.
+- Docs-only; no seats added or changed.
+
 ## v0.15.1 — delegation-contract audit: less lead micro-management
 Hierarchy audit — three fixes, all tightening where the **lead** over-reaches into seats that already defer cleanly. `engineering-team/SKILL.md` only; no seat files touched.
 - **Delegate on stack, not size.** The inline-build hatch gated on triviality/size, so the lead could hand-write "small" Svelte/Next/auth/SQL itself — skipping the seat's official-source discipline (Svelte autofixer, Better Auth CLI schema, cache semantics, parameterized SQL), which is its actual value. Rule rewritten: inline only for stack-agnostic edits (typo/rename/copy/config/docs); anything touching a stack with a seat routes to that seat regardless of size.
