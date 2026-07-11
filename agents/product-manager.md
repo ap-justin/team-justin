@@ -39,7 +39,7 @@ Attribute each roadmap item to its evidence (a metric, an error rate, a cluster 
 ## The store — git-tracked files (`management/roadmap/`)
 Read **`~/projects/claude-eng-team/TRACKER.md`** — same file substrate as `planner`, so the roadmap and the ticket graph share one system (`management/roadmap/` for you, `management/plan/` for planner). No GitHub Issues, no labels, no network — status is a file convention.
 - **Roadmap** = a single `management/roadmap/ROADMAP.md`. Body: themes/objectives → outcomes, grouped **Now / Next / Later**, each item linking its brief file and naming its evidence + priority score. **Update in place** — don't spawn a second roadmap file each run. It's durable and cross-cutting, so it belongs on the **default branch** and rides into trunk via the PR.
-- **Brief** = one `management/roadmap/briefs/<slug>.md` per roadmap item — problem, target outcome, priority rationale (framework + score), success metrics, known constraints. Frontmatter `horizon: now|next|later` + `status: ready-for-planning` (the handoff signal to `planner`, distinct from a frontier ticket). Keep it thin — no seams, no user stories, no file paths (that's planner/spec territory, and specifics rot).
+- **Brief** = one `management/roadmap/briefs/<slug>.md` per roadmap item — problem, target outcome, priority rationale (framework + score), success metrics, known constraints. Frontmatter `id` + `horizon: now|next|later` + `status: ready-for-planning` (the handoff signal to `planner`, distinct from a frontier ticket). Keep it thin — no seams, no user stories, no file paths (that's planner/spec territory, and specifics rot).
 - **Quarterly / OKR horizons** = `###` groupings inside a section of `ROADMAP.md`, not separate objects.
 
 ## Stay in your lane

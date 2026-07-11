@@ -2,6 +2,15 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.17.0 — ticket state in frontmatter, one file per ticket
+v0.16.0 moved the plan store into git-tracked markdown but left the machine-relevant facts encoded as prose: status = "are the acceptance boxes ticked" (scrape the body), edges = **Blocked by** *titles* (string-match). Both are brittle — title edges break on rename, box-scanning breaks on formatting drift. Fixed by structuring the ~3 fields that are actually queried, leaving the prose body (the 95% that's genuine spec) as markdown.
+- **One file per ticket.** `plan/<effort>/tickets.md` → one `<nnn>-<slug>.md` per ticket under `plan/<effort>/tickets/` (`<nnn>` = zero-padded dependency-order sequence, gaps left to insert). Cleaner diffs, stable ids, fewer merge conflicts editing tickets in sequence.
+- **Typed YAML frontmatter** on each ticket: `id` (stable join key — edges point at it, so renames don't break), `status: todo|doing|done` (the machine roll-up; `doing` = claimed, replacing wayfinder's per-issue assignee), `blocked_by: [ids]`. Acceptance `- [ ]` boxes stay as the builder's checklist/evidence; the builder flips `status: done` once they're all checked + verified. **The frontier is now a deterministic query** — `status != done` with all `blocked_by` ids done — not a prose scan.
+- **Ids join, titles narrate.** Frontmatter edges use ids; everything a human reads still refers to a ticket by title-wrapping-its-link (unchanged rule).
+- **Briefs** gain an `id` field (alongside `horizon` + `status: ready-for-planning`).
+- **Vendored skills stay verbatim.** This amends the `<tickets-file-template>` (single-file, prose-only) as a `TRACKER.md` local override — keep the skill's body, wrap it with frontmatter — so `to-tickets`/`wayfinder` remain re-syncable from upstream.
+- Wiring: `TRACKER.md` (layout, Status & frontier, planning ops, naming); `agents/planner.md` (store + to-tickets/wayfinder modes); `agents/product-manager.md` (brief frontmatter); `SOURCES.md` planner row; `skills/engineering-team` Step 2.6 dispatch line.
+
 ## v0.16.0 — plans/roadmaps versioned in-repo, off GitHub Issues
 The `planner` + `product-manager` seats persisted to **GitHub Issues** via `gh`. Swapped the substrate to **git-tracked markdown under `management/`** — plans live beside the code, edits show in `git log`, and they ride into review in the same PR. No `gh`, no network, no per-repo label provisioning.
 - **`TRACKER.md` rewritten** from a `gh`-native issue store to a file store. New layout: `management/roadmap/` (`ROADMAP.md` index + `briefs/<slug>.md`, **durable — belongs on the default branch**) and `management/plan/<effort>/` (`spec.md` / `tickets.md` / `map.md`, **current effort — on the current branch**). This is the vendored skills' own **local-markdown path**, made canonical (they were always dual-mode; `TRACKER.md` just flips which mode is default), so the skills stay verbatim + re-syncable.
