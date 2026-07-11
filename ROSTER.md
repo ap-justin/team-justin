@@ -1,4 +1,4 @@
-# Roster — v0.14.0
+# Roster — v0.15.0
 
 The lead is the `engineering-team` skill (runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -14,6 +14,7 @@ The lead is the `engineering-team` skill (runs in the main thread). It delegates
 | `vercel-perf-optimizer` | Web perf: CWV, caching, rendering, bundle (post-build) | `vercel:performance-optimizer` + `vercel:*` skills + Vercel MCP |
 | `seo-engineer` | Technical SEO + AEO: metadata/OG, canonical/hreflang, sitemaps/robots, JSON-LD, indexability, AI-answer readiness (audits + applies markup fixes; post-build) | `sanity:seo-aeo-best-practices` skill + the stack's meta API (Context7 / Vercel) |
 | `postgres-architect` | Schema, migrations, typed query surface | Context7 |
+| `better-auth-specialist` | Auth layer: server config, adapter + CLI schema, plugins (2FA/passkey/org/social/SSO), sessions/cookies, typed client. Hands a typed auth surface to the framework builder | Better Auth docs MCP → official Skills → `llms.txt` → Context7 |
 | `taste-reviewer` | Adversarial anti-slop design review (static source) | `design-taste-frontend` skill |
 | `visual-reviewer` | Meticulous rendered-UI review in a live browser (viewports, states, measured) | `local-browser` skill (`agent-browser`) |
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |
@@ -28,7 +29,7 @@ Agents inherit the session model unless pinned via a `model:` frontmatter field.
 | Agent(s) | `model:` | Why |
 |---|---|---|
 | `engineering-team` lead | inherit (main thread) | routes/integrates/verifies; Opus 4.8 suffices. Not settable via frontmatter |
-| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `vercel-perf-optimizer`, `seo-engineer`, `test-writer`, `planner`, `product-manager` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures. `seo-engineer` applies markup fixes + must get JSON-LD/canonical/hreflang correct. `planner` decomposition quality gates all downstream parallelism — keep it on the coding tier. `product-manager` sets the priority order everything downstream inherits — misprioritization is the most expensive error, keep it on the top judgment tier |
+| `design-director`, `graphic-designer`, all `*-builder`, `postgres-architect`, `better-auth-specialist`, `vercel-perf-optimizer`, `seo-engineer`, `test-writer`, `planner`, `product-manager` | inherit (→ opus) | code correctness + design judgment; Opus 4.8 is the coding tier. `better-auth-specialist` writes security-critical auth config — a wrong default (disabled verification, permissive origins) is expensive; keep it on the coding tier. `graphic-designer` needs opus-level prompt craft + slop curation. `test-writer` writes real code + debugs failures. `seo-engineer` applies markup fixes + must get JSON-LD/canonical/hreflang correct. `planner` decomposition quality gates all downstream parallelism — keep it on the coding tier. `product-manager` sets the priority order everything downstream inherits — misprioritization is the most expensive error, keep it on the top judgment tier |
 | `code-reviewer` | **opus** (pinned) | adversarial bug-finding stays strong even if the session drops to a cheaper model |
 | `architecture-reviewer` | **opus** (pinned) | seam/coupling judgment is the hardest review; keep it on the top tier regardless of session model |
 | `visual-reviewer` | **opus** (pinned) | multimodal — reads screenshots + reasons over measurements; needs the vision-capable top tier regardless of session model |

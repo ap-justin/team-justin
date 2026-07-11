@@ -66,6 +66,7 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` | `vercel:performance-optimizer` + `vercel:*` skills |
 | SEO/AEO: metadata/OG, canonical/hreflang, sitemap/robots, JSON-LD, indexability, AI-answer readiness (post-build) | `seo-engineer` | `sanity:seo-aeo-best-practices` skill + stack meta API |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` | Context7 |
+| auth / login / signup / sessions / social-OAuth / SSO / `better-auth` | `better-auth-specialist` | Better Auth docs MCP → official Skills → `llms.txt` → Context7 |
 | design/landing/marketing/portfolio UI | `design-director` → builder → `taste-reviewer` (static) → `visual-reviewer` (rendered) | `frontend-design:frontend-design`, `design-taste-frontend`, `local-browser` skills |
 | needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `design-director` → `graphic-designer` → builder → `taste-reviewer` | `scripts/gen-asset.ts` (`@google/genai`) + Context7 |
 | correctness/quality review of a diff | `code-reviewer` (or `/code-review` skill inline) | — |
