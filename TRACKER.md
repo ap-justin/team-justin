@@ -1,52 +1,48 @@
-# Issue Tracker — GitHub Issues (`gh`)
+# Plan Store — git-tracked files (`management/`)
 
-The team's planner seat (`planner`) and its vendored planning skills (`wayfinder`, `to-tickets`, `to-spec`) persist plans as **GitHub Issues**, driven entirely by the `gh` CLI. This file **is** the "tracker doc" those skills ask for — **do NOT run `/setup-matt-pocock-skills`** (that upstream setup step is replaced by this file for this team). When a vendored skill says "the issue tracker should have been provided to you," it means this document.
+The team's `planner` and `product-manager` seats persist plans as **markdown files under `management/`**, committed to the working repo and versioned in git — **not** on GitHub Issues. This file **is** the "tracker doc" the vendored planning skills ask for — **do NOT run `/setup-matt-pocock-skills`**. When a vendored skill says "the issue tracker should have been provided to you," or offers a GitHub/Linear path, use the file layout here — it is the skills' own **local-markdown path**, made canonical for this team.
 
-Repo is inferred from `git remote -v` — `gh` resolves it automatically inside a clone. If the repo has **no GitHub remote**, tell the lead: fall back to the vendored skills' local-markdown path (`tickets.md` in the repo root, `Blocked by:` edges as text) — the ticket content is identical, only the edge representation changes.
+Why files, not Issues: the plan lives beside the code, every edit shows in `git log` and rides into review in the same PR, and no network / `gh` / tokens are needed. Git history *is* the plan's audit trail — the thing a comment timeline can't give you locally.
 
-## Conventions
+## Layout
 
-- **Create an issue**: `gh issue create --title "..." --body "..."` (heredoc for multi-line bodies).
-- **Read an issue**: `gh issue view <number> --comments`.
-- **List issues**: `gh issue list --state open --json number,title,body,labels,comments --jq '[.[] | {number, title, body, labels: [.labels[].name], comments: [.comments[].body]}]'` with `--label` / `--state` filters.
-- **Comment**: `gh issue comment <number> --body "..."`
-- **Label**: `gh issue edit <number> --add-label "..."` / `--remove-label "..."`
-- **Close**: `gh issue close <number> --comment "..."`
+```
+management/
+  roadmap/                 # durable, cross-cutting — belongs on the default branch, rides in via PRs
+    ROADMAP.md             # the roadmap of record (Now / Next / Later index)
+    briefs/<slug>.md       # one thin brief per roadmap item
+  plan/                    # the current effort — lives on the current branch
+    <effort-slug>/
+      spec.md              # to-spec PRD (if the effort has one)
+      map.md               # wayfinder map (wayfinder efforts only)
+      tickets.md           # to-tickets: all tickets, dependency order, "Blocked by" by title
+```
 
-"Publish to the issue tracker" = create a GitHub issue. "Fetch the relevant ticket" = `gh issue view <number> --comments`.
+**Two horizons, two lifetimes:**
+- **`plan/`** is the *current* effort — one branch at a time (sequential execution). Created and edited on the feature branch; it merges with the code it plans. One `<effort-slug>/` dir per effort.
+- **`roadmap/`** is *durable* and cross-cutting — it must outlive any one branch, so treat it as living on the **default branch**: edits ride in via the PR and merge to trunk. A mid-implementation "defer this — later" appends to `roadmap/` so the item survives after the current branch merges. (Two branches deferring at once can conflict on `ROADMAP.md`; resolve it like any merge.)
 
-## Labels
+## Status & the frontier (no labels, no tracker UI)
 
-Created on first use — `gh label create <name> --color <hex> 2>/dev/null || true` before applying, so a fresh repo self-provisions.
+There are no issue labels and no tracker UI — status is a file convention, and the frontier is computed by reading the files:
 
-| Label | Meaning |
-|---|---|
-| `ready-for-agent` | Fully specified, agent-grabbable. `to-tickets` / `to-spec` apply this by construction. |
-| `ready-for-human` | Requires human implementation. |
-| `wayfinder:map` | The single map issue for a `wayfinder` effort. |
-| `wayfinder:research` / `wayfinder:prototype` / `wayfinder:grilling` / `wayfinder:task` | Ticket type on a wayfinder child issue. |
-| `roadmap` | The single pinned `ROADMAP` issue (the `product-manager` seat's roadmap of record). |
-| `roadmap:now` / `roadmap:next` / `roadmap:later` | Horizon of a roadmap brief issue. |
-| `ready-for-planning` | A `product-manager` brief that's decision-ready for `planner` to turn into a spec — the upstream handoff, distinct from `ready-for-agent` (which `planner`/`to-spec` apply once the spec/ticket exists). |
+- A **ticket** is a `## <title>` section in `tickets.md` with a **Blocked by** line (dependency titles, or "None — can start immediately") and `- [ ]` acceptance criteria. It is **done** when every acceptance box is checked. The **frontier** = every not-done ticket whose blockers are all done — for a linear chain, top to bottom. (This replaces GitHub's native `blocked_by` + the `ready-for-agent` label: a frontier ticket is agent-grabbable by construction.)
+- A **brief** carries frontmatter `horizon: now|next|later` and `status: ready-for-planning` — the handoff signal to `planner`, replacing the `ready-for-planning` label. `planner` reads it as the already-scoped brief for to-spec.
+- A **wayfinder ticket** is a section in `map.md` (or in a sibling `tickets.md`); blocking by title; a ticket is **closed** by moving its one-line gist into the map's *Decisions so far* and dropping it from the open list. The `map.md` file itself is the `wayfinder:map` artifact.
 
-## Roadmap operations
+Refer to every ticket/brief by its **title** (linking its file), never a bare id — same rule the skills state.
 
-Used by `product-manager` (upstream of planning). The **roadmap** is one pinned issue; each roadmap item gets a thin **brief** issue that `planner` later elaborates into a spec.
+## Roadmap operations (`product-manager`)
 
-- **Roadmap issue**: a single issue labelled `roadmap`, titled `ROADMAP`, body grouped **Now / Next / Later** (themes/objectives → outcomes), each item linking its brief and naming its evidence + priority score. Create once (`gh issue create --label roadmap`), **pin it** (`gh issue pin <n>`), and **update in place** thereafter (`gh issue edit <n> --body-file -`) — never spawn a second.
-- **Brief issue**: one per roadmap item — problem, target outcome, priority rationale, success metrics, constraints. Labels: `roadmap:<horizon>` + `ready-for-planning`. Thin by construction (no seams/user-stories/file-paths — that's `planner`/spec). `planner` reads it (`gh issue view <n>`) as the already-scoped brief for to-spec.
-- **Milestone** (optional, for time-boxed horizons/quarters): `gh api --method POST repos/<owner>/<repo>/milestones -f title=<Q>`; attach a brief with `gh issue edit <n> --milestone <title>`.
-- **No GitHub remote** → `ROADMAP.md` in the repo root (Now/Next/Later sections, briefs as `##` subsections); state the fallback.
+- **`ROADMAP.md`**: a single file, body grouped **Now / Next / Later** (themes/objectives → outcomes), each item linking its brief file and naming its evidence + priority score. **Update in place** — never spawn a second roadmap file. Quarterly / OKR horizons are `###` groupings inside a section, not separate objects (replaces GitHub Milestones).
+- **`briefs/<slug>.md`**: one per roadmap item — problem, target outcome, priority rationale (framework + score), success metrics, constraints. Frontmatter `horizon:` + `status: ready-for-planning`. Thin by construction (no seams / user-stories / file-paths — that's `planner`/spec territory, and specifics rot).
 
-## Wayfinding operations
+## Planning operations (`planner`)
 
-Used by `/wayfinder`. The **map** is a single issue with **child** issues as tickets.
+- **to-spec** → `plan/<effort>/spec.md`, using the skill's spec template. The seam sketch still goes to the lead to confirm; the file is the published spec.
+- **to-tickets** → `plan/<effort>/tickets.md`, using the skill's `<tickets-file-template>` verbatim: all tickets in dependency order (blockers first), each **Blocked by** listing the **titles** it depends on. This is the skill's *Local-files* path — the canonical one here.
+- **wayfinder** → `plan/<effort>/map.md` (Destination / Notes / Decisions-so-far / Not-yet-specified) plus its tickets; resolve one per session, gisting each closed ticket into *Decisions so far*.
 
-- **Map**: a single issue labelled `wayfinder:map`, holding the Destination / Notes / Decisions-so-far / Fog body. `gh issue create --label wayfinder:map`.
-- **Child ticket**: an issue linked to the map as a GitHub **sub-issue**. Add it via the sub-issues endpoint: `gh api --method POST repos/<owner>/<repo>/issues/<map>/sub_issues -F sub_issue_id=<child-db-id>` (the child's numeric **database id** — `gh api repos/<owner>/<repo>/issues/<n> --jq .id`, _not_ the `#number`). Where sub-issues aren't enabled, add the child to a task list in the map body and put `Part of #<map>` at the top of the child body. Labels: `wayfinder:<type>`. Once claimed, assign the ticket to the driving dev.
-- **Blocking**: GitHub's **native issue dependencies** — the canonical, UI-visible representation. Add an edge with `gh api --method POST repos/<owner>/<repo>/issues/<child>/dependencies/blocked_by -F issue_id=<blocker-db-id>`, where `<blocker-db-id>` is the blocker's numeric **database id**. GitHub reports `issue_dependencies_summary.blocked_by` (open blockers only — the live gate). Where dependencies aren't available, fall back to a `Blocked by: #<n>, #<n>` line at the top of the child body. A ticket is unblocked when every blocker is closed.
-- **Frontier query**: list the map's open children (`gh issue list --state open`, scoped to the map's sub-issues / task list), drop any with an open blocker (`issue_dependencies_summary.blocked_by > 0`, or an open issue in the `Blocked by` line) or an assignee; first in map order wins.
-- **Claim**: `gh issue edit <n> --add-assignee @me` — the session's first write.
-- **Resolve**: `gh issue comment <n> --body "<answer>"`, then `gh issue close <n>`, then append a context pointer (gist + link) to the map's Decisions-so-far.
+## Naming
 
-> GitHub's issue-dependencies + sub-issues APIs are recent and evolve; verify the endpoint shape with `gh api` before a first run in a new repo rather than trusting this doc blindly.
+`<effort-slug>` and `<slug>` are short kebab-case, from the effort / brief title. One effort dir per plan. Once an effort's work has merged and no ticket remains open, delete or archive its `plan/<effort>/` dir — git keeps the history.

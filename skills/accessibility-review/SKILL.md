@@ -121,7 +121,7 @@ When a dev server is running, prefer **measured** evidence over eyeballing — d
 
 The upstream skill branched on Figma / project-tracker MCP connectors. In this team those map to sources you already have:
 - **Design source** → read the Figma frame or the rendered page through `local-browser` / `design-director`'s plan; inspect color values, font sizes, and touch targets there.
-- **Tracker** → file findings GitHub-native via `TRACKER.md` (`gh`) when the lead asks for tickets; otherwise return the audit inline.
+- **Tracker** → file findings via `TRACKER.md` (git-tracked files under `management/`) when the lead asks for tickets; otherwise return the audit inline.
 
 ## Tips
 

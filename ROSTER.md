@@ -25,8 +25,8 @@ The team stops at product-development. **Company functions are out of scope and 
 | `code-reviewer` | Adversarial correctness/quality review | Context7 per stack |
 | `architecture-reviewer` | Structural integrity: seams, interface depth, coupling (design-time + review-time) | `codebase-design` skill |
 | `test-writer` | Writes/updates/fixes tests; portable principles, defers to (and captures) per-repo testing conventions | `/tdd` skill + Context7 per runner; project testing skill/docs |
-| `planner` | Persisted plan of record for work bigger than one context: spec, tracer-bullet ticket graph, or wayfinder map on the tracker (AFK synthesis+publish; lead owns the human loop) | vendored `to-spec`/`to-tickets`/`wayfinder` skills + `TRACKER.md` (GitHub Issues) |
-| `product-manager` | Upstream product layer: prioritized roadmap (Now/Next/Later, quarterly/OKR) + thin per-item briefs, persisted GitHub-native (pinned `ROADMAP` issue + Milestones). Sets what/why/when; hands `ready-for-planning` briefs to `planner`. AFK synthesis+publish; lead owns the human loop | **vendored Product-Management skills** (from `knowledge-work-plugins`, in `skills/`) + `TRACKER.md` (GitHub Issues) |
+| `planner` | Persisted plan of record for work bigger than one context: spec, tracer-bullet ticket graph, or wayfinder map, in git-tracked files (AFK synthesis+publish; lead owns the human loop) | vendored `to-spec`/`to-tickets`/`wayfinder` skills + `TRACKER.md` (files under `management/plan/`) |
+| `product-manager` | Upstream product layer: prioritized roadmap (Now/Next/Later, quarterly/OKR) + thin per-item briefs, persisted as git-tracked files (`management/roadmap/ROADMAP.md` + briefs). Sets what/why/when; hands `ready-for-planning` briefs to `planner`. AFK synthesis+publish; lead owns the human loop | **vendored Product-Management skills** (from `knowledge-work-plugins`, in `skills/`) + `TRACKER.md` (files under `management/roadmap/`) |
 
 ## Model tiers
 Agents inherit the session model unless pinned via a `model:` frontmatter field. Policy — spend on correctness (lead, implementers, code review), economize where the work is pattern-matching.
@@ -46,7 +46,7 @@ Fable 5 is the premium tier ($10/$50) — reserve for long autonomous multi-file
 Built-ins: `Explore` (codebase mapping), `Plan` (architecture).
 Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`, `/writing-great-skills` (authoring standard for this repo — see Growing the team).
 Vendored official skills: `react-router` (backs `react-router-builder`); `to-spec`/`to-tickets`/`wayfinder` (back `planner`); `accessibility-review` (WCAG audit, a11y sibling of `visual-reviewer`); `roadmap-update`/`synthesize-research`/`competitive-brief`/`metrics-review`/`stakeholder-update`/`product-brainstorming` (back `product-manager`) — all from the knowledge-work plugins, vendored so their MCP fleets stay out. See `SOURCES.md` → Vendored resources. Optional official subagent: `svelte:svelte-file-editor`.
-Tracker substrate: `TRACKER.md` (GitHub Issues via `gh`) — the planner's plan-of-record store; replaces `/setup-matt-pocock-skills`.
+Plan store: `TRACKER.md` (git-tracked markdown under `management/`) — the planner's + product-manager's plan-of-record store; replaces `/setup-matt-pocock-skills` and GitHub Issues.
 
 ## Planned (add as the team matures)
 - `astro-builder` — content-heavy sites. Backing: Context7 (`astro`). Mint when Astro work recurs.
