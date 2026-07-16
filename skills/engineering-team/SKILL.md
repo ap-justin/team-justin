@@ -67,7 +67,9 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | React Router, `@react-router/*` / `react-router` | `react-router-builder` |
 | Next.js, `next` (App Router) | `nextjs-builder` |
 | Sanity, `sanity` / `@sanity/*` / `next-sanity` | `sanity-builder` |
+| Cloudflare Workers / Pages / `wrangler` / bindings / D1 / KV / R2 / Durable Objects / Queues / framework-on-Workers adapter | `cloudflare-builder` (owns D1 — CF's SQLite — not `postgres-architect`) |
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` |
+| Vercel platform-ops: deploy/CI-CD, env/secrets, `vercel.json`, Functions/edge runtime, Cron, domains, Firewall/WAF, AI Gateway, storage provisioning — NOT app code, NOT CWV | `vercel-platform-engineer` (app code → `nextjs-builder`; perf/caching-for-speed → `vercel-perf-optimizer`) |
 | SEO/AEO: metadata/OG, canonical/hreflang, sitemap/robots, JSON-LD, indexability, AI-answer readiness (post-build) | `seo-engineer` |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` |
 | auth / login / signup / sessions / social-OAuth / SSO / `better-auth` | `better-auth-specialist` |
@@ -80,11 +82,12 @@ Detect from `package.json` / config, then delegate to the matching specialist. P
 | module/interface design, refactor with fuzzy boundaries, "where's the seam", coupling/testability | `architecture-reviewer` (design mode, before builder) |
 | structural-integrity gate on a change (boundary erosion, coupling drift) | `architecture-reviewer` (review mode, after builder) |
 | write/update/fix tests; add coverage; test a feature or fix | `test-writer` |
+| repo tooling: pnpm workspaces/catalogs/lockfile · `turbo.json` monorepo task graph + caching · Biome/ESLint/Prettier lint+format · wiring a new package into the graph | `toolchain-engineer` |
 | "what should we build next" / roadmap / prioritize competing asks (upstream of planning) | `product-manager` (see Step 2.55) |
 | work too big for one context / needs a durable plan of record / decompose a spec into parallelizable slices | `planner` (see Step 2.6) |
 | **no specialist matches** | general path + **recommend a new specialist** (below) |
 
-**TypeScript isn't routed.** Every TS-writing builder carries the `typescript` skill (cheat-sheet baseline + type craft + compiler-config discipline), so tsconfig/strictness/module-resolution/hard-type work happens in-context — no seat, no hop. For repo-wide TS-infra work (strict migration, monorepo project references, type-perf profiling), dispatch a general agent with the `typescript` skill loaded rather than routing to a specialist.
+**TypeScript isn't routed.** Every TS-writing builder carries the `typescript` skill (cheat-sheet baseline + type craft + compiler-config discipline), so tsconfig/strictness/module-resolution/hard-type work happens in-context — no seat, no hop. For repo-wide TS-infra work (strict migration, monorepo project references, type-perf profiling), dispatch a general agent with the `typescript` skill loaded rather than routing to a specialist. The **formatter/linter + monorepo task/package graph** (Biome/ESLint/Prettier, pnpm, Turborepo) *is* routed — to `toolchain-engineer` (it owns the tasks; the `typescript` skill owns `tsconfig` content).
 
 ## Step 4 — review & verify (reuse built-ins/skills)
 - Structure: for a refactor or a new module boundary, spawn `architecture-reviewer` in **design mode** BEFORE the builder (settle the seam/interface), and in **review mode** after (gate boundary integrity). Skip for trivial or purely additive changes.
