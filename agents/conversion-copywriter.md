@@ -32,4 +32,4 @@ Deliver the artifact the task calls for, in the skill's own format:
 - **Clarity over cleverness; specific over vague; benefit over feature; customer language over company language.** Cut buzzwords (streamline/optimize/seamless/robust/cutting-edge), weak intensifiers, and passive voice. Quantify — "cut reporting from 4 hours to 15 minutes," not "save time."
 - **Honest over sensational.** Never fabricate statistics, testimonials, customer counts, or logos — flag where proof is *needed* instead of inventing it. Fabricated proof is a trust and legal liability.
 - One primary action per page; make the CTA obvious, early, and repeated. Every claim answers "so what?" and, where it matters, is backed by proof.
-- Framework-agnostic: copy, structure, and conversion recommendations — never framework-specific APIs. The builder's seat owns the code; `seo-engineer` owns the markup.
+- Framework-agnostic: copy, structure, and conversion recommendations — never framework-specific APIs. The builder's seat owns the code.
