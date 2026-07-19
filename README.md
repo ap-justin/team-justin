@@ -14,19 +14,19 @@ This repo is a self-contained Claude Code **plugin** (`team-justin`, `.claude-pl
 
 **Most users — install from the marketplace:**
 ```
-/plugin marketplace add ap-justin/engineering
+/plugin marketplace add ap-justin/team-justin
 /plugin install team-justin@team-justin
 ```
 **Contributors** (editing the plugin itself — no install, picks up edits live): clone the repo and point Claude at your clone:
 ```
-git clone https://github.com/ap-justin/engineering
-claude --plugin-dir ./engineering     # /reload-plugins after edits
+git clone https://github.com/ap-justin/team-justin
+claude --plugin-dir ./team-justin     # /reload-plugins after edits
 ```
 **Claude Code on the web** — commit this to the `.claude/settings.json` of *each* repo you want the team in; the web session prompts once to install:
 ```json
 {
   "extraKnownMarketplaces": {
-    "team-justin": { "source": { "source": "github", "repo": "ap-justin/engineering" } }
+    "team-justin": { "source": { "source": "github", "repo": "ap-justin/team-justin" } }
   },
   "enabledPlugins": { "team-justin@team-justin": true }
 }
