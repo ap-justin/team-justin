@@ -12,14 +12,15 @@ A versioned engineering team for Claude Code. A main-thread lead (the `team` ski
 ## Install (as a Claude Code plugin)
 This repo is a self-contained Claude Code **plugin** (`engineering`, `.claude-plugin/plugin.json`) served by its own single-plugin **marketplace** (`.claude-plugin/marketplace.json`, name `engineering`). Installing as a plugin — rather than symlinking into `~/.claude` — is what makes it work identically **locally and in Claude Code on the web**, because plugin content resolves `${CLAUDE_PLUGIN_ROOT}` (the install dir) in both, whereas the web VM never sees your machine's `~/.claude`.
 
-**Local dev** (fastest iteration — no install, picks up edits live):
-```
-claude --plugin-dir ~/projects/engineering     # /reload-plugins after edits
-```
-**Local (persistent install from the marketplace):**
+**Most users — install from the marketplace:**
 ```
 /plugin marketplace add ap-justin/engineering
 /plugin install engineering@engineering
+```
+**Contributors** (editing the plugin itself — no install, picks up edits live): clone the repo and point Claude at your clone:
+```
+git clone https://github.com/ap-justin/engineering
+claude --plugin-dir ./engineering     # /reload-plugins after edits
 ```
 **Claude Code on the web** — commit this to the `.claude/settings.json` of *each* repo you want the team in; the web session prompts once to install:
 ```json
