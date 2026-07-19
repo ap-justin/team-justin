@@ -14,7 +14,7 @@ This repo is a self-contained Claude Code **plugin** (`engineering`, `.claude-pl
 
 **Local dev** (fastest iteration — no install, picks up edits live):
 ```
-claude --plugin-dir ~/projects/claude-eng-team     # /reload-plugins after edits
+claude --plugin-dir ~/projects/engineering     # /reload-plugins after edits
 ```
 **Local (persistent install from the marketplace):**
 ```
