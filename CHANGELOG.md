@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.29.1 — surface `graphic-designer` setup to the user (direct *and* indirect)
+Directly invoking `graphic-designer` already reported a missing `GOOGLE_API_KEY`, but on the **indirect** path (lead routes `design-director → graphic-designer` during a build) the requirement could be missed: the subagent reports "to the PM," not the user, and nothing made the lead relay it — so a hero-image step could quietly fall back to a static gradient without the user ever learning a real asset was one env var away.
+- **`agents/graphic-designer.md`** — a missing prerequisite now returns a structured **`BLOCKED (setup)`** result naming the exact fix (`GOOGLE_API_KEY` / Node+`npm install` / ffmpeg / rembg), the resolving command, and the fallback — instead of prose "tell the PM." The user chooses real vs. fallback; the agent doesn't decide by silently shipping a placeholder. Node named explicitly.
+- **`skills/team/SKILL.md`** — the `graphic-designer` routing row gains a **Preflight**: before routing (or on a `BLOCKED (setup)` return), surface the exact setup to the user and let them choose real assets vs. static fallback; never silently degrade.
+- Patch — prompt-contract fix, no roster/behavior break.
+
 ## v0.29.0 — packaged as an installable plugin (`engineering@engineering`), portable to Claude Code on the web
 The team only worked locally via `~/.claude` symlinks — the web VM never sees your machine's `~/.claude`, so none of it loaded there. Repackaged the repo as a self-contained Claude Code **plugin** served by its own single-plugin **marketplace**, so it installs identically locally and on the web. Repo renamed `ap-justin/claude-eng-team` → **`ap-justin/engineering`**.
 - **`.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json`** (new) — plugin `engineering`, marketplace `engineering`, plugin `source: "."` (marketplace == repo root). Installs via `/plugin marketplace add ap-justin/engineering` → `/plugin install engineering@engineering`, or on web via committed `.claude/settings.json` (`extraKnownMarketplaces` + `enabledPlugins`).
