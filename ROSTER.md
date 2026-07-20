@@ -1,4 +1,4 @@
-# Roster — v0.30.0
+# Roster — v0.31.0
 
 The lead is the `lead` skill (`/team-justin:lead`, runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -52,7 +52,7 @@ Fable 5 is the premium tier ($10/$50) — reserve for long autonomous multi-file
 ## Reused, not owned
 Built-ins: `Explore` (codebase mapping), `Plan` (architecture).
 Repo-authored shared skill: **`typescript`** (`skills/typescript/` — cheat-sheet baseline + type craft + compiler-config discipline). Loaded by every TS-writing builder (`*-builder`, `better-auth-specialist`, `ark-ui-specialist`, `postgres-architect`, `test-writer`) — **TypeScript is ambient, not a seat**: no fuzzy builder/expert seam, no extra hop for routine typing. Repo-wide TS-infra work (strict migration, monorepo project references, type-perf profiling) = the lead dispatches a general agent with this skill; mint a dedicated seat only if that recurs. Excludes the formatter/linter **and the monorepo task/package graph** (Biome/ESLint/Prettier + pnpm + Turborepo) — now the **`toolchain-engineer`** seat's (v0.26.0); the skill owns `tsconfig` content, the seat owns the tasks that run it.
-Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`, `/writing-great-skills` (authoring standard for this repo — see Growing the team).
+Skills: `/grilling` (stress-test the brief before planning, PM judgment), `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`, `/writing-great-skills` (authoring standard for this repo — see Growing the team), `/roster` (**roster-ops**: `hire`/`retire` a seat, `author` a skill, `audit` for drift — the Growing-the-team checklist as a tool; runs in the main thread. This is team **self-authoring/governance**, not the excluded ops/HR company function — it mints the team's own members, it doesn't add a business function).
 Vendored official skills: `react-router` (backs `react-router-builder`); `to-spec`/`to-tickets`/`wayfinder` (back `planner`); `accessibility-review` (WCAG audit, a11y sibling of `visual-reviewer`); `user-research`/`research-synthesis`/`design-critique`/`ux-copy`/`design-handoff` (back `ux-designer`); `roadmap-update`/`synthesize-research`/`competitive-brief`/`metrics-review`/`stakeholder-update`/`product-brainstorming` (back `product-manager`) — all from the knowledge-work plugins, vendored so their MCP fleets stay out; `copywriting`/`copy-editing`/`cro` (back `conversion-copywriter`, from `coreyhaines31/marketingskills` — a curated community pack, vendored since no first-party copywriting source exists); `find-animation-opportunities`/`emil-design-eng`/`apple-design`/`animation-vocabulary`/`review-animations`/`improve-animations` (back `motion-engineer`, from `emilkowalski/skills`, MIT — an authored pack from the reference web-animation source, vendored since no first-party animation source exists); `turborepo` (backs `toolchain-engineer`, from `vercel/turborepo`, MIT); `cloudflare`+`wrangler` (back `cloudflare-builder`, from `cloudflare/skills`, Apache-2.0) — all first-party except the marketing + animation packs. Plus the reuse/maintenance skills now vendored for web self-containment: `codebase-design`/`tdd`/`diagnosing-bugs`/`domain-modeling`/`grilling`/`writing-great-skills` (from `mattpocock/skills`), `design-system` (from `knowledge-work-plugins`), `design-taste-frontend` (from `leonxlnx/taste-skill`, MIT), and the locally-authored `local-browser` (wraps the `agent-browser` CLI). See `SOURCES.md` → Vendored resources. Optional official subagent: `svelte:svelte-file-editor`.
 Plan store: `TRACKER.md` (git-tracked markdown under `management/`) — the planner's + product-manager's plan-of-record store; replaces `/setup-matt-pocock-skills` and GitHub Issues. The **lead reconciles it at commit** (`lead` skill, Step 4.5): flip done tickets, advance the roadmap, and capture pitched/discovered ideas to the roadmap **Icebox** — plan and code share one commit, no drift.
 
@@ -60,11 +60,13 @@ Plan store: `TRACKER.md` (git-tracked markdown under `management/`) — the plan
 - `astro-builder` — content-heavy sites. Backing: Context7 (`astro`). Mint when Astro work recurs.
 
 ## Growing the team
-Adding a specialist is a versioned change:
+Adding a specialist is a versioned change — run **`/roster hire <name>`**, which executes this checklist against its wiring map so no point is missed:
 1. Write `agents/<name>.md` against the **`/writing-great-skills`** standard (invocation model, information hierarchy, single source of truth, aggressive pruning) — single responsibility, official-source-first, quality floor. Copy the shape of an existing specialist.
 2. Wire it to its official source: add a row to `SOURCES.md`.
-3. Add a row here in **Current specialists**, and to the routing table in the `lead` skill.
-4. Bump `CHANGELOG.md` and `VERSION` (minor bump for a new agent).
+3. Add a row here in **Current specialists** + a **Model tiers** entry, and a routing row to the `lead` skill.
+4. Recompute the agent count (`ls agents/*.md | wc -l`) into `plugin.json` + `marketplace.json`; bump `CHANGELOG.md`, `VERSION`, `plugin.json` `version`, and the header above (minor bump for a new agent).
 5. `git add -A && git commit && git tag vX.Y.Z`.
+
+`/roster` also does the inverse (`retire`), authors skills (`author`), and reports wiring **drift** (`audit`) — e.g. the agent count in `plugin.json`/`marketplace.json` disagreeing with `agents/*.md`.
 
 Versioning: semver-ish. New agent or capability → **minor**. Prompt tweaks/fixes → **patch**. Breaking reorg of the orchestration contract → **major**.

@@ -2,6 +2,13 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.31.0 — `/roster` skill: roster-ops (hire/retire/author/audit)
+"Growing the team" was prose in three places (`ROSTER.md` checklist, the `lead` skill's "add an Astro agent" move, `/writing-great-skills` as the standard) — a manual ~10-point wiring per seat with a silent-drift trap: the agent count is hardcoded in **both** `plugin.json` and `marketplace.json` ("24 specialist subagents") and nothing checked it against `agents/*.md`. Added **`/roster`**, a user-invoked main-thread router skill that executes the checklist against one **wiring map** (single source of truth): `hire` mints + wires a seat, `retire` unwires one and catches dangling references, `author` mints/vendors a skill, `audit` reports drift (count/version/registration/orphans/model-tier). Scoped as team **self-authoring/governance** — explicitly *not* the ops/HR company function `ROSTER.md` excludes (it mints the team's own members, not a business function).
+- **`skills/roster/`** — `SKILL.md` (router + wiring map + scope carve-out) with disclosure-by-branch verb files `hire.md`/`retire.md`/`author.md`/`audit.md`, per `/writing-great-skills`.
+- **`skills/lead/SKILL.md`** — the "Handling gaps" step now calls `/roster hire <name>` instead of restating the manual steps (single source of truth).
+- **`ROSTER.md`** — registered `/roster` under *Reused, not owned*; *Growing the team* now points at the tool + notes the count/plugin.json/marketplace.json wiring it recomputes.
+- No agent added — count stays 24; minor bump for the new skill/capability.
+
 ## v0.30.0 — renamed plugin `engineering` → `team-justin`, lead skill `team` → `lead`
 Identity rename. The plugin/marketplace was `engineering` — which collides with the *other* `engineering` plugin in `knowledge-work-plugins` — and the namespaced lead command `/engineering:team` stuttered "team" twice once the skill lived under the plugin namespace. Renamed the plugin to **`team-justin`** and the lead skill to **`lead`**, so it installs as `team-justin@team-justin` and invokes as **`/team-justin:lead`** (or bare `/lead`). Roster and behavior are unchanged — pure identity/wiring.
 - **`.claude-plugin/plugin.json` + `.claude-plugin/marketplace.json`** — plugin name + marketplace name + plugin entry `engineering` → `team-justin`. The GitHub repo was renamed to match (`ap-justin/engineering` → **`ap-justin/team-justin`**; GitHub redirects the old URL), so `repository`, the README clone/marketplace-add URLs, and the web `source.repo` all point at `ap-justin/team-justin`.

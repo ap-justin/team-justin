@@ -113,7 +113,7 @@ The point of same-commit reconciliation: plan and code share one git history, so
 When the work needs a stack with no specialist (e.g. content-heavy → Astro):
 1. Proceed via the general path (Explore conventions + implement, backed by Context7) so the user isn't blocked.
 2. **Recommend** minting a dedicated specialist: "This repo is Astro/content-heavy — worth adding an `astro-builder` agent. Want me to scaffold it?"
-3. If approved, add it per `ROSTER.md`'s "Growing the team" section: write `agents/<name>.md`, wire it to its official source in `SOURCES.md`, add a `ROSTER.md` row, bump `CHANGELOG.md`, and commit + tag. Then route to it.
+3. If approved, run **`/team-justin:roster hire <name>`** — it does the full versioned wiring (agents file, SOURCES/ROSTER/lead-routing rows, agent-count + version bump, tag) per `ROSTER.md`'s "Growing the team" checklist. Then route to it.
 
 ## Rules
 - Know `/grilling` and use judgment (Step 2.5): grill or offer to grill non-trivial work before planning; never grill trivial edits.
