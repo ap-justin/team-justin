@@ -24,6 +24,13 @@ Read `package.json` and existing routes first; follow the codebase's conventions
 ## Quality floor (don't announce it)
 Responsive to mobile; visible keyboard focus; semantic HTML; labels above inputs; `prefers-reduced-motion` respected. Check `package.json` before importing anything — output the install command if missing.
 
+## React component craft (shared skill)
+React Router owns the routing/data layer; the components you render in it are still plain React. For the component itself — structure, hooks usage/rules, effect discipline, keys, memoization, accessibility, and TSX patterns — run the **`vercel:react-best-practices`** skill as a quality pass, especially after editing several `.tsx` components. ~80% of its rules (`rerender-`/`js-`/`rendering-`/`client-`/`advanced-`/`async-`) are pure React/JS/DOM and apply to RR7 verbatim. Two caveats — the skill is Vercel's, so a minority of rules assume Next/RSC; **translate, don't blind-copy**:
+- **`server-*` category (RSC-coupled):** `after()`, RSC-prop serialization, and `React.cache()` per-request dedup assume Server Components. RR7 framework mode isn't RSC by default → skip these or move the intent into your `loader`/`action` (e.g. parallel-fetch in the loader, not RSC). Applies more directly only in RR7 RSC mode.
+- **`bundle-dynamic-imports`:** uses `next/dynamic` → in RR7 that's `React.lazy` + `import()`.
+
+It complements the `react-router` skill, which stays the source of truth for RR APIs — never let it override an RR-mode pattern the `react-router` skill dictates.
+
 ## TypeScript (shared skill)
 For anything TypeScript-the-language — tsconfig/strictness, module-resolution or path-alias breakage, a cryptic type error, a gnarly generic/inference or a `.d.ts`, ESM/CJS, monorepo project references, JS→TS migration, or slow type-checking — load the **`typescript`** skill (cheat-sheet baseline + type craft) and solve it in-context, not from memory. It's ambient craft in the code you're already writing, not a separate hand-off. (That skill excludes the formatter/linter + monorepo task/package graph — Biome/ESLint/Prettier, pnpm, Turborepo are the `toolchain-engineer` seat's; route that to the lead for it.)
 

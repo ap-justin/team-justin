@@ -2,6 +2,12 @@
 
 Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-contract break → major.
 
+## v0.31.1 — `react-router-builder` carries React component skills too
+`vercel:react-best-practices` was wired only into `nextjs-builder`, but React Router is the team's *only* other React framework — so its builder had no React-component quality pass (hooks/effects/keys/memo/a11y/TSX craft), only the RR-API `react-router` skill. Added it to `react-router-builder`. Inspected the skill for RR7 fit before wiring: 64 rules / 8 categories — ~80% (`rerender-`/`js-`/`rendering-`/`client-`/`advanced-`/`async-`, ~51 rules) are pure React/JS/DOM and apply verbatim; the Next/RSC minority (the 8 `server-*` rules assuming Server Components + `after()`/RSC-props, plus `bundle-dynamic-imports`'s `next/dynamic`) is flagged "translate, don't blind-copy" (→ RR7 loaders/actions/`React.lazy`). Complements — never overrides — the `react-router` skill on RR APIs.
+- **`agents/react-router-builder.md`** — new "React component craft (shared skill)" section (mirrors the `typescript` shared-skill pattern) with the two Next/RSC caveats spelled out.
+- **`SOURCES.md`** — React Router row notes the React-component skill + the translate-the-Next-minority caveat.
+- Prompt/source tweak, no new agent → patch bump.
+
 ## v0.31.0 — `/roster` skill: roster-ops (hire/retire/author/audit)
 "Growing the team" was prose in three places (`ROSTER.md` checklist, the `lead` skill's "add an Astro agent" move, `/writing-great-skills` as the standard) — a manual ~10-point wiring per seat with a silent-drift trap: the agent count is hardcoded in **both** `plugin.json` and `marketplace.json` ("24 specialist subagents") and nothing checked it against `agents/*.md`. Added **`/roster`**, a user-invoked main-thread router skill that executes the checklist against one **wiring map** (single source of truth): `hire` mints + wires a seat, `retire` unwires one and catches dangling references, `author` mints/vendors a skill, `audit` reports drift (count/version/registration/orphans/model-tier). Scoped as team **self-authoring/governance** — explicitly *not* the ops/HR company function `ROSTER.md` excludes (it mints the team's own members, not a business function).
 - **`skills/roster/`** — `SKILL.md` (router + wiring map + scope carve-out) with disclosure-by-branch verb files `hire.md`/`retire.md`/`author.md`/`audit.md`, per `/writing-great-skills`.
