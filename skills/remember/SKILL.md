@@ -26,5 +26,5 @@ Park what the user liked into the team's preference inbox so a later `/roster le
 ## Don't
 
 - Don't promote it now — capture is lossless and untriaged; the sweep is the gated step that edits the team.
-- Don't write into the working repo's `management/` — that's project-specific plan state (`TRACKER.md`); preferences are cross-project and live in `~/.claude/team-justin/`.
+- Don't write into the plan store (`~/.claude/team-justin/management/<project-slug>/`) — that's project-specific plan state (`TRACKER.md`); preferences are cross-project and live in `inbox.md` / `patterns/` at the team-justin root.
 - Don't dedupe or curate against existing lines — the sweep does that. Just append.

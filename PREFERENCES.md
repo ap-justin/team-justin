@@ -4,8 +4,8 @@ The team is **project-agnostic**: the same agents start from the same frozen def
 
 This file documents the loop that fixes that: **capture → sweep → evolve**. It is the preference-store sibling of `TRACKER.md` (the plan store). The distinction:
 
-- **`TRACKER.md` / the Icebox** — *project-specific* ideas and roadmap items. They live **in the working repo** under `management/`, because they're about *that product*.
-- **This store** — *cross-project* preferences about how **the team itself** should work. They live **outside any one repo**, because they belong to the team, not the product.
+- **`TRACKER.md` / the Icebox** — *project-specific* ideas and roadmap items. They live at user level too, but **keyed per project** (`~/.claude/team-justin/management/<project-slug>/`), because they're about *that product*.
+- **This store** — *cross-project* preferences about how **the team itself** should work. They live **un-keyed at the team-justin root**, because they belong to the team, not any product.
 
 ## The loop
 
@@ -26,7 +26,7 @@ Two halves, mirroring the Icebox → `product-manager` promotion the team alread
 
 ## Tier 1 — capture (the inbox)
 
-**Location: `~/.claude/team-justin/inbox.md`** — a single user-global file, created on first capture. Not per-project (the team is project-agnostic, so scattering captures into each repo's `management/` would be wrong), and **not** the plugin's install dir (that resolves to a read-only, version-pinned cache when installed from the marketplace — unwritable from other projects and blown away on update). Home dir is the one place writable from every project and durable across plugin updates.
+**Location: `~/.claude/team-justin/inbox.md`** — a single user-global file, created on first capture. Not per-project (the team is project-agnostic, so captures don't belong in any per-project plan store), and **not** the plugin's install dir (that resolves to a read-only, version-pinned cache when installed from the marketplace — unwritable from other projects and blown away on update). Home dir is the one place writable from every project and durable across plugin updates.
 
 It has **two writers**:
 

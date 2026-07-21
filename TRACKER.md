@@ -1,17 +1,19 @@
-# Plan Store — git-tracked files (`management/`)
+# Plan Store — user-level files (`~/.claude/team-justin/management/<project-slug>/`)
 
-The team's `planner` and `product-manager` seats persist plans as **markdown files under `management/`**, committed to the working repo and versioned in git — **not** on GitHub Issues. This file **is** the "tracker doc" the vendored planning skills ask for — **do NOT run `/setup-matt-pocock-skills`**. When a vendored skill says "the issue tracker should have been provided to you," or offers a GitHub/Linear path, use the file layout here — it is the skills' own **local-markdown path**, made canonical for this team.
+The team's `planner` and `product-manager` seats persist plans as **markdown files under `~/.claude/team-justin/management/<project-slug>/`** — at the **user level**, keyed per project, beside the preference store (`PREFERENCES.md`) — **not** committed to the working repo, and **not** on GitHub Issues. This file **is** the "tracker doc" the vendored planning skills ask for — **do NOT run `/setup-matt-pocock-skills`**. When a vendored skill says "the issue tracker should have been provided to you," or offers a GitHub/Linear path, use the file layout here — it is the skills' own **local-markdown path**, made canonical for this team.
 
-Why files, not Issues: the plan lives beside the code, every edit shows in `git log` and rides into review in the same PR, and no network / `gh` / tokens are needed. Git history *is* the plan's audit trail — the thing a comment timeline can't give you locally.
+**`<project-slug>` = the working repo's dir name** — the same slug convention `/remember` stamps on inbox lines, so one name identifies a project across both user-level stores. No repo → the cwd's dir name. Create the dir on first write.
+
+Why user-level files, not in-repo and not Issues: the working repo stays clean — no `management/` files in a product repo, its PRs, or its history — while the plan still survives context resets, branch churn, and even a re-clone. The home dir is the one place writable from every project (the same argument that placed the preference inbox there — `PREFERENCES.md`), and no network / `gh` / tokens are needed. Trade-off, recorded: the plan no longer rides into the PR beside the code — commit-time reconciliation (below) is what keeps plan and code honest instead. If you want an audit trail back, `git init ~/.claude/team-justin` once — history returns without touching any product repo.
 
 ## Layout
 
 ```
-management/
-  roadmap/                 # durable, cross-cutting — belongs on the default branch, rides in via PRs
+~/.claude/team-justin/management/<project-slug>/
+  roadmap/                 # durable, cross-cutting — outlives any effort or branch
     ROADMAP.md             # the roadmap of record (Now / Next / Later index)
     briefs/<slug>.md       # one thin brief per roadmap item
-  plan/                    # the current effort — lives on the current branch
+  plan/                    # the current effort
     <effort-slug>/
       spec.md              # to-spec PRD (if the effort has one)
       map.md               # wayfinder map (wayfinder efforts only)
@@ -19,11 +21,11 @@ management/
         <nnn>-<slug>.md    # a single ticket — YAML frontmatter (id/status/blocked_by) + prose body
 ```
 
-**One file per ticket, not one `tickets.md`.** Each ticket is its own file under `plan/<effort>/tickets/`, named `<nnn>-<slug>.md` where `<nnn>` is a zero-padded dependency-order sequence (`010`, `020`, … — gaps left to insert later) and `<slug>` is kebab-case from the title. One-per-file keeps diffs clean, ids stable across renames, and cuts merge conflicts when tickets are edited in sequence.
+**One file per ticket, not one `tickets.md`.** Each ticket is its own file under `plan/<effort>/tickets/`, named `<nnn>-<slug>.md` where `<nnn>` is a zero-padded dependency-order sequence (`010`, `020`, … — gaps left to insert later) and `<slug>` is kebab-case from the title. One-per-file keeps diffs clean, ids stable across renames, and keeps edits from trampling each other when tickets are edited in sequence.
 
 **Two horizons, two lifetimes:**
-- **`plan/`** is the *current* effort — one branch at a time (sequential execution). Created and edited on the feature branch; it merges with the code it plans. One `<effort-slug>/` dir per effort.
-- **`roadmap/`** is *durable* and cross-cutting — it must outlive any one branch, so treat it as living on the **default branch**: edits ride in via the PR and merge to trunk. A mid-implementation "defer this — later" appends to `roadmap/` so the item survives after the current branch merges. (Two branches deferring at once can conflict on `ROADMAP.md`; resolve it like any merge.)
+- **`plan/`** is the *current* effort — one effort at a time (sequential execution). One `<effort-slug>/` dir per effort; archive it once the effort ships (see *Naming*).
+- **`roadmap/`** is *durable* and cross-cutting — it must outlive any one effort or branch. A mid-implementation "defer this — later" appends to `roadmap/` so the item survives after the current effort ships. The store sits outside every worktree, so there is exactly one copy — no branch-vs-branch merge to resolve, and the sequential-execution rule is what keeps concurrent writers from racing it.
 
 ## Status & the frontier (frontmatter, not a prose scrape)
 
@@ -57,7 +59,7 @@ Other artifacts:
 
 ## Reconcile & capture (the lead, at commit)
 
-The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`lead` skill, Step 4.5), run as part of the **same commit** that lands each slice, so `git log` never shows code ahead of a stale plan and the reconciled state rides into review in the same PR. It's automatic (write, then report) and applies whenever a `management/` store exists:
+The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`lead` skill, Step 4.5), run at the **same moment** as the commit that lands each slice. The store lives outside the repo, so the write doesn't ride in the commit — reconciling as each slice lands is precisely what keeps `git log` and the plan telling the same story instead of drifting. It's automatic (write, then report) and applies whenever the project's store exists:
 
 - **Ticket status** → set `status: done` on every ticket whose acceptance boxes are all satisfied; recompute the frontier and report the new takeable set. Never `done` on unchecked acceptance — that's what makes the frontier lie.
 - **Roadmap** → move any now-complete item in `ROADMAP.md` (Now → shipped), in place.
@@ -86,4 +88,4 @@ The store only stays truthful if the plan moves **with** the code. There is no g
 
 ## Naming
 
-`<effort-slug>` and `<slug>` are short kebab-case, from the effort / brief title; a ticket file is `<nnn>-<slug>.md` (dependency-order sequence + title slug). One effort dir per plan. Once an effort's work has merged and every ticket is `status: done`, delete or archive its `plan/<effort>/` dir — git keeps the history.
+`<effort-slug>` and `<slug>` are short kebab-case, from the effort / brief title; a ticket file is `<nnn>-<slug>.md` (dependency-order sequence + title slug). One effort dir per plan. Once an effort's work has merged and every ticket is `status: done`, delete or archive its `plan/<effort>/` dir.

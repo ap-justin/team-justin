@@ -13,7 +13,7 @@ For each surviving preference, pick the narrowest home:
 - **Seat-specific** (only one seat should carry it — e.g. a Svelte-only idiom, a `design-director`-only default) → a **targeted prompt edit** to that `agents/<seat>.md`. Name the seat and show the exact insertion.
 - **Reusable concrete pattern** → keep the `patterns/<slug>.md` artifact in the plugin (copy it under a repo path if you want it version-shared), referenced from its house-style entry.
 
-A preference that's really project-specific (not about the team) doesn't belong here — flag it to go to that repo's `management/` instead.
+A preference that's really project-specific (not about the team) doesn't belong here — flag it to go to that project's plan store (`~/.claude/team-justin/management/<project-slug>/`, `TRACKER.md`) instead.
 
 ## 3. Propose, then gate
 Show the user the full set of proposed diffs (house-style entries + agent-prompt edits), grouped by destination, each with the inbox line it came from. **Land nothing until the user approves** — editing an agent prompt has global blast radius. The user can accept, drop, or reword per item.
