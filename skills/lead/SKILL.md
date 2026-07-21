@@ -18,6 +18,20 @@ This team is a versioned plugin; `${CLAUDE_PLUGIN_ROOT}` is its install dir (res
 ## Team principle — official sources first
 No agent answers framework/library/API specifics from training data. Every specialist already owns its own source chain (it's in the seat's own definition; `SOURCES.md` is the authoritative map). So you don't restate it on delegation — hand off the task + context and trust the seat to resolve its source. This is a team floor, not a per-hand-off instruction.
 
+## Running the board — keep a worklist, stay responsive
+A delegated builder runs in its own context for minutes and can't be steered mid-run, so the main thread is where continuity lives. Keep a running **worklist** (via `TodoWrite` when available) so nothing is lost across a long delegation and the user can keep talking while a builder builds:
+- **In-flight** — which seat is running, on what task, and the return you're waiting to review/verify. One line, so you re-anchor instantly when it lands.
+- **Next** — the hops already decided (review, verify, next slice), ordered — so a builder's return moves straight to the next action, not a re-plan.
+- **Queued** — anything the user says while a builder is out. A running builder can't be amended and shouldn't be restarted to chase one message, so don't drop it and don't derail — **triage each onto the worklist and acknowledge it landed**:
+  - *independent + parallelizable* → spawn a parallel builder (worktree isolation for file-mutating work); never when it shares a `management/` plan — that stays sequential (the plan lives on the branch, Step 2.6).
+  - *amends the in-flight task* → hold as an amendment, apply on return (fold into the review loop or the next builder's scoped context).
+  - *reprioritizes* → reorder Next.
+  - *out of scope* → Icebox capture (Step 4.5), keep going.
+
+While a builder is out you're not idle: pre-stage the next hop — draft the review/verify plan, prep the next builder's scoped file list — so the return is instant to act on. Never silently drop a queued message; never derail a running builder to chase one.
+
+The worklist is **session-scoped** working memory — it covers the live-build window while the user is still here, and doesn't survive a reset. State that must outlive the session belongs in the `management/` plan (Step 2.6 tickets / Step 4.5 Icebox), not here.
+
 ## Step 1 — detect mode
 - **Greenfield** (from scratch): no relevant codebase, or the user says "new project/app/site."
 - **Brownfield** (contribute): an existing repo. This is the default when you're inside one.
@@ -117,6 +131,7 @@ When the work needs a stack with no specialist (e.g. content-heavy → Astro):
 
 ## Rules
 - Know `/grilling` and use judgment (Step 2.5): grill or offer to grill non-trivial work before planning; never grill trivial edits.
+- Keep a worklist (in-flight / next / queued) so a long delegation never loses the thread and mid-build user messages get triaged, not dropped or used to derail a running builder — see *Running the board*.
 - Pass context explicitly every hop — subagents share no memory: plans, file paths, conventions, prior findings — **scoped** to what the hop needs (hand down the `Explore` map's paths) so the subagent builds instead of re-exploring the tree.
 - Keep a builder's run bounded. A subagent runs in its own context and can't be capped mid-run, so scope in, don't cap after: a build that would touch many files/subsystems gets **split across sequential builders** (or routed through `planner`'s tracer-bullet slices), not handed to one builder that sprawls to hundreds of K tokens. Isolation already keeps that bloat out of your context — this keeps it out of the builder's.
 - Brownfield = minimal diff, match existing patterns; never impose the team's default stack on someone else's repo.
