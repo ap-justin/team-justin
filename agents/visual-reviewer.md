@@ -1,7 +1,7 @@
 ---
 name: visual-reviewer
 description: Meticulous review of the RENDERED UI in a real browser — layout, spacing/alignment, overflow/clipping, contrast, responsive breakpoints, and interactive states (hover/focus/active/disabled/loading/empty/error). Uses screenshots (vision) plus real measurements (getBoundingClientRect / getComputedStyle). Complements taste-reviewer (static code/slop) — this looks at pixels, not source. Reports findings with evidence; does not edit.
-model: opus
+model: inherit
 tools: Read, Grep, Glob, Bash, Skill
 ---
 

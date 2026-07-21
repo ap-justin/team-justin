@@ -57,7 +57,7 @@ Other artifacts:
 
 ## Reconcile & capture (the lead, at commit)
 
-The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`engineering-team` Step 4.5), run as part of the **same commit** that lands each slice, so `git log` never shows code ahead of a stale plan and the reconciled state rides into review in the same PR. It's automatic (write, then report) and applies whenever a `management/` store exists:
+The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`lead` skill, Step 4.5), run as part of the **same commit** that lands each slice, so `git log` never shows code ahead of a stale plan and the reconciled state rides into review in the same PR. It's automatic (write, then report) and applies whenever a `management/` store exists:
 
 - **Ticket status** → set `status: done` on every ticket whose acceptance boxes are all satisfied; recompute the frontier and report the new takeable set. Never `done` on unchecked acceptance — that's what makes the frontier lie.
 - **Roadmap** → move any now-complete item in `ROADMAP.md` (Now → shipped), in place.

@@ -19,7 +19,7 @@ Every place a **seat (agent)** is registered. `hire` writes all of them, `retire
 |---|---|---|
 | 1 | `agents/<name>.md` | the definition — frontmatter `name`/`description`/`tools`/`model`; body copies a peer's shape |
 | 2 | `ROSTER.md` → *Current specialists* | one role row (agent · role · backing source) |
-| 3 | `ROSTER.md` → *Model tiers* | add to the `inherit (→ opus)` list, or a **pinned** row + one-line why |
+| 3 | `ROSTER.md` → *Model tiers* | add to the `inherit (session tier)` list, or a **pinned** row + one-line why |
 | 4 | `SOURCES.md` | backing-source row (skip only for a genuinely stack-agnostic seat, e.g. a pure reviewer — and say so) |
 | 5 | `lead` SKILL.md → *Step 3* routing table | the `detected/needed → specialist` row (a review-only seat wires into *Step 4* instead) |
 | 6 | `.claude-plugin/plugin.json` | `version` bump **and** the "routes to N specialist subagents" **count** in `description` |

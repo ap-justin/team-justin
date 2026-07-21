@@ -64,6 +64,6 @@ The **curated, human-gated** half — it edits the team, so it lives under roste
 
 ## The destination — `skills/house-style/SKILL.md`
 
-The promoted-preferences home, versioned and shared (rides the marketplace, so every install of the team inherits them; the raw inbox stays personal to the user's machine). Organized by the three lanes. The **lead reads it at routing time** and passes the lane-relevant slice into a seat's scoped context (the same way it hands down design tokens) — so a global file doesn't get auto-loaded into all 24 agents, only the relevant prefs reach the relevant seat.
+The promoted-preferences home, versioned and shared (rides the marketplace, so every install of the team inherits them; the raw inbox stays personal to the user's machine). Organized by the three lanes. The **lead reads it at routing time** and passes the lane-relevant slice into a seat's scoped context (the same way it hands down design tokens) — so a global file doesn't get auto-loaded into every agent, only the relevant prefs reach the relevant seat.
 
 An empty house-style is the honest default: the team starts frozen and earns its house style one swept preference at a time.
