@@ -1,4 +1,4 @@
-# Roster — v0.35.0
+# Roster — v0.35.1
 
 The lead is the `lead` skill (`/team-justin:lead`, runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
