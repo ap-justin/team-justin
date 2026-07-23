@@ -21,7 +21,7 @@ agent-browser eval "JSON.stringify([...document.querySelectorAll('.card')].map(e
 Capture screenshots to files and `Read` them for the vision pass. Every finding cites **either** a screenshot **or** a measurement — ideally both.
 
 ## Sweep — for each target page/state
-1. **Viewports**: desktop (~1440), tablet (~768), mobile (~375). Screenshot each.
+1. **Viewports**: desktop (~1440), tablet (~768), mobile (~375). Set each by **emulation** — `agent-browser set viewport <w> <h>` (or `set device "iPhone 16 Pro"` for mobile DPR/touch fidelity), **never by resizing the window**. Headed Chrome can't shrink past a ~400–500px min-width floor (worse with tabs open), so a physical resize clamps and silently renders the wrong width; `set viewport 375 …` renders a true 375px CSS viewport inside a full-size window. Screenshot each.
 2. **Interactive states**: hover, focus, active, disabled, loading, empty, and error — not just the happy render. Drive them via snapshot+click/fill; capture each.
 3. **Cross-check the intent**: if a design plan / design tokens / brief was passed, hold the render against it on **two** axes — **values** (spacing scale, type ramp, palette, radius) *and* **structure** (the actual composition the plan called for: layout family, arrangement, the specific treatment named). "Isometric stacked cards" that shipped as a carousel is a FAIL even when every token is on-scale — right values, wrong thing. Defer to `design-director`'s plan and the project's tokens as truth — you verify conformance, you don't re-decide the design. If no plan/brief was passed, say so and mark intent-conformance **uncertified** (you can still flag defects; you cannot certify it matches intent).
 

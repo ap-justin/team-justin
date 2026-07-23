@@ -69,7 +69,19 @@ agent-browser eval "document.activeElement?.tagName"
 
 Use IIFE wrapper to avoid redeclaration errors across multiple eval calls.
 
-### 5. Clean up
+### 5. Change viewport by emulation — never resize the window
+
+To review a breakpoint, set the **emulated** viewport. Do **not** resize the OS window: real headed Chrome enforces a minimum window width (tab strip + controls, ~400–500px, wider with more tabs open), so a physical resize clamps and silently renders the wrong width.
+
+```bash
+agent-browser set viewport 375 812        # rendered innerWidth=375 while the window stays full-size (CDP device-metrics override — immune to the min-width floor)
+agent-browser set device "iPhone 16 Pro"  # adds DPR + touch + mobile UA on top of the viewport
+```
+
+- `set viewport <w> <h>` emulates the CSS viewport independently of the window — verified: `innerWidth` becomes 375 while `outerWidth` stays ~1470. Use it for arbitrary breakpoints (desktop 1440 / tablet 768 / mobile 375).
+- `set device "<name>"` for higher-fidelity mobile (correct devicePixelRatio, touch, user-agent). Valid names only: `iPhone 15`, `iPhone 16`, `iPhone 16 Pro`, `iPhone 17`, `iPad`, `iPad Pro`, `Pixel 9`, `Galaxy S25` (note: no "iPhone 15 Pro").
+
+### 6. Clean up
 
 ```bash
 agent-browser close
@@ -77,6 +89,7 @@ agent-browser close
 
 ## Key rules
 
+- **Change breakpoints with `set viewport` / `set device` (emulated) — never resize the window.** A physical resize clamps at Chrome's min-width floor and renders the wrong width; emulation renders a true 375px inside a full-size window.
 - **Use `snapshot -i` + `@refs` for interaction** — not screenshots
 - **Always use a project-scoped `--session-name` (`bg-$(basename "$PWD")`)** so auth persists between runs *and* parallel projects stay isolated
 - **Always use `--headed`** so the user can see and intervene
