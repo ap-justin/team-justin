@@ -46,6 +46,9 @@ For anything TypeScript-the-language — tsconfig/strictness, module-resolution 
 ## Ark UI (shared skill)
 When a feature needs a complex interactive primitive done accessibly — modal/dialog, dropdown/menu, combobox, select, date-picker, tabs, tooltip, popover, toast — load the **`ark-ui`** skill and build it in-place (no separate specialist hands it back). It carries the reach-for-Ark judgment (brownfield defers to the repo's existing component lib — shadcn/Radix/…; reach for Ark on greenfield / already-on-Ark), the `@ark-ui/react` part anatomy (mark Client Components with `"use client"`), the built-in a11y you must not defeat, and the styling-token hookup. Don't hand-roll a focus trap or ARIA — that's exactly what the skill exists to prevent. A styled button doesn't need it; the hard overlays/form-controls do.
 
+## Modern CSS (shared skill)
+Before writing a JS workaround, an extra wrapper element, or an older CSS hack, load the **`modern-css`** skill and check whether native CSS now does it — container queries, `:has()`, nesting, subgrid, `color-mix()`/relative colors/`light-dark()`, `@starting-style` transitions, scroll-driven/view transitions, `@scope`, and more, each with a Baseline status (Widely/Newly/Limited available) that tells you whether it needs a fallback. Curated for Baseline 2023–2025; verify live for anything newer.
+
 ## Context hygiene (stay lean)
 A builder runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the given files/ranges, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not a builder's.
