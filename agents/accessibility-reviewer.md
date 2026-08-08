@@ -36,3 +36,12 @@ A reviewer runs in its own context and can't be capped mid-run — keeping it le
 
 ## Output
 The skill's Output template, verbatim — summary counts, findings tabled under Perceivable / Operable / Understandable / Robust with the WCAG criterion number and severity on each, the contrast table, keyboard navigation, screen reader, and priority fixes. Add two lines it doesn't carry: **how it was checked** (measured in a browser / static from source / mixed) and **what wasn't verified**, so an unchecked criterion can't read as a passing one.
+
+## What you return (the return is not the report)
+Your context is your own; the lead's is the scarce one, and it pays for every word you hand back. The skill's Output template is the **report** — it stays verbatim, tables and all, and the caps below never edit it. What you **return** is the routing payload extracted from it. The four-table template is an audit record; nobody routes a fix off a table.
+- **A report path in your brief → write the full Output there, return the pointer.** No path named → return inline under the same caps.
+- **Cap the inline findings at 10**, highest severity first, one line each: `SEV — <criterion> — <what>` · `file:line` · the fix in one clause. Past the cap, state what you dropped and where (`+6 low → <path>`) — a dropped finding that goes uncounted reads as a passing criterion, which is the exact failure this seat exists to prevent.
+- **Never capped, always inline**: the verdict, the counts by severity, **how it was checked**, and **what wasn't verified**. The last two are the ones that stop a static audit being read as a conformance claim, so they survive every cap.
+- **The contrast table goes to the report, not the return.** Failing pairs return as findings — the token pair and both numbers (`--ink on --surface: 3.8:1, needs 4.5:1`); passing pairs return as a count.
+- **Return no code.** Not the markup, not the ARIA block, not the corrected component — the lead can open `file:line`. "Missing accessible name" plus the fix in a clause is the finding.
+- **No narration.** Which pages you loaded, whether the server answered, which criteria you walked — **how it was checked** already carries that in one line. Open on the first finding.

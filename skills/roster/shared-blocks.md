@@ -31,7 +31,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 
 **Tailored slots**: the seat noun, the scope nouns in bullet 1 (`the Worker + wrangler config` / `the config files + the package.jsons` / `the slow route plus its hot path`), the whole docs-source bullet, and the `Return:` line. A seat may add a bullet (the UI builders' no-mid-build-asset-fetch rule) — additions are fine, deletions are drift.
 
-**Reviewer variant** (`code-reviewer`, `architecture-reviewer`): they never edit, so bullet 2 becomes `Never re-read a file already in context — you don't edit, so nothing you've read has changed under you.`, bullet 1 scopes to the diff, and the block opens by naming the read/change asymmetry. Their return contract is `## Output`, not a `Return:` line.
+**Reviewer variant** (`code-reviewer`, `architecture-reviewer`): they never edit, so bullet 2 becomes `Never re-read a file already in context — you don't edit, so nothing you've read has changed under you.`, bullet 1 scopes to the diff, and the block opens by naming the read/change asymmetry. Their return contract is `## Output` **plus Block C.1's `## What you return`**, never a `Return:` line — this block caps what the seat *reads*, C.1 caps what it *hands back*, and the two are separate failure modes.
 
 ## Block B — `## TypeScript (shared skill)`
 
@@ -55,6 +55,38 @@ Every seat ends with exactly one of:
 - a **`## Output`** / **`## Handoff`** section — reviewers, planners, and the design/asset seats (6 seats), whose return is structured rather than a path list.
 
 Pick by seat kind, not by whichever peer you opened.
+
+### Block C.1 — `## What you return` (the six review seats)
+
+Required on `code-reviewer`, `architecture-reviewer`, `taste-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`. It **follows** `## Output` and never replaces it: `## Output` is the **report**, this block is the **return**, and separating them is the whole point. Four of these seats say their Output is a skill's template *verbatim* — the caps here must not read as an edit to that template, or the two-callers-one-body rule forks.
+
+Not on the builders/specialists: their `Return:` line is already a path list, which is the shape this block exists to produce. Not on the four text-producing seats: their output **is** the deliverable a next seat consumes.
+
+```
+## What you return (the return is not the report)
+Your context is your own; the lead's is the scarce one, and it pays for every word you hand back. {The Output above|The skill's Output} is the **report**. What you **return** is the routing payload extracted from it — the lead needs enough to route a fix, not enough to re-run your review.
+- **A report path in your brief → write the full Output there, return the pointer.** No path named → return inline under the same caps.
+- **Cap the inline {findings|failures|defects} at 10**, {ordering rule}, one line each: `SEV — <what>` · `file:line` · the fix in one clause. Past the cap, state what you dropped and where (`+7 low → <path>`) — a dropped finding that goes uncounted reads as a clean pass.
+- **Never capped, always inline**: the verdict, the severity counts, and {the seat's coverage line}. Those are what the lead routes on.
+- **Return no code.** Not the diff, not the offending lines, not your proposed replacement — the lead can open `file:line`. A fix is a clause, not a patch.
+- **No narration.** {what this seat is tempted to narrate}, a restatement of your brief — none of it is a finding. Open on the first one.
+```
+
+**Invariant clauses** — the two marked ⚠ are what makes the block load-bearing rather than a politeness note:
+- `the return is not the report` in the heading, and the report/return split in the opener — a seat that loses this collapses the two back together, which is the state this block was written to fix
+- `A report path in your brief` + `return the pointer`, **with** the `No path named → return inline` fallback. The fallback is not optional: the lead may legitimately name no path, and a seat missing it either invents a location or returns nothing.
+- ⚠ `Cap the inline ... at 10` + `state what you dropped and where` — the count is the half that bites, and **the drop notice is the half that keeps it honest**. A cap without a stated remainder is indistinguishable from a clean pass, which turns a context optimization into a silently weaker review.
+- ⚠ `Never capped, always inline` + the verdict/counts/coverage triple — the cap must never reach the fields the lead routes on. Without this clause the seat caps its way past its own verdict.
+- `Return no code` + `the lead can open ` + `` `file:line` `` — the single largest line item in a review return, and the one every seat reaches for by default
+- `No narration` + `Open on the first one`
+
+**Tailored slots**: the finding noun (`findings` / `failures` / `defects`), the **ordering rule** (severity for most; `systemic first` for `visual-reviewer`, **path order** for `ux-auditor` — its findings compound along the walk), the seat's coverage line (the `handed to visual-reviewer` line · the coverage line · *how it was checked* + *what wasn't verified* · where the dependency trace stopped · the resolved entry route), and what the seat narrates by habit. A seat may add a bullet for the payload *it specifically* over-returns — `visual-reviewer`'s screenshots-are-paths, `accessibility-reviewer`'s contrast table, `taste-reviewer`'s one-line pass group, `ux-auditor`'s questions-and-gaps-as-counts. Additions are fine, deletions are drift.
+
+**Two documented exceptions to the caps**, both recorded rather than inferred:
+- `architecture-reviewer` **design mode returns its interface spec in full** — the spec is not a finding list, it's what a builder implements, and capping it breaks the build it was dispatched to unblock. Signatures are that mode's exception to *return no code*. Review mode caps normally.
+- `ux-auditor`'s **path map goes to the report, not the return** — it's the artifact that makes findings checkable, so it stays written in full, but the lead routes off defects. Its header (resolved entry route, step count, unfollowed branches) returns; the map doesn't.
+
+**The lead's half.** A seat can only write the long half somewhere if the lead names where — `lead` SKILL.md Step 4 puts `report: ${TMPDIR:-/tmp}/team-justin-review/<project-slug>/<seat>-<slice-slug>.md` in every review brief. That location is **deliberately ephemeral and outside the plan store**: a review is per-run and has none of the four lifetimes `TRACKER.md` defines, so nothing durable may point at it. What survives is the routed fix list and any `issues/<kebab-slug>.md` capture — never the report file.
 
 ## Block D — `## Test-first (shared skill)`
 

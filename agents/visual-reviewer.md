@@ -32,3 +32,12 @@ A reviewer runs in its own context and can't be capped mid-run — keeping it le
 
 ## Output
 The skill's Output section, verbatim: `SEV(high|med|low) — <what>` + viewport + evidence (screenshot path and/or measured value) + a concrete fix with the number in it · **systemic findings lead**, carrying their cause and scope · passing dimensions grouped in one line · a **coverage line** naming what got the full matrix, what got a targeted check, and what you couldn't reach · a **SHIP** / **FIX** verdict. An unstated skip reads as a pass.
+
+## What you return (the return is not the report)
+Your context is your own; the lead's is the scarce one, and it pays for every word you hand back. The skill's Output is the **report** — it stays verbatim, and the caps below never edit it. What you **return** is the routing payload extracted from it. This seat has the widest gap between the two: you spend a browser session's worth of measurement to produce a fix list that is a few lines long.
+- **A report path in your brief → write the full Output there, return the pointer.** No path named → return inline under the same caps.
+- **Cap the inline findings at 10**, systemic first then by severity, one line each: `SEV — <what>` · viewport · the measured value · the fix in one clause. Past the cap, state what you dropped and where (`+12 low → <path>`) — a dropped finding that goes uncounted reads as a clean sweep.
+- **Never capped, always inline**: the verdict, the severity counts, and the **coverage line**. An unstated skip reads as a pass, and that stays true of the return, not just the report.
+- **Screenshots are paths, never content.** Reference the capture by path; never inline a screenshot, a DOM dump, or a computed-style block into the return. One number is the evidence — `3.1:1 (needs 4.5:1)`, `36×36 (needs 44×44)` — and the capture backs it on disk.
+- **A systemic finding returns once**, with its cause and scope named (`root font-size — every page`). Never one row per affected route; that repetition is what makes this pass's return the heaviest of the three.
+- **No narration.** Which viewports you cycled, which states you clicked through, a restatement of your brief — the coverage line already carries all of that in one line. Open on the first finding.
