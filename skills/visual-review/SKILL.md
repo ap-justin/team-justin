@@ -1,6 +1,6 @@
 ---
 name: visual-review
-description: Measurement pass on the rendered UI in a live browser — computed contrast, rects, overflow, off-scale values, tap targets, missing states, across viewports and interactive states. Dispatched to a spawned agent so the main thread stays free. Reports numbers, not judgments about design intent. Report-only.
+description: Measurement pass on the rendered UI in a live browser — computed contrast, rects, overflow, off-scale values, tap targets, missing states, across viewports and interactive states, plus an outside eye (a second model reads the same screenshots). Dispatched to a spawned agent so the main thread stays free. Reports numbers and labelled proposals, never a verdict on design intent. Report-only.
 disable-model-invocation: true
 argument-hint: "[url or pages/states]"
 ---
@@ -10,7 +10,7 @@ You now review the UI as it actually renders — not the source. The `/taste-rev
 ## What this pass is for — measure what an eye can't
 **A browser is better than a person at measuring and worse at judging.** It can tell you a contrast ratio is 3.9:1, that the page scrolls horizontally at 375, that a tap target is 31px, that a gap is 14px against a 16px scale, that focus never becomes visible. It cannot tell you whether the build *looks like the design* — that's a judgment a person makes in a glance and an agent burns twenty minutes failing to reach. **Don't attempt it.** Conformance is prevented at the handoff (an authoritative token file plus a brief that closes the set), enforced statically in source by `/taste-review`, and judged by the user. This pass supplies numbers, not verdicts on intent.
 
-So: every finding here is something **measured or plainly visible in a capture** — a ratio, a rect, an overflow, a missing state. If you catch yourself writing "feels off," "doesn't quite match," or "could be more refined," delete it; that's the user's call and you're guessing at it.
+So: every finding here is something **measured or plainly visible in a capture** — a ratio, a rect, an overflow, a missing state. If you catch yourself writing "feels off," "doesn't quite match," or "could be more refined," delete it; that's the user's call and you're guessing at it. The one thing that *does* carry an impression is the **outside eye** below — a different model's read of the same screenshots, routed as a labelled proposal rather than laundered into a measured finding.
 
 **Target**: `$ARGUMENTS` if given (URL, pages, specific states/viewports); otherwise the running dev server's pages touched by the current build. Read the `CLAUDE.md` `## Design system` pointer and the token file it names before sweeping — not to certify intent, but because **the scales are what make a measurement a finding**: 14px is only wrong once you know the scale step is 16.
 
@@ -47,6 +47,25 @@ The full matrix is pages × viewports × states, and driven literally it runs fo
 2. **Interactive states**: hover, focus, active, disabled, loading, empty, and error — not just the happy render. Drive them via snapshot+click/fill; capture each.
 3. **Check the rendered values against the scales** — the one intent-adjacent check that *is* a measurement. Computed spacing, type sizes, radii and colors either land on a step in the token file or they don't; an off-scale value is a finding with a number attached ("gap computes to 14px; nearest steps are 12 and 16"). That's the limit. **Do not extend it into whether the composition is the right one** — "this should have been stacked cards, not a carousel" is a judgment about intent, and you are the wrong reader for it: report the structure you measured if it's useful, and leave the verdict to the user. If no token file exists, say so — off-scale is unmeasurable without a scale, and you're down to defects only.
 
+## The outside eye — a second model reads the same screenshots
+The captures are already on disk, so a different model can read them for the price of one API call. That is the whole value: the reviewing model is **not the model that built the page**, so it isn't marking its own homework — and it answers "what does this look like" in seconds, which is the question a browser sweep can't reach at all.
+
+```bash
+npm --prefix "${CLAUDE_PLUGIN_ROOT}" run vision-review -- \
+  --shots <capture>,<capture> --labels "home @1440,home @375" \
+  --context "<what this screen is supposed to be, one or two sentences>" \
+  --tokens <the project's token file>
+```
+
+Needs `GOOGLE_API_KEY` (the same Google AI Studio key `gen-asset` uses) and `npm --prefix "${CLAUDE_PLUGIN_ROOT}" install` on first run. Unset key, or a failed call → say so in the coverage line and finish the sweep without it. **Write only a read you actually got.**
+
+It returns three sections and no verdict — `SAW` (how the screen reads at a glance), `DEFECTS` (plainly visible breakage), `UNSURE`:
+- **`DEFECTS` are leads, not findings.** Confirm each one yourself in the capture or with an `eval` before it enters your report; a confirmed one becomes an ordinary finding carrying *your* evidence, never the model's say-so, and routes to the builder in the same fix list as everything else. What you can't confirm goes into the coverage line as raised-and-unconfirmed.
+- **`SAW` and anything verdict-shaped route too — as proposals**, in their own short quoted section marked as the outside model's read. They reach the lead and the builders like any other finding: the **user is the commit gate**, so a cheap reversible fix taken off a second model's read costs a diff they can reject, and holding it back just makes them the messenger.
+- **Gate on blast radius, not on who saw it.** A one-line or token-level fix is the lead's to make. A change to the token system, the page's composition, or a direction already settled is **proposed and named**, never executed off an impression — that's the difference between fixing what an outside eye caught and letting it redesign the build.
+- **It supplies no numbers.** A vision model can't compute a contrast ratio or a gap from a raster. Anything measurement-shaped is yours to measure or to drop.
+- **Send the few shots that carry the sweep** — the representative page per layout family at each viewport, plus any state that looked wrong. The full matrix costs more than the sweep that produced it, and the script refuses a count past its cap rather than billing you for one.
+
 ## What to catch (cite viewport + evidence, assign severity)
 - **Layout & alignment**: misaligned edges/baselines, inconsistent gaps vs the spacing scale, orphaned/overlapping elements, broken grids. Prove with rects.
 - **Overflow/clipping**: horizontal scroll at any breakpoint, clipped text/controls, content escaping containers, `100vh` vs `100dvh` mobile cutoff.
@@ -62,8 +81,9 @@ Map to a `file:line` when you can trace the offending element back to source (Gr
 - Per finding: `SEV(high|med|low) — <what>` + viewport + evidence (screenshot path and/or measured value) + concrete fix (e.g. "gap is 14px, scale step is 16px" — not "tighten spacing"). Note confidence.
 - **Systemic findings lead, and carry their cause and scope**: "root `font-size` is 15px (`app.css:12` shorthand), so every rem is 6.25% short — affects the whole type and spacing scale" beats seven per-route alignment reports of the same thing. One entry, `file:line`, scope named.
 - Passing dimensions: one line, grouped. Don't invent defects to look thorough; a clean render gets said plainly.
-- **Coverage line** — what you actually swept and what you didn't: pages given the full matrix vs. the targeted check, states you couldn't reach (behind auth, needs seed data), anything the browser wouldn't render. An unstated skip reads as a pass.
+- **Outside eye**: its `SAW` block quoted in its own short section, unedited, naming the model that wrote it and marked as a proposal rather than a measured finding. Its `DEFECTS` appear only as findings you confirmed yourself, carrying your evidence like any other; the rest go to the coverage line.
+- **Coverage line** — what you actually swept and what you didn't: pages given the full matrix vs. the targeted check, states you couldn't reach (behind auth, needs seed data), anything the browser wouldn't render, whether the outside eye ran and what it raised that you couldn't confirm. An unstated skip reads as a pass.
 - End with a verdict: **SHIP** (no high/med) or **FIX** (blocking findings, priority order).
 
 ## Boundary
-Measurable properties of the rendered page only. **Whether the build matches its design is not in scope** — that's the user's glance, and it's prevented upstream by a closed handoff rather than detected here. Correctness → `code-reviewer`; structure → `architecture-reviewer`; static slop, anti-templating, and **values that aren't in the token file** → the `/taste-review` pass (greppable, and much cheaper there than in a browser). Visual-regression baseline diffing (Percy/Playwright snapshots) is a CI concern, out of scope here.
+Measurable properties of the rendered page, plus the outside eye's read carried through as a labelled proposal. **Whether the build matches its design is not in scope** — that's the user's glance, and it's prevented upstream by a closed handoff rather than detected here. Correctness → `code-reviewer`; structure → `architecture-reviewer`; static slop, anti-templating, and **values that aren't in the token file** → the `/taste-review` pass (greppable, and much cheaper there than in a browser). Visual-regression baseline diffing (Percy/Playwright snapshots) is a CI concern, out of scope here.

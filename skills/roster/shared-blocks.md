@@ -125,3 +125,21 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 **Tailored slot**: `{the seat's behavior surface}` only. Everything else is invariant — this block is short precisely so there's nothing to shorten.
 
 **Not a substitute for `test-writer`.** This block covers first coverage of behavior the seat is building right now. What needs its own context stays `test-writer`'s (`lead` SKILL.md Step 4): coverage sweeps and fan-out across many files, repairing a red/flaky suite when no builder is in flight, and **capturing** an unfamiliar repo's conventions into a project testing doc. The seat and this block run the same `testing` skill — the split is context, not craft.
+
+## Block E — the token-vocabulary bullet
+
+Required on the two **UI component builders** (`react-ui-builder`, `svelte-ui-builder`) — the seats that write style values. It sits inside `## Follow the plan exactly`, under the closed-set and named-gap bullets it depends on.
+
+**Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. **Not on `taste-reviewer`** either: the reviewer needs the *traps* as greps, and its own skill body carries them in that form.
+
+```
+- **The token vocabulary is shadcn's semantic set** — the naming convention only: no shadcn or Tailwind dependency is implied, and primitives are still Ark's. Read the names off the project's token file, which is the only authority; `design-director` owns the contract behind it. Three traps, all arriving the same way — by pasting shadcn's own component and theme code: `--accent` is the **hover/selected surface**, not the brand accent (that's `--primary`); `bg-primary/90`-style hover is **opacity-as-lightener**, and the team authors `--primary-hover`/`--primary-active` instead; and `--border: oklch(1 0 0 / 10%)` in a `.dark` block is that same mistake, where the team authors the value solid.
+```
+
+**Invariant clauses:**
+- `the naming convention only` + the no-dependency clause — without it a seat installs shadcn or reaches for Tailwind because the names implied a stack. The names are a vocabulary, not a package.
+- ⚠ `Read the names off the project's token file, which is the only authority` — this is what keeps the block from becoming a **stale cache** of a list that lives in the repo being built. Enumerating the ~30 names here instead is drift: the seat opens that file anyway, and a copy goes wrong the first time the contract grows.
+- ⚠ all three traps, each with its correction. These are the block's whole reason to exist — they are the part **no token file confesses**, because each one is a plausible-looking line the seat imports from shadcn's published components rather than a value it invented. Drop one and the seat ships it.
+- `` `--accent` `` is the hover/selected surface + `` `--primary` `` is the brand — read backwards, this one tints every resting row, which is the most expensive of the three to unpick later.
+
+**Tailored slots**: none. The bullet is identical on both seats by design — `audit`'s cluster check (step 6) treats any divergence between them as drift.
