@@ -4,6 +4,16 @@ Semver-ish: new agent/capability → minor, prompt fix → patch, orchestration-
 
 Last 5 releases only — older entries live in git: `git show vX.Y.Z:CHANGELOG.md`.
 
+## v0.5.0 — the states nobody opens
+
+**`/visual-review` stops measuring and starts covering.** The pass was built on *a browser measures better than an eye judges*, and the measuring half turned out to be the wrong half to buy: rect tables, off-scale-vs-token-step audits, contrast ratios and tap-target counts were either duplicating a seat that already owns them or restating what the token file already said. What the user genuinely cannot do themselves is two things, and the pass is now only those. **Coverage** — empty, error, loading, disabled, focus-visible, 375, the row with the 90-character string; in most projects nobody has ever rendered them, so *"this state exists and no one has seen it"* is a finding on its own, reported even when what rendered was fine. **Cause** — a defect the user spots in a second costs them an hour to locate, so the seat returns it as a `file:line` with its scope. Numbers survive only as evidence: one `eval` where the eye is genuinely unsure, inline next to the finding, never a table.
+
+**The lanes stop overlapping.** Contrast ratios and tap-target sizes are `accessibility-reviewer`'s alone — it drives the same browser and carries the criterion number, and a failure measured twice is a failure argued twice. Values outside the token file stay `taste-reviewer`'s grep, a hundred times cheaper than a browser. `visual-reviewer` reports text as *unreadable over what's behind it* and routes the ratio. Six documents that pointed a measurement at this pass now point it at the seat that owns it (`design-critique`, `/taste-review`, `/accessibility-review`, and the three seats' boundaries).
+
+**The outside eye is removed** — `scripts/vision-review.ts`, its npm script, and the doctrine around it in `README.md`, `ROSTER.md`, `SOURCES.md` and `lead`. It shipped last release on the argument that a model which didn't build the page isn't marking its own homework; on its first real test it missed an obvious visible defect. An impression channel that can miss the obvious is worse than no channel, because its `SAW` block reads equally authoritative whether or not it saw anything, and the routing rules around it (confirm the leads, tag the impression, gate on blast radius) were paying upkeep for that. The gate was always the user's glance. The honest correction is to make the sweep better at what a glance can't reach, not to buy a worse glance. `@google/genai` and `sharp` stay — `gen-asset` uses both.
+
+**What did not move:** the judge line. `visual-reviewer` still returns no verdict on intent, conformance is still prevented by a closed token file rather than detected in a browser, and *does the hierarchy read* is still the user's and nobody else's — `/taste-review` now says so explicitly instead of routing it here.
+
 ## v0.4.0 — a second pair of eyes
 
 **`visual-reviewer` gains an outside eye.** The captures the sweep already took go through `scripts/vision-review.ts` to a Google Gemini vision model (`gemini-3.1-pro-preview`, the same `GOOGLE_API_KEY` `gen-asset` uses) — a sibling of the `--video`/`--cutout` paths, not a new seat. The value is the **outsideness**: the reader is not the model that built the page, so it isn't marking its own homework, and one API call over a handful of screenshots answers "what does this look like" in seconds — the question the doctrine conceded a browser sweep can't reach and an agent burns twenty minutes failing at.
@@ -46,8 +56,3 @@ Why: a Step 4 parallel batch is the largest thing the lead's context ever ingest
 
 ## v0.1.0 — the lead talks to a PM
 New orchestration-wide principle in `skills/lead` (+ a Rules bullet): the lead translates at the boundary instead of passing seat vocabulary through. Say it without jargon or code when nothing is lost; a load-bearing term is introduced once in plain words; grill in outcomes the user can feel, and anything unaskable in plain words is a fact the lead looks up rather than a decision; plain is never vague (numbers, real names, risk, cost survive); no code/diffs/file trees in reports unless asked; seat names stay visible, process nouns don't. Scoped to what the lead *says* — the plan store's file formats and the builders' handoffs stay exact.
-
-## v0.0.1 — the team, reset to one release
-History squashed and versioning restarted at `0.0.1`. Prior release notes and the per-release lineage that had accumulated across `ROSTER.md`, `SOURCES.md` and the skill files are gone — a rule reads better than a rule plus the release that introduced it, and the repo has one user, so the archaeology was cost without a reader.
-
-What ships: a `lead` skill orchestrating **25 specialist subagents**, a vendored skill set (design, UX, marketing, testing, stack playbooks), the plan store (`TRACKER.md`), and the roster discipline in `skills/roster/` (`hire`, `author`, `audit`, `shared-blocks`).

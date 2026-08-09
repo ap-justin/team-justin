@@ -15,7 +15,7 @@ argument-hint: "<screenshot, image file, or description>"
 
 # /design-critique
 
-Get structured design feedback across multiple dimensions. In this team it is the **mockup-stage** pass — it runs on descriptions, wireframes and mockups *before* a build exists, upstream of `/taste-review` (built source) and `/visual-review` (rendered pixels). Feed those passes; don't duplicate them.
+Get structured design feedback across multiple dimensions. In this team it is the **mockup-stage** pass — it runs on descriptions, wireframes and mockups *before* a build exists, upstream of `/taste-review` (built source) and `/visual-review` (rendered states + cause). Feed those passes; don't duplicate them.
 
 ## Usage
 
@@ -32,7 +32,7 @@ This pass usually has a picture or a paragraph, not a rendered page — so it ha
 
 - **Visible in what you were given** → report as a finding.
 - **Turns on intent the artifact doesn't state** ("is this the primary action?") → report as a **question**, never a verdict.
-- **Needs pixels, computed styles or real timing** → you cannot see it. **Name it as out of scope and hand it on by name.** Contrast *ratios*, tap-target *sizes* and text readability are in this tier whenever you're looking at an image or a description: `/accessibility-review` computes them on a rendered page, `/visual-review` measures the rest. A pass/fail you didn't compute is fabrication, and one of them costs more trust than ten real findings earn.
+- **Needs pixels, computed styles or real timing** → you cannot see it. **Name it as out of scope and hand it on by name.** Contrast *ratios*, tap-target *sizes* and text readability are in this tier whenever you're looking at an image or a description: `/accessibility-review` computes them on a rendered page; `/visual-review` renders the states nobody opens and traces what breaks in them back to source. A pass/fail you didn't compute is fabrication, and one of them costs more trust than ten real findings earn.
 
 The Accessibility section below is where this goes wrong most often — keep it, but answer it in the right tier: flag the *risk* you can see (pale text on a tinted panel, a 24px icon-only control, body copy set small) and route the verdict.
 
@@ -68,7 +68,7 @@ The Accessibility section below is where this goes wrong most often — keep it,
 
 ### 5. Accessibility — risks you can see, not ratios you can't compute
 - Color contrast — name the pairing that looks at risk; the **ratio** is `/accessibility-review`'s on the rendered page
-- Touch target sizes — name controls that look undersized; the **measurement** is `/visual-review`'s
+- Touch target sizes — name controls that look undersized; the **measurement** is `/accessibility-review`'s (WCAG 2.5.5/2.5.8)
 - Text readability — size, measure and line height as *drawn*
 - Alternative text for images, and anything the artifact states outright (focus order, labels, semantics)
 
@@ -105,7 +105,7 @@ The Accessibility section below is where this goes wrong most often — keep it,
 
 ### Accessibility
 - **Contrast risks**: [Pairing that looks at risk — flag, don't rate. Ratio → /accessibility-review]
-- **Target-size risks**: [Controls that look undersized. Measurement → /visual-review]
+- **Target-size risks**: [Controls that look undersized. Measurement → /accessibility-review]
 - **Text readability**: [Font size, line height, measure as drawn]
 - **Handed on**: [What needs a rendered page, and to which pass]
 

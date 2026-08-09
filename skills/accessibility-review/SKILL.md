@@ -13,7 +13,7 @@ argument-hint: "<URL, page/component, or description>"
 
 # /accessibility-review
 
-Audit a design or page for WCAG 2.1 AA accessibility compliance. This is the team's a11y gate — the sibling of the `/visual-review` (rendered pixels) and `/taste-review` (anti-slop) passes. Run it after a page/component is built and rendered.
+Audit a design or page for WCAG 2.1 AA accessibility compliance. This is the team's a11y gate — the sibling of the `/visual-review` (rendered states + cause) and `/taste-review` (anti-slop) passes. Run it after a page/component is built and rendered.
 
 ## Usage
 
@@ -64,7 +64,7 @@ Audit for accessibility: @$1
 4. Color contrast verification
 5. Zoom to 200% — does layout break?
 
-When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`agent-browser`) and read real values (`getComputedStyle` for contrast/colors, `getBoundingClientRect` for touch-target size, tab order via focus events), exactly as the `/visual-review` pass does.
+When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`agent-browser`) and read real values (`getComputedStyle` for contrast/colors, `getBoundingClientRect` for touch-target size, tab order via focus events). **Every measured number on a rendered page is this pass's** — `/visual-review` hands ratios and target sizes here rather than tabling its own.
 
 ## Output
 
