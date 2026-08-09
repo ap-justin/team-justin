@@ -10,9 +10,9 @@ argument-hint: "[audit | document | extend] <component or system>"
 
 Manage your design system — audit for consistency, document components, or design new patterns.
 
-**Whose skill this is:** `design-director`'s. It owns the visual system (palette, type, scales, signature, motion) and maintains the `## Design system` pointer in `CLAUDE.md`; auditing, documenting or extending that system is the same lane. `ux-designer` sits upstream of it and routes this work here. The seams either side: `ui-principles` supplies the *mechanism* behind a craft defect, `design-taste-frontend` (via `/taste-review`) owns anti-slop and templated design, `/visual-review` owns anything needing a rendered page.
+**Whose skill this is:** `design-director`'s. It owns the visual system (palette, type, scales, signature, motion) and maintains the `## Design system` pointer in `CLAUDE.md`; auditing, documenting or extending that system is the same lane. `ux-designer` sits upstream of it and routes this work here. The seams either side: `design-taste-frontend` (via `/taste-review`) owns anti-slop and templated design plus conformance to the token file, `/visual-review` owns anything needing a rendered page.
 
-**No score.** Report findings and let them stand. A count over a made-up denominator implies a precision a static read doesn't have, and the number gets quoted downstream long after the findings that produced it are gone — the team dropped scores from `ui-principles`, `ux-principles` and the review passes for that reason, and this skill is no exception. The `Score`/`X/10` cells in the templates below are struck for the same reason.
+**No score.** Report findings and let them stand. A count over a made-up denominator implies a precision a static read doesn't have, and the number gets quoted downstream long after the findings that produced it are gone — the team dropped scores from `ux-principles` and the review passes for that reason, and this skill is no exception. The `Score`/`X/10` cells in the templates below are struck for the same reason.
 
 **The token file is the scale.** Follow `CLAUDE.md`'s `## Design system` pointer and read the real token file before judging any value. "Hardcoded" means *off that file*, not off a default from a book. A deliberate token is not a finding for disagreeing with one.
 

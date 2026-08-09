@@ -28,7 +28,7 @@ Review the design: @$1
 Work from what you were given: a description, a screenshot or image file, or repo files (`Read`/`Grep`/`Glob`). **There is no Figma MCP on this team** — it was vendored out on purpose. If a task genuinely needs the live file, say so and stop rather than describing what you'd have found in it.
 
 ## Say what you can see, and only that
-This pass usually has a picture or a paragraph, not a rendered page — so it has no measurements, and inventing them is the one failure that makes the whole critique untrustworthy. The team's tier rule from `ui-principles` applies here unchanged:
+This pass usually has a picture or a paragraph, not a rendered page — so it has no measurements, and inventing them is the one failure that makes the whole critique untrustworthy. The team's tier rule (`ux-principles`, `## Tier discipline`) applies here unchanged:
 
 - **Visible in what you were given** → report as a finding.
 - **Turns on intent the artifact doesn't state** ("is this the primary action?") → report as a **question**, never a verdict.

@@ -11,7 +11,8 @@ argument-hint: "<design description, screenshot, or the built design-system gall
      TEAM-ADAPTED, not verbatim: dead CONNECTORS.md pointer dropped, Figma-pull path replaced (no Figma MCP here),
      connector block rewritten as team equivalents, and the no-invented-measurement rule added — tokens go in by name, and a
      dimension the design does not settle becomes an open question, never a plausible default a builder would then write.
-     the gap-routing column no longer offers "the design tool" as a destination — the external tool left the loop,
+     the gap-routing column names `design-director` rather than "the design tool" — the greenfield design is made in
+     `claude-design`, but nothing on the team can reach it (the user carries the brief there and brings the result back),
      so an element/state the system lacks routes to `design-director`, which extends the system and its coverage manifest together.
      re-sync: diff against the plugin cache after a plugin update, then re-apply all five. -->
 

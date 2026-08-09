@@ -51,7 +51,7 @@ The full matrix is pages × viewports × states, and driven literally it runs fo
 - **Layout & alignment**: misaligned edges/baselines, inconsistent gaps vs the spacing scale, orphaned/overlapping elements, broken grids. Prove with rects.
 - **Overflow/clipping**: horizontal scroll at any breakpoint, clipped text/controls, content escaping containers, `100vh` vs `100dvh` mobile cutoff.
 - **Responsive**: does each breakpoint reflow correctly? tap targets ≥ ~44px on mobile? no desktop layout leaking into mobile?
-- **Contrast & legibility (WCAG AA)**: text vs bg, ghost buttons over images, placeholder/label/focus/error states — compute from `getComputedStyle`, don't guess.
+- **Contrast & legibility (WCAG AA)** — the **composed** cases only, where what rendered isn't what the token file authored: ghost buttons and text over images or gradients, inherited or opacity-stacked color, a pair the build assembled that the system never authored. Compute from `getComputedStyle`, don't guess. An **authored** token pair failing AA is a system defect — one finding, routed to `design-director`, never re-argued per element — and the criterion number belongs to `/accessibility-review`, so hand it there rather than tabling ratios yourself.
 - **State completeness**: missing focus ring, no loading indicator, empty/error states unstyled or absent, layout shift (CLS) between states.
 - **Motion/a11y**: `prefers-reduced-motion` honored; keyboard focus visible and ordered; no motion-only affordances.
 - **Asset render**: blurry/stretched images, wrong aspect ratio, missing art, icon misalignment.

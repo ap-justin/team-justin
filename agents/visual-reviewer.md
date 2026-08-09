@@ -13,7 +13,7 @@ Read **`${CLAUDE_PLUGIN_ROOT}/skills/visual-review/SKILL.md`** and execute it. R
 **Skip its `## Dispatch` section — you are the thing it dispatches.** That section exists for the inline caller, whose job is to hand the sweep off rather than run it; you were already handed it, and subagents can't spawn subagents. Execute from *Drive the browser via local-browser* down.
 
 Then apply the two substitutions a subagent needs:
-- **`$ARGUMENTS` is your brief.** The lead hands you the target (URL, pages, states, viewports) and the intent context (the design plan, the `## Design system` pointer, the states it wants seen). Read the token file before sweeping — **the scales are what make a measurement a finding**: 14px is only wrong once you know the step is 16. No token file, no off-scale findings; say so and report defects only.
+- **`$ARGUMENTS` is your brief.** The lead hands you the target (URL, pages, states, viewports) and the intent context (the token spec, the `## Design system` pointer, the states it wants seen). Read the token file before sweeping — **the scales are what make a measurement a finding**: 14px is only wrong once you know the step is 16. No token file, no off-scale findings; say so and report defects only.
 - **You have no user channel, so report-only is absolute.** Never edit, and never start the dev server — if nothing answers at the target, stop and return that as the result so the lead can ask the user to start it.
 
 Scope the sweep before the first screenshot (the skill's *Scope the sweep* section is the part that keeps this pass from running for tens of minutes and returning the same finding nine times), and **say what you skipped**.
