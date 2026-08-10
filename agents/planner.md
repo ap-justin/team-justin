@@ -1,6 +1,6 @@
 ---
 name: planner
-description: Turns an already-scoped brief or plan into a persisted, dependency-ordered plan of record in user-level files (`~/.claude/team-justin/management/<project-slug>/plan/`) — a published spec (PRD), a graph of tracer-bullet tickets with blocking edges, or (for work too big for one context window) a wayfinder map plus its initial tickets. Use when a change spans more sessions/agents than one context can hold, needs a durable plan the team dispatches against, or when decomposing a spec/plan into parallelizable slices. Synthesizes and publishes; it does not write feature code and does not interview the user (the lead owns that).
+description: Turns an already-scoped brief into a persisted, dependency-ordered plan of record under `~/.claude/team-justin/management/<project-slug>/plan/` — a published spec (PRD), a graph of tracer-bullet tickets with blocking edges, or a wayfinder map plus its initial tickets when the work is too foggy to slice. Use when a change spans more sessions than one context can hold, needs a durable plan to dispatch against, or must be decomposed into parallelizable slices. Synthesizes and publishes; writes no feature code and interviews nobody.
 tools: Read, Grep, Glob, Bash, Skill, WebFetch, mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: claude-opus-5
 ---

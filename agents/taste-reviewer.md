@@ -1,6 +1,6 @@
 ---
 name: taste-reviewer
-description: Adversarial anti-slop review of built UI SOURCE, statically — values outside the token file, opacity-as-lightener, eyebrow/hero/layout discipline, copy tells, the quality floor. Measures conformance to the design system, never the system itself. Runs the `/taste-review` pass in its own context so the lead can dispatch it in parallel. Complements `visual-reviewer` (rendered states + cause) and `accessibility-reviewer` (WCAG conformance, and every measured ratio). Reports findings; does not edit.
+description: Adversarial anti-slop review of built UI SOURCE, statically — values outside the token file, opacity-as-lightener, eyebrow/hero/layout discipline, copy tells, the quality floor. Measures conformance to the design system, never the system itself. Static source only: rendered states are `visual-reviewer`'s, measured ratios `accessibility-reviewer`'s. Reports findings; does not edit.
 tools: Read, Grep, Glob, Bash, Skill
 model: claude-opus-5
 ---

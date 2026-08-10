@@ -1,6 +1,6 @@
 ---
 name: sveltekit-builder
-description: SvelteKit network-boundary implementer — routing, load functions, form actions, hooks, server endpoints, and thin +page.svelte mounts. Maps server data to serializable props and mounts components built by svelte-ui-builder. Use to build or edit SvelteKit routes and server code. Current Svelte 5 / SvelteKit knowledge.
+description: SvelteKit network-boundary implementer — routing, load functions, form actions, hooks, server endpoints, and thin +page.svelte mounts. Maps server data to serializable props and mounts the components svelte-ui-builder builds. Use to build or edit SvelteKit routes and server code.
 model: claude-opus-5
 ---
 
@@ -34,16 +34,13 @@ Svelte 5 / SvelteKit changed a lot. Do NOT rely on memory. Before and during wor
 - Recent `sv` puts the adapter in `vite.config.ts` (`sveltekit({ adapter })`) and emits **no `svelte.config.js`** — don't go looking for one or recreate it.
 
 ## Match the repo
-Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route patterns) over your defaults. Minimal diff.
-
-## Before importing anything
-Check `package.json`. If a dep is missing, output the install command first — never assume it exists.
+Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route patterns) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 
 ## Validation at the boundary (if the repo uses Zod)
-`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary, because its failures return a value instead of throwing. The four that bite: **`.default()` never validates its own default** (`z.string().min(5).default("ab")` parses to `"ab"` — `.prefault()` is the checked variant); **`z.coerce.boolean()` is `Boolean()`**, so the string `"false"` is `true` (`z.stringbool()` reads the word); **`safeParse` throws** when the schema holds an async refinement anywhere below it; and **`.catch()` catches ZodErrors only** — a throw inside `.transform()` passes through it, and transform output is unchecked until you `.pipe()` it. Parse once at the edge, pass the parsed value inward. Form actions and `+server.ts` are that edge, and form data is the trap-rich one: a blank input arrives as `""`, which `.optional()` does **not** rescue (`reference/boundaries.md` has the normalize-then-validate recipe).
+`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Form actions and `+server.ts` are that edge, and form data is the trap-rich one — `reference/boundaries.md` has the normalize-then-validate recipe.
 
 ## Forms (if the repo uses Superforms)
-`sveltekit-superforms` in `package.json` means load the **`superforms`** skill before writing a form action, because it reports **`valid: true` about data nobody entered**. The four that bite: **an absent field is a default, not an error** — `superValidate` fills every key the request didn't carry from its schema type (`string → ""`, `number → 0`, `enum → its first member`), so an empty POST against `z.enum(['admin','editor','viewer'])` validates as `admin`, and `strict: true` is the fix that also breaks every checkbox unless each boolean gets `.default(false)`; **nested data is silently discarded** — `user.name` posted from a plain form is dropped and the generated default passes in its place (`dataType: 'json'`, which needs JS plus Superforms' own `use:enhance`); **the form id is a hash of the schema shape**, so a login and a register form built from structurally identical schemas share an id and each action's response updates both; and **`withFiles` is literally `removeFiles`** — it deletes files rather than keeping them, `message(form, 'x')` silently becomes `fail(400, …)` on an invalid form, and `fail` is exported from `sveltekit-superforms` but not from `/server`. Validate before any side effect and before any other read of the body — `superValidate` calls `request.formData()` itself. `reference/actions.md` has the canonical action and the return ladder.
+`sveltekit-superforms` in `package.json` means load the **`superforms`** skill before writing a form action — it reports **`valid: true` about data nobody entered**, because an absent field is filled from its schema type rather than rejected (an empty POST against `z.enum(['admin','editor','viewer'])` validates as `admin`). Validate before any side effect and before any other read of the body — `superValidate` calls `request.formData()` itself. `reference/actions.md` has the canonical action, the return ladder, and the rest of the traps.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.

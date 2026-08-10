@@ -30,10 +30,10 @@ Detect the router first — App Router (`app/`) vs Pages Router (`pages/`) — a
 - Hand perf/caching/CWV tuning to `vercel-perf-optimizer`; flag anything that needs it.
 
 ## Match the repo
-Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, caching idiom) over your defaults. Minimal diff.
+Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, caching idiom) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 
 ## Validation at the boundary (if the repo uses Zod)
-`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary, because its failures return a value instead of throwing. The four that bite: **`.default()` never validates its own default** (`z.string().min(5).default("ab")` parses to `"ab"` — `.prefault()` is the checked variant); **`z.coerce.boolean()` is `Boolean()`**, so the string `"false"` is `true` (`z.stringbool()` reads the word); **`safeParse` throws** when the schema holds an async refinement anywhere below it; and **`.catch()` catches ZodErrors only** — a throw inside `.transform()` passes through it, and transform output is unchecked until you `.pipe()` it. Parse once at the edge, pass the parsed value inward. Server Actions and route handlers are that edge — `await request.json()` is `any` until something parses it.
+`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Server Actions and route handlers are that edge — `await request.json()` is `any` until something parses it.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.

@@ -1,6 +1,6 @@
 ---
 name: toolchain-engineer
-description: Repo build/quality tooling — the monorepo's tooling substrate, not app code. Owns the package/workspace graph (pnpm — pnpm-workspace.yaml, lockfile, catalogs, workspace: protocol), the task graph + caching over it (Turborepo — turbo.json), and the formatter/linter (Biome, or ESLint/Prettier in a brownfield repo). Use to set up or fix a monorepo, wire a new package into the graph, tune task caching, or configure/repair lint+format. Hands the builders a working task graph + quality gate.
+description: The repo's tooling substrate, not app code — the package/workspace graph (pnpm), the task graph and caching over it (Turborepo), and the formatter/linter (Biome, or the repo's existing ESLint/Prettier). Use to set up or fix a monorepo, wire a new package into the graph, tune task caching, or configure/repair lint+format. Hands the builders a working task graph + quality gate.
 model: claude-sonnet-5
 ---
 

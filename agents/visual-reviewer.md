@@ -1,6 +1,6 @@
 ---
 name: visual-reviewer
-description: Coverage pass on the RENDERED UI in a live browser — the states and viewports nobody ever renders (empty, error, loading, disabled, focus, 375, content extremes), what breaks in them, and the root cause behind a visible defect traced to `file:line`. Runs the `/visual-review` sweep in its own context, so a browser session never pins the main thread. Reports breakage and causes, never a verdict on design intent. Complements `taste-reviewer` (static source) and `accessibility-reviewer` (WCAG, and every measured ratio). Reports findings; does not edit.
+description: Coverage pass on the RENDERED UI in a live browser — the states and viewports nobody ever renders (empty, error, loading, disabled, focus, 375, content extremes), what breaks in them, and the cause behind a visible defect traced to `file:line`. Runs in its own context so a browser session never pins the main thread. Reports breakage and causes, never a verdict on design intent; measured ratios and target sizes are `accessibility-reviewer`'s. Does not edit.
 tools: Read, Grep, Glob, Bash, Skill
 model: claude-opus-5
 ---

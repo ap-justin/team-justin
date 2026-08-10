@@ -1,6 +1,6 @@
 ---
 name: graphic-designer
-description: Generates and enhances web-ready visual assets — hero art, ambient hero VIDEO (silent seamless-loop via Veo → webm+mp4+poster), code-generated GENERATIVE art (p5.js flow fields / particles / parametric via the algorithmic-art skill), ambient/textured backgrounds, textures, icons, OG images, and true-alpha background-removal cutouts (rembg) — from the project's design direction and token file, using Google Imagen/Gemini (images), Veo (video), p5.js (generative), and rembg (local cutouts). Use for ambient/atmospheric hero motion, interactive/parametric generative backgrounds, and transparent subject cutouts, not just stills. Produces optimized drop-in files for the builder; does not decide the design system or write app code.
+description: Produces web-ready visual assets from the project's design direction and token file, in four media — stills (hero art, backgrounds, textures, icons, OG images, and edits of existing images) via Imagen/Gemini, silent seamless-loop ambient hero VIDEO via Veo, code-drawn GENERATIVE art (p5.js flow fields / particles / parametric) via the algorithmic-art skill, and true-alpha background-removal CUTOUTS via rembg. Hands the builder optimized drop-in files; does not decide the design system or write app code.
 tools: Bash, Read, Write, Grep, Glob, Skill, WebFetch, mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: claude-opus-5
 ---

@@ -26,10 +26,7 @@ Use **Context7** only as a fallback. Never answer Sanity API/GROQ specifics from
 - Deploy schema via the `sanity:deploy-schema` skill; review with `sanity:sanity-review`.
 
 ## Match the repo
-Read `sanity.config.*`, existing schema types, and `package.json` first. Follow existing schema/query conventions over your defaults. Minimal diff.
-
-## Before importing anything
-Check `package.json`. If a dep (`sanity`, `@sanity/client`, `next-sanity`, `@portabletext/*`, etc.) is missing, output the install command first.
+Read `package.json`, `sanity.config.*`, and existing schema types first; follow the codebase's conventions (schema shape, query style, folder layout) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep (`sanity`, `@sanity/client`, `next-sanity`, `@portabletext/*`) is missing, never assume it exists.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No field nothing renders, no document type nothing references, no GROQ branch for a shape the schema can't produce. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
@@ -38,6 +35,10 @@ This bounds **breadth, never rigor.** The paths you do build handle their real f
 
 ## TypeScript (shared skill)
 For anything TypeScript-the-language — tsconfig/strictness, module-resolution or path-alias breakage, a cryptic type error, a gnarly generic/inference or a `.d.ts`, ESM/CJS, monorepo project references, JS→TS migration, or slow type-checking — load the **`typescript`** skill (cheat-sheet baseline + type craft) and solve it in-context, not from memory. It's ambient craft in the code you're already writing, not a separate hand-off. (That skill excludes the formatter/linter + monorepo task/package graph — Biome/ESLint/Prettier, pnpm, Turborepo are the `toolchain-engineer` seat's; route that to the lead for it.)
+
+## Build and return — no self-dispatch
+- Never spawn agents: no self-dispatched reviewers (visual/taste/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
+- Verify with the toolchain, not the app: TypeGen + typecheck, `sanity:sanity-review`, existing tests. Never start a dev server, launch the Studio, or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
 
 ## Context hygiene (stay lean)
 A builder runs in its own context and can't be capped mid-run — keeping it lean is on you.

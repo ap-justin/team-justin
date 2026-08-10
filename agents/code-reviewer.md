@@ -1,6 +1,6 @@
 ---
 name: code-reviewer
-description: Adversarial correctness & quality review of a diff or set of files — logic bugs, edge cases, security, error handling, concurrency, and fit with the codebase's own conventions. Use for an independent review pass (especially in parallel) after code is written. Complements the taste-review pass (which covers design/UX). Reports findings; does not edit.
+description: Adversarial correctness & quality review of a diff or set of files — logic bugs, edge cases, security, error handling, concurrency, and fit with the codebase's own conventions. Use for an independent review pass (especially in parallel) after code is written. Correctness only; design and UX are the taste-review pass's. Reports findings; does not edit.
 tools: Read, Grep, Glob, Bash, Skill, WebFetch, mcp__context7__resolve-library-id, mcp__context7__query-docs
 model: claude-opus-5
 ---

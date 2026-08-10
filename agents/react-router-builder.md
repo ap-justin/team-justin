@@ -25,10 +25,10 @@ Verify the repo's mode first — framework mode (Vite plugin, `@react-router/dev
 - Keep server-only code server-only; don't leak DB/secrets into client bundles. Expect a typed query surface from `postgres-architect` for data work.
 
 ## Match the repo
-Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route config) over your defaults. Minimal diff.
+Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route config) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 
 ## Validation at the boundary (if the repo uses Zod)
-`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary, because its failures return a value instead of throwing. The four that bite: **`.default()` never validates its own default** (`z.string().min(5).default("ab")` parses to `"ab"` — `.prefault()` is the checked variant); **`z.coerce.boolean()` is `Boolean()`**, so the string `"false"` is `true` (`z.stringbool()` reads the word); **`safeParse` throws** when the schema holds an async refinement anywhere below it; and **`.catch()` catches ZodErrors only** — a throw inside `.transform()` passes through it, and transform output is unchecked until you `.pipe()` it. Parse once at the edge, pass the parsed value inward. Actions and loaders are that edge, and form data is the trap-rich one: a blank input arrives as `""`, which `.optional()` does **not** rescue (`reference/boundaries.md` has the normalize-then-validate recipe).
+`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Actions and loaders are that edge, and form data is the trap-rich one — `reference/boundaries.md` has the normalize-then-validate recipe.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.

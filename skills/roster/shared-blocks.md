@@ -37,7 +37,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 
 Required on every seat that **writes or edits TypeScript**.
 
-Full form (10 seats — the default for any seat writing app code):
+Full form (11 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
 
 ```
 ## TypeScript (shared skill)
@@ -125,6 +125,63 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 **Tailored slot**: `{the seat's behavior surface}` only. Everything else is invariant — this block is short precisely so there's nothing to shorten.
 
 **Not a substitute for `test-writer`.** This block covers first coverage of behavior the seat is building right now. What needs its own context stays `test-writer`'s (`lead` SKILL.md Step 4): coverage sweeps and fan-out across many files, repairing a red/flaky suite when no builder is in flight, and **capturing** an unfamiliar repo's conventions into a project testing doc. The seat and this block run the same `testing` skill — the split is context, not craft.
+
+## Block F — `## Scope — build the real path, not every path`
+
+Required on every seat that **writes app code** (11 seats: the three framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, both UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
+
+```
+## Scope — build the real path, not every path
+Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. {four examples of what the seat therefore doesn't build}. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
+
+This bounds **breadth, never rigor**{, and where the bound bites hardest on this seat: the seat's hard-rigor clause}. The paths you do build handle their real failures — an error a user can hit, a null the query can return, a request that can arrive twice. Cutting one of those is a bug, not restraint. Genuinely unsure a path carries traffic? Name it in your return and let the lead call it — don't build it speculatively, and don't silently drop it.
+```
+
+**Invariant clauses** — the two marked ⚠ are what stop the block being read as a licence to cut:
+- `Pareto:` as the opener — the leading word the whole block hangs on
+- `Code that never executes is never known to work` + the least-trustworthy-code clause
+- ⚠ `This bounds **breadth, never rigor**` — without it a seat prunes error handling under a scope heading, which is the exact inversion this block causes when shortened
+- ⚠ `Name it in your return and let the lead call it` + `don't silently drop it` — the escape hatch, and the half that keeps an unsure call from becoming a silent omission. A block with the bound and no escape hatch makes the seat decide alone.
+
+**Tailored slots**: the four examples; the **hard-rigor clause** naming what is never marginal on this seat (`## Money rules (non-negotiable)` · `## Security (non-negotiable)` · `a constraint is not a marginal case` + `SQLITE_BUSY` · at-least-once delivery at the edge · the plan's named states on the UI builders). The data architects also swap the second sentence's closer for `an unused index is worse than dead code, since it's paid for on every write`.
+
+## Block G — `## Build and return — no self-dispatch`
+
+Required on the seats whose output **renders** (7 seats: the three framework builders, both UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
+
+```
+## Build and return — no self-dispatch
+- Never spawn agents: no self-dispatched reviewers (visual/taste/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
+- Verify with the toolchain, not the app: {the seat's checks}. Never start a dev server or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
+```
+
+**Exempt by decision** — record the reason, don't just omit:
+- `vercel-perf-optimizer` — measuring a running app **is** the job; `## Prove the win` is its version of this rule.
+- `toolchain-engineer`, `vercel-platform-engineer` — config; nothing renders to be tempted by.
+- the data/auth/billing specialists — no rendered surface, and their gate is the suite (Block D).
+- reviewers and the four text-producing seats — they don't build.
+
+**Invariant clauses:**
+- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 7 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on five and `Never boot the app, start a dev server, or drive a browser` on the two UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
+- `the rendered gate is the user's look` — names who *does* judge it, so the ban has a positive target.
+- the no-spawn bullet is cheap insurance rather than a live risk (a subagent can't spawn subagents), so it may be one line — but it stays paired with `dispatch and review routing is the lead's alone`.
+
+**Tailored slots**: the **opener** — `Verify with the toolchain, not the app:` on the seats that have one (the framework builders, `cloudflare-builder`, `sanity-builder`), `Self-check in isolation:` on the two UI component builders, whose toolchain can't render what they wrote either — and the seat's checks (`autofixer, typecheck/build, existing tests` · `typecheck/lint` · `wrangler deploy --dry-run` + `wrangler types` · TypeGen + typecheck).
+
+## Block H — `## Match the repo`
+
+Required on the seats that write app code **into an existing tree** (7 seats: the three framework builders, both UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
+
+```
+## Match the repo
+Read `package.json` and {the seat's peer artifacts — existing routes / components / schema types / the hot path} first; follow the codebase's conventions ({its convention axes}) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
+```
+
+**Invariant clauses:**
+- `follow the codebase's conventions` + `over your defaults` — the whole point; a seat that keeps this as "follow conventions" alone loses the tie-break rule
+- ⚠ `Check `package.json` before importing anything — output the install command` — it lives **inside this block** on every seat, never under a heading of its own and never in the quality floor. One home, or it goes missing from whichever seat is written next.
+
+**Tailored slots**: the peer artifacts and the convention axes only.
 
 ## Block E — the token-vocabulary bullet
 

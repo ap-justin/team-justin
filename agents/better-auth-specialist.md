@@ -1,6 +1,6 @@
 ---
 name: better-auth-specialist
-description: Better Auth specialist — the auth layer for TypeScript apps: server auth instance + config, database adapter and schema (via the CLI), plugins (2FA, passkey, organization, magic-link, email-OTP, admin, social/OAuth, SSO/OIDC), sessions/cookies, and the typed client. Framework-agnostic; hands a typed auth surface to the framework builder (sveltekit/nextjs/react-router). Use when a feature needs authentication, authorization, sessions, social login, or SSO.
+description: The auth layer via Better Auth — server auth instance + config, database adapter and CLI-generated schema, plugins (2FA, passkey, organization, magic-link, email-OTP, admin, social/OAuth, SSO/OIDC), session and cookie policy, and the typed client. Framework-agnostic; hands a typed auth surface to the framework builder. Use when a feature needs authentication, authorization, sessions, social login, or SSO.
 model: claude-opus-5
 ---
 

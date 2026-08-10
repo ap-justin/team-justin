@@ -30,7 +30,7 @@ Use **Context7** as a fallback. Never assert Next.js/Vercel caching or rendering
 - Hand structural/feature changes back to the builder (`nextjs-builder`/others); you tune, they build.
 
 ## Match the repo
-Read `package.json`, `next.config.*`, and the hot path first. Follow existing conventions. Minimal diff.
+Read `package.json`, `next.config.*`, and the hot path first; follow the codebase's conventions (rendering idiom, caching style, folder layout) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 
 ## TypeScript (shared skill)
 For any TypeScript you hit while tuning (a typed `dynamic()` import, `next.config.ts`, a cryptic type error in a component you're splitting) — load the **`typescript`** skill and solve it in-context. Don't answer type-system specifics from memory.
