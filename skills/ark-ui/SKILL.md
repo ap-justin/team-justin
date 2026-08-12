@@ -7,8 +7,9 @@ Ark UI is the **headless component layer** — accessible, unstyled interactive 
 
 ## When to reach for Ark (vs. the repo's lib, vs. hand-rolling)
 The reach-for-Ark call is the load-bearing judgment — get it wrong and you either drag a second primitive library into a repo that has one, or hand-roll a focus trap that ships broken.
-- **Brownfield defers to the repo's existing component library.** If the repo is already on shadcn/Radix/Headless UI/Skeleton/etc., use that — minimal diff. Don't introduce Ark as a second primitive library; flag the mismatch to the lead instead.
-- **Reach for Ark** when it's a **greenfield** primitive choice, when the stack is **Vue/Solid/Svelte** (where a React-only kit like Radix doesn't fit), or when the repo **already uses Ark**.
+- **Brownfield defers to the repo's existing component library.** If the repo is already on shadcn/Radix/Headless UI/Skeleton/etc., use that — minimal diff. Don't introduce Ark as a second primitive library; flag the mismatch to the lead instead. The tell for shadcn is a **`components.json`** at the root, and that repo has its own vendored playbook: load the **`shadcn`** skill and build from what's installed.
+- **Reach for Ark** when the stack is **Vue/Solid/Svelte** (where a React-only kit like Radix doesn't fit) or when the repo **already uses Ark**.
+- **Greenfield React is the one open call, and it isn't yours** — Ark and shadcn are both available, they answer to the same design tokens, and the choice belongs to the plan the lead hands down. Build the primitive the plan names; with no name in it, ask the lead rather than default. Whichever comes down, it's the only primitive library in the repo from then on.
 - **Reach for it on the complex primitives** — the ones where a11y is hard and hand-rolling silently breaks it: dialogs/modals, dropdowns/menus, comboboxes, selects, date pickers, tabs, tooltips, popovers, toasts. A styled button or a plain `<a>` doesn't need Ark — don't over-reach.
 
 ## Consult current docs (official sources first)
