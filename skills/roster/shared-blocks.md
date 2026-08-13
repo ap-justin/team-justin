@@ -37,7 +37,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 
 Required on every seat that **writes or edits TypeScript**.
 
-Full form (11 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
+Full form (12 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
 
 ```
 ## TypeScript (shared skill)
@@ -50,7 +50,7 @@ Invariant in both forms: loads `` **`typescript`** `` **and** `solve it in-conte
 
 ## Block I — `## Comments (earn the line)`
 
-Required on every seat carrying **Block B** (15 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
+Required on every seat carrying **Block B** (16 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
 
 **Exempt by decision** — record the reason, don't just omit:
 - `graphic-designer` — its p5.js output comes from the `algorithmic-art` template, whose heavy instructional comments are what mark the VARIABLE sections a later run replaces. Pruning them breaks the template's own contract, and the artifact is an image, not code anyone maintains.
@@ -77,7 +77,7 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 ## Block C — the return contract
 
 Every seat ends with exactly one of:
-- a trailing **`Return:`** line — builders and specialists (11 seats), or
+- a trailing **`Return:`** line — builders and specialists (12 seats), or
 - a **`## Output`** / **`## Handoff`** section — reviewers, planners, and the design/asset seats (6 seats), whose return is structured rather than a path list.
 
 Pick by seat kind, not by whichever peer you opened.
@@ -116,10 +116,11 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 
 ## Block D — `## Test-first (shared skill)`
 
-Required on every seat that implements **executable behavior with a specifiable contract** (8 seats: the three framework builders, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`).
+Required on every seat that implements **executable behavior with a specifiable contract** (9 seats: the three framework builders, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
 
 **Exempt by decision** — record the reason, don't just omit:
 - `react-ui-builder`, `svelte-ui-builder` — you can't go red on a layout or a motion curve; their gate is the user's visual-intent inspection. Logic-dense component internals (a reducer, validation rules) route to `test-writer` after the build.
+- `web-components-builder` is the **partial**, and it's in rather than out: its element's public API (attribute→property reflection and the pre-upgrade path, emitted events and their `detail`, `ElementInternals` form value/validity, idempotent connect/disconnect) is a specifiable contract other people's pages depend on, and every one of its failures is invisible on screen — so Block D applies to it in full. What it *renders* is covered by the block's existing screen exemption, which the lead names in the brief; it needs no fourth case.
 - `sanity-builder` — its primary artifact is declarative schema; TypeGen is the correctness gate on GROQ.
 - `vercel-perf-optimizer` — already carries the same discipline in a different currency: `## Prove the win` demands a measured before/after.
 - `toolchain-engineer`, `vercel-platform-engineer` — config, not behavior.
@@ -154,7 +155,7 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 
 ## Block F — `## Scope — build the real path, not every path`
 
-Required on every seat that **writes app code** (11 seats: the three framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, both UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
+Required on every seat that **writes app code** (12 seats: the three framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
 
 ```
 ## Scope — build the real path, not every path
@@ -173,7 +174,7 @@ This bounds **breadth, never rigor**{, and where the bound bites hardest on this
 
 ## Block G — `## Build and return — no self-dispatch`
 
-Required on the seats whose output **renders** (7 seats: the three framework builders, both UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
+Required on the seats whose output **renders** (8 seats: the three framework builders, the three UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
 
 ```
 ## Build and return — no self-dispatch
@@ -188,7 +189,7 @@ Required on the seats whose output **renders** (7 seats: the three framework bui
 - reviewers and the four text-producing seats — they don't build.
 
 **Invariant clauses:**
-- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 7 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on five and `Never boot the app, start a dev server, or drive a browser` on the two UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
+- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 8 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on five and `Never boot the app, start a dev server, or drive a browser` on the three UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
 - `the rendered gate is the user's look` — names who *does* judge it, so the ban has a positive target.
 - the no-spawn bullet is cheap insurance rather than a live risk (a subagent can't spawn subagents), so it may be one line — but it stays paired with `dispatch and review routing is the lead's alone`.
 
@@ -196,7 +197,7 @@ Required on the seats whose output **renders** (7 seats: the three framework bui
 
 ## Block H — `## Match the repo`
 
-Required on the seats that write app code **into an existing tree** (7 seats: the three framework builders, both UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
+Required on the seats that write app code **into an existing tree** (8 seats: the three framework builders, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
 
 ```
 ## Match the repo
@@ -211,7 +212,7 @@ Read `package.json` and {the seat's peer artifacts — existing routes / compone
 
 ## Block E — the token-vocabulary bullet
 
-Required on the two **UI component builders** (`react-ui-builder`, `svelte-ui-builder`) — the seats that write style values. It sits inside `## Follow the plan exactly`, under the closed-set and named-gap bullets it depends on.
+Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-builder`, `web-components-builder`) — the seats that write style values. It sits inside `## Follow the plan exactly`, under the closed-set and named-gap bullets it depends on.
 
 **Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. **Not on `taste-reviewer`** either: the reviewer needs the *traps* as greps, and its own skill body carries them in that form.
 
@@ -225,4 +226,4 @@ Required on the two **UI component builders** (`react-ui-builder`, `svelte-ui-bu
 - ⚠ `How a value was derived is the system's business, not yours` — the team conforms to the system it was given and holds no opinion on the CSS behind it. Without this clause a seat re-derives a state step it dislikes, which is a design decision taken from `claude-design` at the last possible moment, in a file nobody reviews as design.
 - ⚠ the `--accent` trap. It is the block's reason to exist — the part **no token file confesses**, because it's a plausible-looking line imported from shadcn's published components rather than a value the seat invented. Read backwards it tints every resting row, and it is expensive to unpick later.
 
-**Tailored slots**: none. The bullet is identical on both seats by design — `audit`'s cluster check (step 6) treats any divergence between them as drift.
+**Tailored slots**: none. The bullet is identical on all three seats by design — `audit`'s cluster check (step 6) treats any divergence between them as drift. `web-components-builder` carries **one added bullet after it**, never an edit to it: inside a shadow root distributed beyond the app the token names take a prefix, because custom properties inherit across the boundary and a generic `--primary` on a host page the team doesn't own bleeds in. An addition is fine; changing the block's own text is drift.
