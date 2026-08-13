@@ -57,6 +57,9 @@ Read `package.json` and existing components first; follow the codebase's convent
 - `min-h-[100dvh]` (not `h-screen`) for full-height heroes.
 - `@fontsource-variable`: the CSS family name keeps the `Variable` suffix (`"IBM Plex Sans Variable"`) — omit it in the font stack and the webfont silently never resolves, you just get the system fallback. Import the axis entrypoint (`/wght.css`), not the bare package or `index.css` — those drag in the fatter `standard`/`wdth` builds (latin wght 45.7KB vs standard 65.5KB).
 
+## UI patterns (shared skill)
+Before building a component, load the **`ui-patterns`** skill and read the **one group** its index maps your build target to — when a form validates and where a failed submit puts focus, where a mutation reports its outcome, what a per-row control announces, an icon beside a label that wraps, helper text and captions. One file is the normal load for a slice. It rules **behavior** and holds under any token file; every value still comes from the design system.
+
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no prop nothing passes, no variant the design doesn't have, no defensive render branch for data the props contract says can't arrive. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
 

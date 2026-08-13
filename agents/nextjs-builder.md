@@ -29,6 +29,12 @@ Detect the router first — App Router (`app/`) vs Pages Router (`pages/`) — a
 - Keep server-only code server-only (`server-only` pkg, `$`-style env guards); never leak DB clients or secrets into client bundles. Expect a typed query surface from `postgres-architect` for data work — consume it, don't reinvent it.
 - Hand perf/caching/CWV tuning to `vercel-perf-optimizer`; flag anything that needs it.
 
+## Mutation feedback — where the outcome lands
+The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write a Server Action. Yours is the Next mechanism behind each:
+- **Flash** — `cookies().set` in the Server Action, read in the page, cleared in middleware: a render can't delete a cookie.
+- **Same-screen save** — a Server Action that returns without `redirect` doesn't navigate; where a push is needed, `router.push(url, { scroll: false })`.
+- **Validation failure** — the action returns a state object (`useActionState`) carrying the field error map plus the submitted values; it doesn't redirect, so the form keeps its input and the component can put focus where the map says.
+
 ## Match the repo
 Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, caching idiom) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 

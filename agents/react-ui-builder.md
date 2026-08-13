@@ -46,6 +46,9 @@ Read `package.json` and existing components first; follow the codebase's convent
 - Visible keyboard focus; semantic HTML; labels above inputs.
 - `prefers-reduced-motion` respected; `min-h-[100dvh]` (not `h-screen`) for full-height heroes.
 
+## UI patterns (shared skill)
+Before building a component, load the **`ui-patterns`** skill and read the **one group** its index maps your build target to — when a form validates and where a failed submit puts focus, where a mutation reports its outcome, what a per-row control announces, an icon beside a label that wraps, helper text and captions. One file is the normal load for a slice. It rules **behavior** and holds under any token file; every value still comes from the design system.
+
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no prop nothing passes, no variant the design doesn't have, no defensive render branch for data the props contract says can't arrive. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
 
@@ -68,6 +71,8 @@ When a feature needs a complex interactive primitive done accessibly — modal/d
 Two primitive libraries are open to you, and **the repo chooses before you do**: a `components.json` at the root means this repo is on shadcn — load the **`shadcn`** skill and build from what's installed. On greenfield the choice comes down with the plan; absent a stated one, ask the lead rather than pick. The rule itself lives in `ark-ui`'s *reach-for* section, written once — never introduce the second library into a repo that already has one.
 
 The skill runs `shadcn info --json` as it loads, so the repo's own `aliases`, `base` (`radix` or `base-ui` — they differ on `asChild` vs `render`), `iconLibrary`, `tailwindVersion` and installed-component list arrive with it. Read those instead of assuming `@/components/ui` and `lucide-react`. Before writing against a component, run `npx shadcn@latest docs <component>` and fetch the URLs — the composition rules it enforces (`FieldGroup`/`Field` for form layout, `gap-*` over `space-y-*`, `data-icon` over sizing classes, the full `Card`/`Dialog`/`Tabs` anatomy) are what separate correct shadcn from styled `div`s.
+
+Its `rules/composition.md` toast section settles **which** toast this base imports (`sonner` on Radix/React Aria, the `toast` component on Base UI); where the outcome reports stays `ui-patterns` → `forms-and-mutations`, which is what its worked example leaves open.
 
 **In a shadcn repo the installed theme *is* the design system**, and the token bullet above applies to it unchanged: read the names off the CSS file `tailwindCssFile` points at, use what's there, return a named gap when it's missing something. Stock components stay as the CLI wrote them — `components/ui/*` is the vendor's file, and a restyle there is a diff nobody asked for that the next `add --diff` has to reconcile.
 

@@ -24,6 +24,7 @@ Invoke and fully read the skill(s) for the task before producing anything (don't
 - Word a CTA / error / empty state / onboarding / confirmation → `ux-copy`.
 - Design is ready for build; spec it for engineering → `design-handoff`.
 - Need the mechanism behind an interaction decision, or the states a flow must handle → `ux-principles` (the corpus `ux-auditor` audits against; use it to *specify* states, not to audit built code — that's the auditor's pass).
+- Specifying a component the builders will implement — a form's validation timing, where a failed submit sends focus, a submit button's feedback, a row action's accessible name → `ui-patterns`, one group per build target. It rules behavior, not appearance, so it's spec material rather than visual language; and the builders read the same corpus as they write, so a spec citing a pattern by name is one they'll implement as written.
 
 Then inspect the repo for what already exists (routes, existing flows, components, prior research notes, design tokens) with Read/Grep/Glob. For an existing product, treat current screens as the material you're improving.
 

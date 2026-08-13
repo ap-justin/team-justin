@@ -28,6 +28,12 @@ Svelte 5 / SvelteKit changed a lot. Do NOT rely on memory. Before and during wor
 - Keep secrets server-only (`$env/static/private`, `$lib/server/*`). Never leak DB clients into shared/client code.
 - For data/DB work, expect a schema + query layer from `postgres-architect`; consume it, don't reinvent it. Flag if it's missing.
 
+## Mutation feedback — where the outcome lands
+The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write an action. Yours is the SvelteKit mechanism behind each:
+- **Flash** — `cookies.set` before the `redirect`, then read and `cookies.delete` in the root layout's server `load`, so it's consumed exactly once.
+- **Same-screen save** — return from the action and let `use:enhance` apply the result. A `redirect` to the same URL is a navigation, and a navigation resets scroll.
+- **Validation failure** — `fail(400, { form })` (Superforms: `message`/`setError`) returns the field error map alongside the submitted values and `use:enhance` applies it in place, so the form keeps its input and the component can put focus where the map says.
+
 ## Scaffolding (`sv create`)
 - `sv create <dir>` in a **non-empty** dir OVERWRITES `README.md` — restore it from git after scaffolding into an existing repo.
 - The `sveltekit-adapter` add-on crashes (`Cannot read properties of undefined (reading 'package')`) when combined with `--no-install`. Scaffold with the other add-ons, then wire the adapter by hand.

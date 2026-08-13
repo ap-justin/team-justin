@@ -24,6 +24,12 @@ Verify the repo's mode first — framework mode (Vite plugin, `@react-router/dev
 - Nested routing + `<Outlet>`; keep route config the way the repo declares it (`routes.ts` / file-based).
 - Keep server-only code server-only; don't leak DB/secrets into client bundles. Expect a typed query surface from `postgres-architect` for data work.
 
+## Mutation feedback — where the outcome lands
+The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write an action. Yours is the RR7 mechanism behind each:
+- **Flash** — `session.flash()` on cookie session storage, set before the redirect and consumed by the next `loader`.
+- **Same-screen save** — `useFetcher` (a fetcher doesn't navigate at all), or `<Form preventScrollReset>` where it must navigate.
+- **Validation failure** — the action returns the field error map with a 4xx rather than redirecting, and the route reads it back through `useActionData`/`fetcher.data`, so the form keeps its input and the component can put focus where the map says.
+
 ## Match the repo
 Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route config) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 

@@ -115,6 +115,6 @@ Prevention, recovery, undo. This is the most directly greppable group in the cor
   - a form-validation library configured for change-time validation (e.g. `mode: 'onChange'`) applied uniformly across a whole form, including fields with no real-time benefit
   - the inverse defect: a long, multi-section form with zero validation until the final submit, surfacing every error at once
 **Fix:** validate on blur for the first error, then on change for subsequent edits, as the default; reserve keystroke-level validation for fields with a real formation rule to teach.
-**Applies when:** fields the user builds up character-by-character against a visible rule (password strength, live username availability) benefit from instant feedback — the general rule inverts there.
+**Applies when:** fields the user builds up character-by-character against a visible rule (password strength, live username availability) benefit from instant feedback — the general rule inverts there. Of the two moments this rule permits, the house default picks **submit** for the first pass, then change for the correction pass (`ui-patterns` → `forms-and-mutations`); a form built that way satisfies this entry. The third signal is unaffected — a long multi-section form's first pass is per section, not one final submit at the end.
 **Detect:** STATIC
 **Source:** *10 Usability Heuristics* (help users recognize, diagnose, and recover from errors) · https://www.nngroup.com/articles/errors-forms-design-guidelines/ (2019)

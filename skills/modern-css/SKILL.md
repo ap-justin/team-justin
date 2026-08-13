@@ -37,6 +37,7 @@ The actual value of this skill: recognizing when a familiar workaround is now ob
 | JS virtualization purely for offscreen render cost | `content-visibility: auto` + `contain-intrinsic-size` |
 | Manually maintained typed CSS custom properties | `@property` (registered custom properties) |
 | Global unscoped selectors reached for encapsulation via BEM alone | `@scope` |
+| Hand-tuned `margin-top` to line an icon up with a multiline label | `lh` units (the pattern is `ui-patterns` → `text-and-icons`; this skill owns whether `lh` needs a fallback here) |
 
 If a build is doing any of the left column, check the right column's Baseline status in `reference/baseline.md` before assuming it needs the old approach.
 

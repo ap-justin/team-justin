@@ -62,8 +62,13 @@ The **curated, human-gated** half — it edits the team, so it lives under roste
 4. Applies approved edits; **drains** the promoted lines from the inbox (leaves un-promoted lines for next time), archiving artifacts it kept.
 5. Version-bumps (minor for new prefs/capability, patch for a tiny tweak), runs `audit`, hands off. Commit/tag left to the user (git rule).
 
-## The destination — the seat definitions themselves
+## The destination — a consulted corpus, or the seat itself
 
-There is deliberately **no central style file** (the `house-style` skill was retired). Claude Code plugins cannot ship auto-loaded context (no plugin CLAUDE.md/rules mechanism), so a central file only reaches a seat if the lead remembers to re-read and re-hand a slice of it on every dispatch — a hop that silently drops. Promoted preferences are instead edited into the surfaces that already load: the seat's own `agents/<seat>.md` prompt, or the owning skill (`lead`'s SKILL.md for orchestration-wide rules). Versioned and shared all the same — every install inherits them; the raw inbox stays personal to the user's machine.
+There is deliberately **no central style file**. Claude Code plugins cannot ship auto-loaded context (no plugin CLAUDE.md/rules mechanism), so a file that has to be *handed down* only reaches a seat if the lead remembers to re-read and re-slice it on every dispatch — a hop that silently drops. A preference therefore lands in one of two places, both of which the seat reaches on its own:
+
+- **`ui-patterns`** (`skills/ui-patterns/`) for a component-level UI default — the corpus a builder **consults by build target**, loading the one group matching what it's about to write. This is where most `[design]`-lane preferences go. It's a skill the seat loads itself rather than context the lead carries, which is what makes it survive the dispatch hop the retired central style file never did; and it holds the bound a flat list of preferences can't — `CURATION.md` requires every entry to name **the default it corrects**, so the corpus grows with wrong defaults rather than with taste. It takes **behavior only**: validation timing, where focus goes, where an outcome reports, what a control announces. A preference about how something *looks* — rank, ink, borders, the focus indicator itself — is the project design system's to settle, so the sweep returns it to you instead of filing it.
+- **The seat's own `agents/<seat>.md` prompt**, or the owning skill (`lead`'s SKILL.md for orchestration-wide rules), for everything that isn't a component pattern — a stack-specific mechanism, a routing rule, a seat's posture. Where a rule has both, the rule goes in the corpus and only the mechanism goes in the seat.
+
+Versioned and shared either way — every install inherits them; the raw inbox stays personal to the user's machine.
 
 The team starts frozen and earns its defaults one swept preference at a time — in place.
