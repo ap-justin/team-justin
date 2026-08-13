@@ -1,4 +1,4 @@
-# Roster — v0.7.0
+# Roster — v0.8.0
 
 The lead is the `lead` skill (`/team-justin:lead`, runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -86,7 +86,7 @@ Plan store: `TRACKER.md` (user-level markdown under `~/.claude/team-justin/manag
 
 ## Growing the team
 Adding a specialist is a versioned change — run **`/roster hire <name>`**, which executes this checklist against its wiring map so no point is missed:
-1. Write `agents/<name>.md` against the **`writing-for-agents`** standard (context pointers, the two loads, information hierarchy, single source of truth, aggressive pruning; `SKILL-MECHANICS.md` for the skill-only half) — single responsibility, official-source-first, quality floor, **present tense with no archeology**. Copy the shape of an existing specialist for the seat-specific half and **`skills/roster/shared-blocks.md` for Blocks A–H**, never a peer for those.
+1. Write `agents/<name>.md` against the **`writing-for-agents`** standard (context pointers, the two loads, information hierarchy, single source of truth, aggressive pruning; `SKILL-MECHANICS.md` for the skill-only half) — single responsibility, official-source-first, quality floor, **present tense with no archeology**. Copy the shape of an existing specialist for the seat-specific half and **`skills/roster/shared-blocks.md` for Blocks A–I**, never a peer for those.
 2. Wire it to its official source: add a row to `SOURCES.md`.
 3. Add a row here in **Current specialists** + a **Model tiers** entry, and a routing row to the `lead` skill.
 4. Recompute the agent count (`ls agents/*.md | wc -l`) into `plugin.json` + `marketplace.json`; bump `CHANGELOG.md`, `VERSION`, `plugin.json` `version`, and the header above (minor bump for a new agent).

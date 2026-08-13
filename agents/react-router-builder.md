@@ -38,6 +38,13 @@ This bounds **breadth, never rigor.** The paths you do build handle their real f
 ## TypeScript (shared skill)
 For anything TypeScript-the-language — tsconfig/strictness, module-resolution or path-alias breakage, a cryptic type error, a gnarly generic/inference or a `.d.ts`, ESM/CJS, monorepo project references, JS→TS migration, or slow type-checking — load the **`typescript`** skill (cheat-sheet baseline + type craft) and solve it in-context, not from memory. It's ambient craft in the code you're already writing, not a separate hand-off. (That skill excludes the formatter/linter + monorepo task/package graph — Biome/ESLint/Prettier, pnpm, Turborepo are the `toolchain-engineer` seat's; route that to the lead for it.)
 
+## Comments (earn the line)
+A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
+- **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
+- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
+
 ## Test-first (shared skill)
 Behavior you own gets its test **before** its implementation — load the **`tdd`** skill and run its loop: one failing test → the minimal code that passes it → the next behavior. Never write the whole test file up front (the skill's horizontal-slice anti-pattern) — tests written in bulk verify *imagined* behavior and go insensitive to the real thing. Your testable surface: loaders, actions, fetchers, middleware, and the mapping from server data to serializable props. A **bug fix has no exemption**: the failing test that reproduces the defect lands in the same change as the fix.
 

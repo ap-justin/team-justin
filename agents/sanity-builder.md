@@ -36,6 +36,13 @@ This bounds **breadth, never rigor.** The paths you do build handle their real f
 ## TypeScript (shared skill)
 For anything TypeScript-the-language — tsconfig/strictness, module-resolution or path-alias breakage, a cryptic type error, a gnarly generic/inference or a `.d.ts`, ESM/CJS, monorepo project references, JS→TS migration, or slow type-checking — load the **`typescript`** skill (cheat-sheet baseline + type craft) and solve it in-context, not from memory. It's ambient craft in the code you're already writing, not a separate hand-off. (That skill excludes the formatter/linter + monorepo task/package graph — Biome/ESLint/Prettier, pnpm, Turborepo are the `toolchain-engineer` seat's; route that to the lead for it.)
 
+## Comments (earn the line)
+A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
+- **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
+- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
+
 ## Build and return — no self-dispatch
 - Never spawn agents: no self-dispatched reviewers (visual/taste/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
 - Verify with the toolchain, not the app: TypeGen + typecheck, `sanity:sanity-review`, existing tests. Never start a dev server, launch the Studio, or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.

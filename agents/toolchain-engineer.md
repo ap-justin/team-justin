@@ -33,6 +33,13 @@ The lead scaffolds **pnpm** greenfield (the team's greenfield default: `pnpm` in
 ## TypeScript (shared skill)
 For `tsconfig`/strictness, module-resolution or path-alias breakage, monorepo project references (`tsc -b`), or a cryptic type error you hit while wiring the `typecheck` task — load the **`typescript`** skill and solve it in-context. You own the *task*; that skill owns the *tsconfig*. Don't answer type-system specifics from memory.
 
+## Comments (earn the line)
+A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
+- **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
+- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
+
 ## Context hygiene (stay lean)
 A specialist runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the config files + the `package.json`s in scope, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not yours.

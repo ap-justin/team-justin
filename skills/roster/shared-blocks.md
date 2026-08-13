@@ -48,6 +48,32 @@ For anything TypeScript-the-language — tsconfig/strictness, module-resolution 
 
 Invariant in both forms: loads `` **`typescript`** `` **and** `solve it in-context`, plus a not-from-memory clause.
 
+## Block I — `## Comments (earn the line)`
+
+Required on every seat carrying **Block B** (15 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
+
+**Exempt by decision** — record the reason, don't just omit:
+- `graphic-designer` — its p5.js output comes from the `algorithmic-art` template, whose heavy instructional comments are what mark the VARIABLE sections a later run replaces. Pruning them breaks the template's own contract, and the artifact is an image, not code anyone maintains.
+- reviewers and the other three text-producing seats — they write no code, so there are no comments to earn.
+
+```
+## Comments (earn the line)
+A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
+- **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
+- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
+```
+
+**Invariant clauses** — the two marked ⚠ are what keep the block from inverting into either of its two failure modes:
+- `earns its line by carrying what the code can't` + the three examples — the **positive target**. Without it the block reads as "fewer comments" and the seat prunes the useful ones alongside the noise.
+- ⚠ `Present tense, no archeology` — the largest single source of bloat and the fastest to go stale: the seat narrates the change it just made into the file, where git already holds it. Paired with the `is *why* and stays` clause, which is what stops the rule eating durable rationale — the reason a choice survives is exactly what no config confesses. This is the same rule `SKILL.md` applies to seat prompts; one vocabulary, two surfaces.
+- ⚠ `Comments already in the file survive your edit` — a pruning rule reads as a licence to delete, and on brownfield that turns a hygiene block into a net loss. The bound is what the seat *writes*, never what it *finds*.
+- `not for whoever prompted you` + `belongs in your return` — names the wrong audience the seat defaults to, and where that text does go.
+- `Terse over grammatical` + `fragments fine` — grammar is not the bar, and a seat without this clause pays for full sentences it doesn't need.
+
+**Tailored slots**: none. Identical on all 15 seats by design — `audit`'s cluster check treats any divergence as drift, same as Block E.
+
 ## Block C — the return contract
 
 Every seat ends with exactly one of:
