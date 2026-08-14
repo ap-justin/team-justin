@@ -14,7 +14,7 @@ Why user-level files, not in-repo and not Issues: the working repo stays clean �
   notes/                   # brainstorming — freeform thinking, no format, never authority
     <whatever>.md
   issues/                  # known defects — one file per bug, deleted when fixed
-    <kebab-slug>.md        # status/severity frontmatter + the write-up
+    <kebab-slug>.md        # severity frontmatter + the write-up
   plan/                    # the current effort
     <effort-slug>/
       brief.md             # the change-shaped brief — the `brief` verb's output
@@ -69,7 +69,7 @@ Other artifacts:
 
 ## Reconcile & capture (the lead, at commit)
 
-The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`lead` skill, Step 4.5), run at the **same moment** as the commit that lands each slice. The store lives outside the repo, so the write doesn't ride in the commit — reconciling as each slice lands is precisely what keeps `git log` and the plan telling the same story instead of drifting. It's automatic (write, then report) and applies whenever the project's store exists:
+The store only stays truthful if the plan moves **with** the code. There is no git hook and no tracker daemon — reconciliation is a **lead** action (`lead` skill, Step 4.5), run at the **same moment** as the commit that lands each slice. The store lives outside the repo, so the write doesn't ride in the commit — reconciling as each slice lands is precisely what keeps `git log` and the plan telling the same story instead of drifting. It's automatic (write, then report); **`lead` Step 4.5 states the gate once** — the two captures have no precondition, the two reconciliations need a `plan/<effort>/` to reconcile against:
 
 - **Ticket status** → set `status: done` on every ticket whose acceptance boxes are all satisfied; recompute the frontier and report the new takeable set. Never `done` on unchecked acceptance — that's what makes the frontier lie.
 - **Brief** → tick the `Done when` boxes the slice satisfied and check off the landed **commit** in `Landing plan` (and its parent PR when that PR merges); correct `Blast radius` if the change reached further than the grill predicted. In place, in `plan/<effort>/brief.md`.
@@ -108,7 +108,6 @@ It also answers a recurring question: *where do I put private project notes?* No
 
 ```markdown
 ---
-status: open        # open | fixing
 severity: high      # low | medium | high | critical
 ---
 # <what's wrong, one line>
@@ -120,6 +119,8 @@ severity: high      # low | medium | high | critical
 **Blast radius:** what else this reaches
 **Fix options:** 1) … 2) …
 ```
+
+**No `status` field — membership is the status.** A file in `issues/` is a live defect and a fix deletes it, so the dir already answers the only question a status would. In-flight-ness is session state (the lead's worklist), not frontmatter: a `fixing` value has no writer that survives a context reset, so it can only ever go stale — and a stale status on a defect file is the drift this store exists to prevent. `severity` stays because nothing else carries it.
 
 Every reference cites **`file:line`** — the write-up lives outside the repo, so a bare filename or an unanchored code quote is unfollowable. Same no-precondition rule as idea capture: create the dir on first write. **Delete the file in the same change that fixes the bug** — an empty `issues/` means no known defects, which is only true if fixed bugs leave.
 

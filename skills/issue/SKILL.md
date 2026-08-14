@@ -19,7 +19,6 @@ Write the defect file from what the user just told you and get out. They hit som
 
    ```markdown
    ---
-   status: open
    severity: medium
    ---
    # <what's wrong, one line — the user's framing>
