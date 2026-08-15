@@ -24,6 +24,6 @@ Show the user the full set of proposed diffs (agent-prompt + skill edits), group
 - **Drain** the inbox: remove the promoted lines from `~/.claude/team-justin/inbox.md`, leaving un-promoted/deferred lines for next time. Move kept artifacts out of the inbox's `patterns/` if you copied them into the repo.
 
 ## 5. Version + hand off (wiring map #6–#8)
-No agent added → **count stays the same** (don't touch the `plugin.json`/`marketplace.json` count). Bump version: **minor** if it adds a new default or capability, **patch** for a tiny prompt tweak. Set `VERSION`, `plugin.json` `version`, `ROSTER.md` header, and a `CHANGELOG.md` entry — all equal. Then **run `audit` (`audit.md`) — it must pass.** Report what landed where; leave `commit`+`tag` to the user (git rule).
+No agent added → **count stays the same** (don't touch the `plugin.json`/`marketplace.json` count). Bump version: **minor** if it adds a new default or capability, **patch** for a tiny prompt tweak. Set `VERSION`, `plugin.json` `version`, and the `ROSTER.md` header — all equal. Then **run `audit` (`audit.md`) — it must pass.** Report what landed where; leave `commit`+`tag` to the user (git rule).
 
 Completion: approved preferences edited into seats/skills, inbox drained of them, version bumped, `audit` green.

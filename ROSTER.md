@@ -1,4 +1,4 @@
-# Roster — v0.12.2
+# Roster — v0.12.3
 
 The lead is the `lead` skill (`/team-justin:lead`, runs in the main thread). It delegates to the specialists below and to built-in agents (`Explore`, `Plan`) and skills (`/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run`). Every specialist follows **official sources first** (`SOURCES.md`).
 
@@ -93,7 +93,7 @@ Adding a specialist is a versioned change — run **`/roster hire <name>`**, whi
 1. Write `agents/<name>.md` against the **`writing-for-agents`** standard (context pointers, the two loads, information hierarchy, single source of truth, aggressive pruning; `SKILL-MECHANICS.md` for the skill-only half) — single responsibility, official-source-first, quality floor, **present tense with no archeology**. Copy the shape of an existing specialist for the seat-specific half and **`skills/roster/shared-blocks.md` for Blocks A–I**, never a peer for those.
 2. Wire it to its official source: add a row to `SOURCES.md`.
 3. Add a row here in **Current specialists** + a **Model tiers** entry, and a routing row to the `lead` skill.
-4. Recompute the agent count (`ls agents/*.md | wc -l`) into `plugin.json` + `marketplace.json`; bump `CHANGELOG.md`, `VERSION`, `plugin.json` `version`, and the header above (minor bump for a new agent).
+4. Recompute the agent count (`ls agents/*.md | wc -l`) into `plugin.json` + `marketplace.json`; bump `VERSION`, `plugin.json` `version`, and the header above (minor bump for a new agent).
 5. `git add -A && git commit && git tag vX.Y.Z`.
 
 Adding a **skill** is the smaller change (`/roster author`) and carries its own entry bar: a skill is **recipes earned by working with the thing**, never a restatement of docs the stack's `SOURCES.md` row already serves — order that matters, defaults with the reason attached, traps, and what to leave out. Derivable-from-the-source-in-the-moment is a lookup, not a skill.

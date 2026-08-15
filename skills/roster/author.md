@@ -18,6 +18,6 @@ On the page that means: sequences whose order matters, defaults with the reason 
 2. Record it in `SOURCES.md` → *Vendored resources* (repo, license, what it backs) and in `ROSTER.md` → *Reused, not owned*. Confirm the license permits vendoring; note it.
 
 ## Both
-Minor version bump — `VERSION` · `CHANGELOG.md` · `ROSTER.md` header · `.claude-plugin/plugin.json`, all equal (the plugin manifest is the one that gets forgotten — it has shipped stale before). Leave commit/tag to the user (git rule).
+Minor version bump — `VERSION` · `ROSTER.md` header · `.claude-plugin/plugin.json`, all equal (the plugin manifest is the one that gets forgotten — it has shipped stale before). Leave commit/tag to the user (git rule).
 
 Completion: the skill loads, meets the standard (or is verbatim-vendored with provenance), and is recorded in `ROSTER.md`/`SOURCES.md` if it backs a seat or is vendored.

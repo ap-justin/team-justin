@@ -25,7 +25,7 @@ Completion: file exists, meets the standard, description carries a boundary clau
 - `lead` SKILL.md *Step 3* routing row — the `detected/needed → specialist`. A **review-only** seat wires into *Step 4* (review & verify) instead, next to its sibling reviewer.
 
 ## 4. Version + count (map #6–#8)
-Recompute the count — `ls agents/*.md | wc -l` — and set it in **both** `plugin.json` and `marketplace.json` descriptions (don't hand-increment). Minor bump: `VERSION`, `plugin.json` `version`, `ROSTER.md` header, and a `CHANGELOG.md` entry, all equal.
+Recompute the count — `ls agents/*.md | wc -l` — and set it in **both** `plugin.json` and `marketplace.json` descriptions (don't hand-increment). Minor bump: `VERSION`, `plugin.json` `version`, and the `ROSTER.md` header, all equal.
 
 Completion: **run `audit` (see `audit.md`) — it must pass.**
 

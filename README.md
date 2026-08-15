@@ -12,7 +12,7 @@ A versioned engineering team for Claude Code. A main-thread lead (the `lead` ski
 - `TRACKER.md` — the user-level plan store: the change's `brief.md` (incl. commit/PR cadence), `planner`'s tickets, captured `IDEAS.md` lines, one file per known defect under `issues/`, and freeform brainstorming under `notes/`. Nothing of it is written into the working repo.
 - `SOURCES.md` — official MCP/skill/plugin each stack must use (official sources first).
 - `ROSTER.md` — current + planned agents, and how to grow the team.
-- `CHANGELOG.md` / `VERSION` — release history.
+- `VERSION` — current release. History is git: `git log` / `git tag`.
 
 ## Install (as a Claude Code plugin)
 This repo is a self-contained Claude Code **plugin** (`team-justin`, `.claude-plugin/plugin.json`) served by its own single-plugin **marketplace** (`.claude-plugin/marketplace.json`, name `team-justin`). Installing as a plugin — rather than symlinking into `~/.claude` — is what makes it work identically **locally and in Claude Code on the web**, because plugin content resolves `${CLAUDE_PLUGIN_ROOT}` (the install dir) in both, whereas the web VM never sees your machine's `~/.claude`.
