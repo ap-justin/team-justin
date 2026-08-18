@@ -47,3 +47,28 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Default it corrects:** navigating to the same URL to refresh the data, which most routers treat as a fresh navigation and scroll to the top.
 **Why:** the operator is looking at the control they pressed, usually somewhere down a long form. Jumping to the top loses their place and reads as a failure — they can't see the thing they just changed, so they check it again. Only an outcome landing on a *different* screen earns the trip to the top.
 **Applies when:** the current screen persists — this is the rule the component's callbacks have to leave room for.
+
+## An explanation goes on screen; `aria-describedby` points the control at it
+
+**Trigger:** a control whose effect isn't obvious from its label — a toggle that changes what other people can see, a checkbox with a consequence, a destructive action.
+**Pattern:** render the consequence as visible text near the control, give it an `id`, and point the control at it with `aria-describedby`.
+**Default it corrects:** writing the explanation into the control's `aria-label` (or `title`), so the only person who gets it is the one using a screen reader.
+**Why:** an accessible name is a name, not a place to put content — nothing paints it, so the sighted user infers the consequence from a bare toggle. Worse, it *replaces* the visible label rather than adding to it, so the string that was supposed to explain more explains less.
+**Shape:**
+```html
+<input id="vis" type="checkbox" aria-describedby="vis-note">
+<p id="vis-note">Anyone with the link can view this.</p>
+```
+**Applies when:** the string is a description. A genuinely icon-only control still needs `aria-label` for its *name*.
+
+## A stateful control sits inside its own `<label>`
+
+**Trigger:** a checkbox, radio or switch with visible text beside it.
+**Pattern:** wrap the control and its text in one `<label>`, so the visible string *is* the accessible name.
+**Default it corrects:** an `aria-label` on the input plus a separate `<span>` of visible text — two strings kept in step by hand, which drift the first time one is reworded.
+**Why:** label-in-name (WCAG 2.5.3) requires the accessible name to contain the visible text, so a voice user can say what they can see. Wrapping makes that structural rather than a promise: there is only one string, so it can't drift.
+**Shape:**
+```html
+<label><input type="checkbox" name="public"> Make this public</label>
+```
+**Applies when:** the text sits beside the control. A label placed elsewhere in the layout uses `<label for>` — same one-string rule, different mechanism.

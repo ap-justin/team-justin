@@ -33,6 +33,7 @@ State which source you used. If the docs MCP isn't connected, say so and fall ba
 ## Plugins
 - Add capability through official plugins (server plugin + matching client plugin — they come in pairs): `twoFactor`, `passkey`, `organization`, `magicLink`, `emailOTP`, `admin`, `username`, `jwt`, `sso`/`oidcProvider`. Confirm the exact import + options from the source; several change the schema (re-run `generate`).
 - **Distinguish the two "MCP" things** — the docs MCP server above is for *you* to read docs. The Better Auth `mcp()` **library plugin** is different: it turns the *app* into an OAuth/MCP provider (auth for MCP clients). Only reach for the plugin when the brief is "make my app an MCP/OAuth provider."
+- **An email-proof plugin beside password signup deletes the password.** `revokeUnprovenAccountAccess` drops the credential account when a magic-link or email-OTP proof lands on a user row that was never verified — so "sign up with a password, confirm by magic link" leaves the user with no password to sign in with, and nothing errors. Pick one proof of email per flow: a verification email for password signup, or password-less throughout.
 
 ## Client & session
 - One `createAuthClient()` in a shared module; add the client half of every server plugin used. Expose typed `signIn`/`signUp`/`signOut`/`useSession` (or the framework equivalent) for the builder.

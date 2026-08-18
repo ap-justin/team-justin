@@ -11,7 +11,7 @@ Each entry states the pattern, then the **default it corrects** — the thing th
 
 | About to build | Load |
 |---|---|
-| a form · a submit button · validation · anything that mutates and has to report back | `reference/forms-and-mutations.md` |
+| a form · a submit button · validation · a checkbox, radio or switch and the words beside it · anything that mutates and has to report back | `reference/forms-and-mutations.md` |
 | a control that repeats per row — Remove, Edit, a per-row menu | `reference/lists-and-rows.md` |
 | an icon beside a label · helper text under a control · a caption · prose introducing a section | `reference/text-and-icons.md` |
 

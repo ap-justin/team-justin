@@ -30,6 +30,7 @@ The usual tell is reaching for a **different runner's API out of habit** — the
 Behavior-over-implementation, public-interface-only assertions, and boundary-only mocking belong to **`tdd`**, which loads alongside this skill — not restated here. What it doesn't cover:
 
 - **Assert something that can fail.** `toBeDefined()`, a bare `not.toThrow()`, or a snapshot nobody read prove only that the code ran. Assert the value or effect the caller actually depends on.
+- **Scope the assertion to the block under test, then mutation-check it.** A `toContain` over the whole rendered output passes whether or not the block did anything — the same figure is usually emphasised somewhere else in the document. Assert against the element or slice you're covering, then break the line it covers and confirm the test goes red.
 - **User flows over isolated renders.** One flow exercising render + interaction + result beats many "renders X" tests. Cross-boundary flows are highest-value.
 - **Cover the space, not just the happy path** — validation failures, empty and boundary inputs, error and permission paths, concurrency where it's real. Map the edge cases before writing.
 - **One reason to fail per test**, arrange-act-assert shape, and a name that's a scannable statement of the behavior — `formats USD prices`, not `should correctly return the formatted price string when given a valid positive number`.

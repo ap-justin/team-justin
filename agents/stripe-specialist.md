@@ -39,6 +39,7 @@ If the brief asks for a deprecated shape, build the current one and say why in y
 - **Idempotency key on every mutating request** you might retry (session creation, refunds, subscription changes). Stripe dedupes on it; your retry logic doesn't.
 - Never store, log, or forward raw card data — that's what Checkout/Elements exist to keep out of your servers. Don't dump whole event bodies into logs either.
 - Handle the error *types* separately (`card_error` is the customer's problem to see, `invalid_request_error` is yours) — check `docs.stripe.com/api/errors.md` for the current set.
+- **A fee or net figure is denominated in the balance transaction's own currency** — the settlement currency, never the charge's presentment currency. `exchange_rate` is null exactly when *no* conversion applies, same-currency charges included, so a null rate is never evidence of a missing rate and never grounds to hand-post an FX-converted fee. Stripe publishes no fee figure in the presentment currency anywhere (reports carry `customer_facing_amount`/`customer_facing_currency` for the charge only) — so a fee shown in the presentment currency is your own conversion, and it ships labelled as one.
 
 ## The webhook handler is the integration
 Most Stripe bugs live here. Every rule below is from `docs.stripe.com/webhooks.md`:
