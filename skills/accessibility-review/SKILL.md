@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: WCAG 2.1 AA accessibility audit of a design or page — color contrast, keyboard navigation, focus order, touch target size, screen reader/ARIA. Report-only unless fixes are asked for.
+description: WCAG 2.1 AA accessibility audit of a design or page — keyboard navigation, focus order, touch target size, screen reader/ARIA. Color contrast is the design system's, not this pass's. Report-only unless fixes are asked for.
 disable-model-invocation: true
 argument-hint: "<URL, page/component, or description>"
 ---
@@ -9,11 +9,16 @@ argument-hint: "<URL, page/component, or description>"
      copied into the repo so the team keeps the skill without the plugin's ~9 auth-gated MCP servers
      (slack, figma, linear, asana, atlassian, notion, intercom, google calendar, gmail) loaded.
      upstream ships this as the namespaced `design:accessibility-review`; this is the plain vendored copy.
-     re-sync: diff against the plugin cache after a plugin update. -->
+     TEAM-ADAPTED, not verbatim: color contrast (1.4.3, 1.4.11) removed from the criteria, the common issues,
+     the testing approach, the output template and the tips — `design-director` clears every token pair at
+     formalization, so no review pass on this team re-derives a ratio.
+     re-sync: diff against the plugin cache after a plugin update, then re-apply. -->
 
 # /accessibility-review
 
 Audit a design or page for WCAG 2.1 AA accessibility compliance. This is the team's a11y gate — the sibling of the `/visual-review` (rendered states + cause) and `/taste-review` (anti-slop) passes. Run it after a page/component is built and rendered.
+
+**Color contrast is settled upstream, so you audit everything else.** `design-director` clears it on every token pair, light and dark, at formalization — the team's whole pass over it. What's still reportable is the **absence** of a treatment the system never authored (an unauthored pairing; text over image, video, gradient or translucency with no scrim and no `prefers-contrast` handling), and that is `/taste-review`'s static finding, without a number. Name 1.4.3/1.4.11 as unassessed in *what wasn't verified*: with them out, this audit is never a full-AA claim.
 
 ## Usage
 
@@ -28,8 +33,7 @@ Audit for accessibility: @$1
 ### Perceivable
 - **1.1.1** Non-text content has alt text
 - **1.3.1** Info and structure conveyed semantically
-- **1.4.3** Contrast ratio >= 4.5:1 (normal text), >= 3:1 (large text)
-- **1.4.11** Non-text contrast >= 3:1 (UI components, graphics)
+- *(1.4.3 / 1.4.11 contrast — settled in the design system's token pairs, **not assessed here**)*
 
 ### Operable
 - **2.1.1** All functionality available via keyboard
@@ -47,24 +51,22 @@ Audit for accessibility: @$1
 
 ## Common Issues
 
-1. Insufficient color contrast
-2. Missing form labels
-3. No keyboard access to interactive elements
-4. Missing alt text on meaningful images
-5. Focus traps in modals
-6. Missing ARIA landmarks
-7. Auto-playing media without controls
-8. Time limits without extension options
+1. Missing form labels
+2. No keyboard access to interactive elements
+3. Missing alt text on meaningful images
+4. Focus traps in modals
+5. Missing ARIA landmarks
+6. Auto-playing media without controls
+7. Time limits without extension options
 
 ## Testing Approach
 
 1. Automated scan (catches ~30% of issues)
 2. Keyboard-only navigation
 3. Screen reader testing (VoiceOver, NVDA)
-4. Color contrast verification
-5. Zoom to 200% — does layout break?
+4. Zoom to 200% — does layout break?
 
-When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`agent-browser`) and read real values (`getComputedStyle` for contrast/colors, `getBoundingClientRect` for touch-target size, tab order via focus events). **Every measured number on a rendered page is this pass's** — `/visual-review` hands ratios and target sizes here rather than tabling its own.
+When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`agent-browser`) and read real values (`getBoundingClientRect` for touch-target size, tab order via focus events, computed styles for the focus indicator). **Every measured number on a rendered page is this pass's** — `/visual-review` hands target sizes here rather than tabling its own.
 
 ## Output
 
@@ -80,7 +82,7 @@ When a dev server is running, prefer **measured** evidence over eyeballing — d
 #### Perceivable
 | # | Issue | WCAG Criterion | Severity | Recommendation |
 |---|-------|---------------|----------|----------------|
-| 1 | [Issue] | [1.4.3 Contrast] | 🔴 Critical | [Fix] |
+| 1 | [Issue] | [1.1.1 Alt text] | 🔴 Critical | [Fix] |
 
 #### Operable
 | # | Issue | WCAG Criterion | Severity | Recommendation |
@@ -96,11 +98,6 @@ When a dev server is running, prefer **measured** evidence over eyeballing — d
 | # | Issue | WCAG Criterion | Severity | Recommendation |
 |---|-------|---------------|----------|----------------|
 | 1 | [Issue] | [4.1.2 Name, Role, Value] | 🟡 Major | [Fix] |
-
-### Color Contrast Check
-| Element | Foreground | Background | Ratio | Required | Pass? |
-|---------|-----------|------------|-------|----------|-------|
-| [Body text] | [color] | [color] | [X]:1 | 4.5:1 | ✅/❌ |
 
 ### Keyboard Navigation
 | Element | Tab Order | Enter/Space | Escape | Arrow Keys |
@@ -126,6 +123,6 @@ The upstream skill branched on Figma / project-tracker MCP connectors. In this t
 
 ## Tips
 
-1. **Start with contrast and keyboard** — These catch the most common and impactful issues.
+1. **Start with keyboard and focus** — These catch the most common and impactful issues in scope here.
 2. **Test with real assistive technology** — This audit is a great start, but manual testing with VoiceOver/NVDA catches things automation can't.
 3. **Prioritize by impact** — Fix issues that block users first, polish later.

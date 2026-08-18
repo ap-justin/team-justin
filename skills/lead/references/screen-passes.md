@@ -14,7 +14,7 @@ The user has already seen the happy path in their own window. What nobody has re
 
 The other half is tracing: a defect the user spots in a second costs them an hour to locate, and this seat returns it as a `file:line` with a scope.
 
-What `visual-reviewer` no longer does is table numbers — ratios and tap targets are `accessibility-reviewer`'s, off-token values are `taste-reviewer`'s grep, and asking this seat for them buys a browser-priced duplicate.
+What `visual-reviewer` no longer does is table numbers — tap targets are `accessibility-reviewer`'s, off-token values are `taste-reviewer`'s grep, and asking this seat for them buys a browser-priced duplicate. Contrast is **settled** one tier up — `design-director` clears every token pair at formalization — so brief the seats for what's left.
 
 Two things bound the batch:
 
