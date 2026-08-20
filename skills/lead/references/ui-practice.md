@@ -39,6 +39,16 @@ Brownfield starts here, and greenfield lands here after step 5.
 
 **The repo is upstream of every design project, in every direction.** That is the whole design: a design project is downstream, so it is rebuilt from the repo and never merged into it. Merge both ways and you are maintaining a design system in two places, which holds at no size. What the tool produces is a design; what the repo holds is the system.
 
+## System change — the trip that moves the token file
+
+Most trips round the loop compose a screen out of parts that already exist and settle no new value. A **system change** is the other kind: the token file itself moves. Two things start one — a builder's **named gap**, blocked and reported (*the conformance gate*, below), or a deliberate improvement with nothing blocked, which is the user's to start and enters the loop at step 2. Both run the same five steps; what differs is what step 4 lands and what closes it.
+
+- **The token edit is its own slice, and it lands first.** A value that is retuned, renamed or retired reaches every consumer in the tree, so it goes in ahead of the components that consume it rather than riding along inside one of them.
+- **The gate runs over the whole tree on that slice**, not over the components that changed. Whether the rest of the tree still resolves is the question a system change asks, and a repo-wide sweep is what answers it — a name that stopped resolving is a rename that stranded its consumers, and it is a finding on the slice that renamed it.
+- **`conventions.md` moves in the same change**, by `ux-designer`, in the corpus's own shape. A corpus that lags the system sends the next design session at constraints the repo no longer holds, and what comes back is the thing you just replaced.
+
+Then step 5 as ever — rebuild, resync.
+
 ## The conformance gate is a deliverable, not a review pass
 
 Whether a build honors its system is a **test**, written in Phase 0 and run at every commit. Two sweeps:

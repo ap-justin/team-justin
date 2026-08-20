@@ -84,7 +84,7 @@ A greenfield UI is **not built and then designed**. `ux-designer`'s flow + the `
 
 **The design is authoritative.** What comes back ships as authored — contrast included. The team's job is to transcribe it once, into the token file, and hold every build inside it.
 
-**Bootstrap, steady state, ownership, and what a build is held to: `${CLAUDE_PLUGIN_ROOT}/skills/lead/references/ui-practice.md`.** Read it when any UI build starts — greenfield at *Bootstrap*, brownfield at *Steady state*. It also carries the greenfield-only team defaults (`pnpm`, React).
+**Bootstrap, steady state, system change, ownership, and what a build is held to: `${CLAUDE_PLUGIN_ROOT}/skills/lead/references/ui-practice.md`.** Read it when any UI build starts — greenfield at *Bootstrap*, brownfield at *Steady state*, a change that moves the token file at *System change*. It also carries the greenfield-only team defaults (`pnpm`, React).
 
 ### Brownfield UI — there is no design hop
 An existing repo already has a system, so the build follows it and the design work already happened. Two shapes:
