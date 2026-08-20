@@ -39,8 +39,8 @@ No group matches? `grep -ril "<term>" reference/` before concluding there's no p
 
 ## Not this skill's job
 - **WCAG conformance** — `accessibility-review`. The lanes touch at the signifier boundary (a `<div onClick>` is both a signifier defect and a keyboard defect); cite the overlap, don't re-audit it.
-- **Anti-slop review of built UI** — `taste-review` reads screens for templated design; this walks a task for journey breaks.
+- **Rendered breakage** — `/visual-review` reads rendered screens for what broke; this walks a task for journey breaks.
 - **The words themselves** — `ux-copy`. This flags a *missing* error state; that skill decides what it says.
 - **Conversion** — `cro`. A usability principle is not a conversion test, and the two genuinely disagree sometimes.
 - **Building the primitive accessibly** — `ark-ui`. This says which principle is violated, never how to code the replacement.
-- **The visual system** — palette, type scale, spacing, motion feel live in the token file `design-director` formalized.
+- **The visual system** — palette, type scale, spacing, motion feel live in the repo's token file, transcribed from what Claude Design settled.

@@ -44,7 +44,7 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 - **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
 
 ## Build and return — no self-dispatch
-- Never spawn agents: no self-dispatched reviewers (visual/taste/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
+- Never spawn agents: no self-dispatched reviewers (visual/a11y/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
 - Verify with the toolchain, not the app: TypeGen + typecheck, `sanity:sanity-review`, existing tests. Never start a dev server, launch the Studio, or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
 
 ## Context hygiene (stay lean)

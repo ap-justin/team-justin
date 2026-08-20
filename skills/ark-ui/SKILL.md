@@ -38,12 +38,12 @@ Ark ships one package per framework — `@ark-ui/react`, `@ark-ui/vue`, `@ark-ui
 ## Styling — hook onto the design tokens
 - Ark is **headless/unstyled** — style via the parts' `data-*` state attributes (`[data-state=open]`, `[data-disabled]`, `[data-highlighted]`, …) and Ark's CSS variables, per the `styling_guide`. Consult it; don't assume attribute names.
 - Use whatever the repo already uses to apply styles (Tailwind, CSS modules, vanilla-extract, Panda) — match it, don't introduce a styling system.
-- Map `design-director`'s tokens onto the component; keep styling co-located the way the repo does. If a token you need is missing, ask the lead — don't improvise a value.
+- Map the repo's tokens onto the component; keep styling co-located the way the repo does. If a token you need is missing, ask the lead — don't improvise a value.
 
 ## TypeScript
 Ark components are TS-heavy (generic `value`/`collection` types, part props). For any hard type work — a cryptic generic on `Select`/`Combobox`, controlled-state typing, a `.d.ts` — load the **`typescript`** skill and solve it in-context.
 
 ## Not this skill's job
 - **Placing the primitive in a route, wiring page data, form submission / server actions** — that's the framework build you're already doing; this skill is just the primitive's composition + a11y + styling.
-- **The visual system** (palette, type, spacing, motion tokens) is `design-director`'s — you *apply* those tokens, you don't invent them.
+- **The visual system** (palette, type, spacing, motion tokens) is the design's — you *apply* those tokens, you don't invent them.
 - **Post-build passes** — `/accessibility-review` (WCAG) and `/visual-review` (rendered UI) are the user's to pull afterward; this skill is the build-time discipline that makes them come back clean.

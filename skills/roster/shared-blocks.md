@@ -8,7 +8,7 @@ Each block below has **invariant clauses** (copy verbatim — `audit` checks the
 
 ## Block A — `## Context hygiene (stay lean)`
 
-Required on every seat that **reads or edits repo files**. The four text-producing seats (`design-director`, `ux-designer`, `graphic-designer`, `planner`) are exempt by decision: their input is a brief handed to them, and they already carry an `## Output`/`## Handoff` contract.
+Required on every seat that **reads or edits repo files**. The three text-producing seats (`ux-designer`, `graphic-designer`, `planner`) are exempt by decision: their input is a brief handed to them, and they already carry an `## Output`/`## Handoff` contract.
 
 ```
 ## Context hygiene (stay lean)
@@ -72,19 +72,21 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 - `not for whoever prompted you` + `belongs in your return` — names the wrong audience the seat defaults to, and where that text does go.
 - `Terse over grammatical` + `fragments fine` — grammar is not the bar, and a seat without this clause pays for full sentences it doesn't need.
 
-**Tailored slots**: none. Identical on all 15 seats by design — `audit`'s cluster check treats any divergence as drift, same as Block E.
+**Tailored slots**: none. Identical on every seat carrying it, by design — `audit`'s cluster check treats any divergence as drift, same as Block E.
 
 ## Block C — the return contract
 
 Every seat ends with exactly one of:
-- a trailing **`Return:`** line — builders and specialists (12 seats), or
-- a **`## Output`** / **`## Handoff`** section — reviewers, planners, and the design/asset seats (6 seats), whose return is structured rather than a path list.
+- a trailing **`Return:`** line — builders and specialists, or
+- a **`## Output`** / **`## Handoff`** section — reviewers, planners, and the asset seats, whose return is structured rather than a path list.
+
+The two are exhaustive and disjoint, so `grep -Lc '^Return:' agents/*.md` and `grep -lE '^## (Output|Handoff)' agents/*.md` should partition the roster — re-derive rather than trusting a count here.
 
 Pick by seat kind, not by whichever peer you opened.
 
 ### Block C.1 — `## What you return` (the six review seats)
 
-Required on `code-reviewer`, `architecture-reviewer`, `taste-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`. It **follows** `## Output` and never replaces it: `## Output` is the **report**, this block is the **return**, and separating them is the whole point. Four of these seats say their Output is a skill's template *verbatim* — the caps here must not read as an edit to that template, or the two-callers-one-body rule forks.
+Required on `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`. It **follows** `## Output` and never replaces it: `## Output` is the **report**, this block is the **return**, and separating them is the whole point. Three of these seats say their Output is a skill's template *verbatim* — the caps here must not read as an edit to that template, or the two-callers-one-body rule forks.
 
 Not on the builders/specialists: their `Return:` line is already a path list, which is the shape this block exists to produce. Not on the four text-producing seats: their output **is** the deliverable a next seat consumes.
 
@@ -106,7 +108,7 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 - `Return no code` + `the lead can open ` + `` `file:line` `` — the single largest line item in a review return, and the one every seat reaches for by default
 - `No narration` + `Open on the first one`
 
-**Tailored slots**: the finding noun (`findings` / `failures` / `defects`), the **ordering rule** (severity for most; `systemic first` for `visual-reviewer`, **path order** for `ux-auditor` — its findings compound along the walk), the seat's coverage line (the `handed to visual-reviewer` line · the coverage line · *how it was checked* + *what wasn't verified* · where the dependency trace stopped · the resolved entry route), and what the seat narrates by habit. A seat may add a bullet for the payload *it specifically* over-returns — `visual-reviewer`'s screenshots-are-paths, `accessibility-reviewer`'s criterion tables, `taste-reviewer`'s one-line pass group, `ux-auditor`'s questions-and-gaps-as-counts. Additions are fine, deletions are drift.
+**Tailored slots**: the finding noun (`findings` / `failures` / `defects`), the **ordering rule** (severity for most; `systemic first` for `visual-reviewer`, **path order** for `ux-auditor` — its findings compound along the walk), the seat's coverage line (the `handed to visual-reviewer` line · the coverage line · *how it was checked* + *what wasn't verified* · where the dependency trace stopped · the resolved entry route), and what the seat narrates by habit. A seat may add a bullet for the payload *it specifically* over-returns — `visual-reviewer`'s screenshots-are-paths, `accessibility-reviewer`'s criterion tables, `ux-auditor`'s questions-and-gaps-as-counts. Additions are fine, deletions are drift.
 
 **Two documented exceptions to the caps**, both recorded rather than inferred:
 - `architecture-reviewer` **design mode returns its interface spec in full** — the spec is not a finding list, it's what a builder implements, and capping it breaks the build it was dispatched to unblock. Signatures are that mode's exception to *return no code*. Review mode caps normally.
@@ -178,7 +180,7 @@ Required on the seats whose output **renders** (8 seats: the three framework bui
 
 ```
 ## Build and return — no self-dispatch
-- Never spawn agents: no self-dispatched reviewers (visual/taste/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
+- Never spawn agents: no self-dispatched reviewers (visual/a11y/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
 - Verify with the toolchain, not the app: {the seat's checks}. Never start a dev server or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
 ```
 
@@ -210,20 +212,35 @@ Read `package.json` and {the seat's peer artifacts — existing routes / compone
 
 **Tailored slots**: the peer artifacts and the convention axes only.
 
+## Block J — the contrast clause
+
+Required on every seat that could otherwise reach for a ratio: the three **UI component builders**, `ux-designer`, `accessibility-reviewer`, `visual-reviewer`. It rides inside whatever sentence already tells the seat where a value comes from, rather than as a bullet of its own.
+
+```
+contrast is the design's and ships as authored — no seat on this team computes a ratio
+```
+
+**Invariant clauses:**
+- ⚠ `contrast is the design's` — the **positive** half, and it has to come first. Left as a bare prohibition the clause reads as a gap in the practice, and a seat helpfully fills a gap; stated as ownership it reads as a decision already taken, which is what it is.
+- ⚠ `ships as authored` — this is what stops the softer failure: a seat that doesn't compute a ratio but still flags a pair as "worth checking," which routes a design decision back to the user as a defect.
+- `no seat on this team computes a ratio` — team-wide, not seat-local. Scoped to the seat, each one assumes some *other* seat has it covered, and the criterion silently comes back.
+
+**Tailored slots**: the host sentence. `accessibility-reviewer` and the `/accessibility-review` skill additionally name **1.4.3 / 1.4.11 as unassessed** in their output, so a clean run is never read as a full-AA claim — that naming is theirs alone and is not part of this block.
+
 ## Block E — the token-vocabulary bullet
 
 Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-builder`, `web-components-builder`) — the seats that write style values. It sits inside `## Follow the plan exactly`, under the closed-set and named-gap bullets it depends on.
 
-**Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. **Not on `taste-reviewer`** either: the reviewer needs the *traps* as greps, and its own skill body carries them in that form.
+**Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. The **conformance gate** the builder writes in Phase 0 is what enforces it afterwards — a test in the repo, not a seat.
 
 ```
-- **The token vocabulary is shadcn's semantic set** — the naming convention only: no shadcn or Tailwind dependency is implied. Read the names off the project's token file, which is the only authority; `design-director` owns the contract behind it. **How a value was derived is the system's business, not yours** — a hover step may be a named `--primary-hover`, an alpha step like `bg-primary/90`, or a `color-mix()`; use whichever the file has, and return a named gap when it has none. One trap, and it arrives by pasting shadcn's own component code rather than by inventing anything: `--accent` is the **hover/selected surface**, not the brand accent (that's `--primary`) — read backwards it puts brand hue on every resting row.
+- **The token vocabulary is shadcn's semantic set** — the naming convention only: no shadcn or Tailwind dependency is implied. Read the names off the project's token file, which is the only authority — it was transcribed from what Claude Design settled, and no seat here extends it. **How a value was derived is the system's business, not yours** — a hover step may be a named `--primary-hover`, an alpha step like `bg-primary/90`, or a `color-mix()`; use whichever the file has, and return a named gap when it has none. One trap, and it arrives by pasting shadcn's own component code rather than by inventing anything: `--accent` is the **hover/selected surface**, not the brand accent (that's `--primary`) — read backwards it puts brand hue on every resting row.
 ```
 
 **Invariant clauses:**
 - `the naming convention only` + the no-dependency clause — without it a seat installs shadcn or reaches for Tailwind because the names implied a stack. The names are a vocabulary, not a package.
 - ⚠ `Read the names off the project's token file, which is the only authority` — this is what keeps the block from becoming a **stale cache** of a list that lives in the repo being built. Enumerating the ~30 names here instead is drift: the seat opens that file anyway, and a copy goes wrong the first time the contract grows.
-- ⚠ `How a value was derived is the system's business, not yours` — the team conforms to the system it was given and holds no opinion on the CSS behind it. Without this clause a seat re-derives a state step it dislikes, which is a design decision taken from `claude-design` at the last possible moment, in a file nobody reviews as design.
+- ⚠ `How a value was derived is the system's business, not yours` — the team conforms to the system it was given and holds no opinion on the CSS behind it. Without this clause a seat re-derives a state step it dislikes, which is a design decision taken from Claude Design at the last possible moment, in a file nobody reviews as design.
 - ⚠ the `--accent` trap. It is the block's reason to exist — the part **no token file confesses**, because it's a plausible-looking line imported from shadcn's published components rather than a value the seat invented. Read backwards it tints every resting row, and it is expensive to unpick later.
 
 **Tailored slots**: none. The bullet is identical on all three seats by design — `audit`'s cluster check (step 6) treats any divergence between them as drift. `web-components-builder` carries **one added bullet after it**, never an edit to it: inside a shadow root distributed beyond the app the token names take a prefix, because custom properties inherit across the boundary and a generic `--primary` on a host page the team doesn't own bleeds in. An addition is fine; changing the block's own text is drift.

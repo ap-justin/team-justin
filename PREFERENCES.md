@@ -55,7 +55,7 @@ The **curated, human-gated** half — it edits the team, so it lives under roste
 
 1. Reads `~/.claude/team-justin/inbox.md` (+ `patterns/`); groups by lane, dedupes, drops noise.
 2. For each keeper, picks a **destination**:
-   - **seat-specific** (a default only `design-director`, or only the Svelte builder, should carry) → a **targeted prompt edit** to that `agents/<seat>.md`.
+   - **seat-specific** (a default only `graphic-designer`, or only the Svelte builder, should carry) → a **targeted prompt edit** to that `agents/<seat>.md`.
    - **cross-seat** (several seats should carry it) → the same targeted edit in each affected seat, or the owning skill (`lead` SKILL.md for orchestration-wide rules).
    - **reusable concrete pattern** → keep the `patterns/<slug>.md` artifact, reference it from the seat/skill that uses it.
 3. **Proposes the diffs to the user and gates on approval** — editing agent prompts has global blast radius, so nothing lands unreviewed (same as `hire`'s hand-off).

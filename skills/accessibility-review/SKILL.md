@@ -1,6 +1,6 @@
 ---
 name: accessibility-review
-description: WCAG 2.1 AA accessibility audit of a design or page — keyboard navigation, focus order, touch target size, screen reader/ARIA. Color contrast is the design system's, not this pass's. Report-only unless fixes are asked for.
+description: WCAG 2.1 AA accessibility audit of a design or page — keyboard navigation, focus order, touch target size, screen reader/ARIA. Color contrast is the design's, and is audited nowhere on this team. Report-only unless fixes are asked for.
 disable-model-invocation: true
 argument-hint: "<URL, page/component, or description>"
 ---
@@ -10,15 +10,15 @@ argument-hint: "<URL, page/component, or description>"
      (slack, figma, linear, asana, atlassian, notion, intercom, google calendar, gmail) loaded.
      upstream ships this as the namespaced `design:accessibility-review`; this is the plain vendored copy.
      TEAM-ADAPTED, not verbatim: color contrast (1.4.3, 1.4.11) removed from the criteria, the common issues,
-     the testing approach, the output template and the tips — `design-director` clears every token pair at
-     formalization, so no review pass on this team re-derives a ratio.
+     the testing approach, the output template and the tips — the design is authoritative on colour, so no
+     review pass on this team computes or re-derives a ratio.
      re-sync: diff against the plugin cache after a plugin update, then re-apply. -->
 
 # /accessibility-review
 
-Audit a design or page for WCAG 2.1 AA accessibility compliance. This is the team's a11y gate — the sibling of the `/visual-review` (rendered states + cause) and `/taste-review` (anti-slop) passes. Run it after a page/component is built and rendered.
+Audit a design or page for WCAG 2.1 AA accessibility compliance. This is the team's a11y gate — the sibling of the `/visual-review` (rendered states + cause) pass. Run it after a page/component is built and rendered.
 
-**Color contrast is settled upstream, so you audit everything else.** `design-director` clears it on every token pair, light and dark, at formalization — the team's whole pass over it. What's still reportable is the **absence** of a treatment the system never authored (an unauthored pairing; text over image, video, gradient or translucency with no scrim and no `prefers-contrast` handling), and that is `/taste-review`'s static finding, without a number. Name 1.4.3/1.4.11 as unassessed in *what wasn't verified*: with them out, this audit is never a full-AA claim.
+**Contrast is the design's and ships as authored — no seat on this team computes a ratio**, so you audit everything else. What is still reportable is **breakage**: text over image, video, gradient or translucency with no scrim, reported as unreadable rather than as a number. Name 1.4.3/1.4.11 as unassessed in *what wasn't verified*: with them out, this audit is never a full-AA claim.
 
 ## Usage
 
@@ -33,7 +33,7 @@ Audit for accessibility: @$1
 ### Perceivable
 - **1.1.1** Non-text content has alt text
 - **1.3.1** Info and structure conveyed semantically
-- *(1.4.3 / 1.4.11 contrast — settled in the design system's token pairs, **not assessed here**)*
+- *(1.4.3 / 1.4.11 contrast — the design's call, **not assessed here or anywhere on this team**)*
 
 ### Operable
 - **2.1.1** All functionality available via keyboard
@@ -118,7 +118,7 @@ When a dev server is running, prefer **measured** evidence over eyeballing — d
 ## Team wiring (replaces the plugin's connector hooks)
 
 The upstream skill branched on Figma / project-tracker MCP connectors. In this team those map to sources you already have:
-- **Design source** → read the Figma frame or the rendered page through `local-browser` / `design-director`'s plan; inspect color values, font sizes, and touch targets there.
+- **Design source** → read the rendered page through `local-browser`, or the design itself; inspect font sizes and touch targets there.
 - **Tracker** → file findings via `TRACKER.md` (user-level files under `~/.claude/team-justin/management/<project-slug>/`) when the lead asks for tickets; otherwise return the audit inline.
 
 ## Tips

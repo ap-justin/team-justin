@@ -90,7 +90,7 @@ State which source you used; if the MCP isn't connected, say so and fall back ra
 
 ## Not this skill's job
 - **Introducing Panda into a repo that already has a styling system** — brownfield matches what's there (Tailwind, CSS modules, vanilla-extract). Flag the mismatch to the lead instead.
-- **Which tokens exist** — palette, type scale, spacing, motion are `design-director`'s; this skill is how they're expressed and why they fail to compile.
+- **Which tokens exist** — palette, type scale, spacing, motion are the design's, and they live in the repo's token file; this skill is how they're expressed and why they fail to compile.
 - **Native CSS feature safety** (container queries, `:has()`, `@starting-style`) — the `modern-css` skill; Panda emits whatever you write.
 - **Accessible interactive primitives** — the `ark-ui` skill. Panda styles them via their `data-*` state attributes.
 - **Config/recipe generic typing, `.d.ts`, module augmentation** — the `typescript` skill, in whichever seat owns the code.
