@@ -225,13 +225,15 @@ contrast is the design's and ships as authored — no seat on this team computes
 - ⚠ `ships as authored` — this is what stops the softer failure: a seat that doesn't compute a ratio but still flags a pair as "worth checking," which routes a design decision back to the user as a defect.
 - `no seat on this team computes a ratio` — team-wide, not seat-local. Scoped to the seat, each one assumes some *other* seat has it covered, and the criterion silently comes back.
 
+**The pair carve-out — a permitted companion, never an edit to the clause.** The clause bans *deciding* a pair; it does not ban holding one together. Where the design authored a surface and its ink as one decision, a fill token spent as a text colour is a **conformance** finding — cited by token name against the system's own ledger, never by a ratio the seat worked out. The three UI builders carry it as a following sentence (*transcribing a pair includes keeping it a pair*), `ux-designer` as a clause on its critique bullet. The screen seats — `accessibility-reviewer`, `visual-reviewer` — carry **no** carve-out: for them the ban is total, because a finding they file reads as an a11y verdict whatever it cites. Recording measured ratios in a token ledger is likewise not covered by this block: that is the system documenting decisions already taken (`skills/lead/references/ui-practice.md` → *Contrast*).
+
 **Tailored slots**: the host sentence. `accessibility-reviewer` and the `/accessibility-review` skill additionally name **1.4.3 / 1.4.11 as unassessed** in their output, so a clean run is never read as a full-AA claim — that naming is theirs alone and is not part of this block.
 
 ## Block E — the token-vocabulary bullet
 
 Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-builder`, `web-components-builder`) — the seats that write style values. It sits inside `## Follow the plan exactly`, under the closed-set and named-gap bullets it depends on.
 
-**Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. The **conformance gate** the builder writes in Phase 0 is what enforces it afterwards — a test in the repo, not a seat.
+**Not on the framework builders.** They mount components and write no style values, so the vocabulary is nothing they can get wrong. The **conformance gate** the builder sets up in Phase 0 is what enforces it afterwards — structural in the build where the stack allows, plus a test in the repo, and never a seat.
 
 ```
 - **The token vocabulary is shadcn's semantic set** — the naming convention only: no shadcn or Tailwind dependency is implied. Read the names off the project's token file, which is the only authority — it was transcribed from what Claude Design settled, and no seat here extends it. **How a value was derived is the system's business, not yours** — a hover step may be a named `--primary-hover`, an alpha step like `bg-primary/90`, or a `color-mix()`; use whichever the file has, and return a named gap when it has none. One trap, and it arrives by pasting shadcn's own component code rather than by inventing anything: `--accent` is the **hover/selected surface**, not the brand accent (that's `--primary`) — read backwards it puts brand hue on every resting row.
