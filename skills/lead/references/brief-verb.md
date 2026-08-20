@@ -20,7 +20,7 @@ A brief pointer into `decisions.md` for a record that isn't there is a **finding
 
 ## 2. Grill
 
-Step 2.5's discipline — the frontier asked a round at a time, your recommended answer on every question, codebase-answerable questions answered from the codebase.
+Step 2.5's discipline — the frontier asked a round at a time, your recommended answer on every question, codebase-answerable questions answered from the codebase, and only the product calls and one-way doors reaching the round at all (`SKILL.md` → *talk to a PM*). Persisting the brief widens what's written down, never what's asked: a two-way door you settled goes into `Decisions resolved` as your call, with the reasoning, not into the round as a question.
 
 ## 3. Write `plan/<effort>/brief.md`
 
