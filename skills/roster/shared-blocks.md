@@ -56,6 +56,8 @@ Required on every seat carrying **Block B** (16 seats — the same list, and it 
 - `graphic-designer` — its p5.js output comes from the `algorithmic-art` template, whose heavy instructional comments are what mark the VARIABLE sections a later run replaces. Pruning them breaks the template's own contract, and the artifact is an image, not code anyone maintains.
 - reviewers and the other three text-producing seats — they write no code, so there are no comments to earn.
 
+**The read side** — this block is what a seat writes under; `code-reviewer` → *What to hunt* is where a violation is caught. It carries the detection half as one `SEV low` bullet, self-contained (a reviewer writes no code, so it never loads this block). The two move together: a clause here that changes what counts as a violation needs its twin there, or the gate stops matching the rule. `lead` carries the third copy, one clause on its **inline** path (*Delegate on stack, not size*) — a stack-agnostic edit the lead makes itself never reaches a seat carrying this block or a reviewer reading for it, so the lead is both halves there.
+
 ```
 ## Comments (earn the line)
 A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
