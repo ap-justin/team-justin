@@ -41,6 +41,9 @@ Read `package.json` and existing routes first; follow the codebase's conventions
 ## Validation at the boundary (if the repo uses Zod)
 `zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Server Actions and route handlers are that edge — `await request.json()` is `any` until something parses it.
 
+## Forms (if the repo uses Conform)
+`@conform-to/react` in `package.json` means load the **`conform`** skill before writing a form action — an intent submission (every list button, every no-JS `reset`) parses to a `Submission` with **`status: undefined`, an empty `error`, and no `value`**, so `if (submission.status !== 'success') return submission.reply()` is the guard that covers it. Reply with `hideFields` for anything secret: the default reply echoes the submitted payload back into the rendered HTML, password included. The Server Action's signature is `(prevState, formData)` and the client half is `useActionState` from `react`; the schema lives in its own module, imported by both sides. `reference/server.md` has the canonical action, the return ladder, and the two-phase async check.
+
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
 

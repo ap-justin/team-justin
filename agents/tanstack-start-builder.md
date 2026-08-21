@@ -41,6 +41,9 @@ Read `package.json` and the existing route files, router factory, and any `*.ser
 ## Validation at the boundary (if the repo uses Zod)
 `zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field, search param and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Your edges are `.validator()` on a server function, `validateSearch` on a route, and a server route's request body — search params and `FormData` are the trap-rich ones; `reference/boundaries.md` has the normalize-then-validate recipe.
 
+## Forms (if the repo uses Conform)
+`@conform-to/react` in `package.json` means load the **`conform`** skill before writing a form action — an intent submission (every list button, every no-JS `reset`) parses to a `Submission` with **`status: undefined`, an empty `error`, and no `value`**, so `if (submission.status !== 'success') return submission.reply()` is the guard that covers it. Reply with `hideFields` for anything secret: the default reply echoes the submitted payload back into the rendered HTML, password included. A `createServerFn` taking `FormData` runs the same parse-and-reply, and the route feeds its returned result back in as `lastResult`. `reference/server.md` has the canonical action, the return ladder, and the two-phase async check.
+
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No server route wrapping a server function no external client calls, no prerender entry for a page nothing links to, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
 
