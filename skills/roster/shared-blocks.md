@@ -37,7 +37,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 
 Required on every seat that **writes or edits TypeScript**.
 
-Full form (12 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
+Full form (13 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
 
 ```
 ## TypeScript (shared skill)
@@ -50,7 +50,7 @@ Invariant in both forms: loads `` **`typescript`** `` **and** `solve it in-conte
 
 ## Block I — `## Comments (earn the line)`
 
-Required on every seat carrying **Block B** (16 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
+Required on every seat carrying **Block B** (17 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
 
 **Exempt by decision** — record the reason, don't just omit:
 - `graphic-designer` — its p5.js output comes from the `algorithmic-art` template, whose heavy instructional comments are what mark the VARIABLE sections a later run replaces. Pruning them breaks the template's own contract, and the artifact is an image, not code anyone maintains.
@@ -120,7 +120,7 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 
 ## Block D — `## Test-first (shared skill)`
 
-Required on every seat that implements **executable behavior with a specifiable contract** (9 seats: the three framework builders, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
+Required on every seat that implements **executable behavior with a specifiable contract** (10 seats: the four framework builders, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
 
 **Exempt by decision** — record the reason, don't just omit:
 - `react-ui-builder`, `svelte-ui-builder` — you can't go red on a layout or a motion curve; their gate is the user's visual-intent inspection. Logic-dense component internals (a reducer, validation rules) route to `test-writer` after the build.
@@ -159,7 +159,7 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 
 ## Block F — `## Scope — build the real path, not every path`
 
-Required on every seat that **writes app code** (12 seats: the three framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
+Required on every seat that **writes app code** (13 seats: the four framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
 
 ```
 ## Scope — build the real path, not every path
@@ -178,7 +178,7 @@ This bounds **breadth, never rigor**{, and where the bound bites hardest on this
 
 ## Block G — `## Build and return — no self-dispatch`
 
-Required on the seats whose output **renders** (8 seats: the three framework builders, the three UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
+Required on the seats whose output **renders** (9 seats: the four framework builders, the three UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
 
 ```
 ## Build and return — no self-dispatch
@@ -193,7 +193,7 @@ Required on the seats whose output **renders** (8 seats: the three framework bui
 - reviewers and the four text-producing seats — they don't build.
 
 **Invariant clauses:**
-- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 8 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on five and `Never boot the app, start a dev server, or drive a browser` on the three UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
+- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 9 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on six and `Never boot the app, start a dev server, or drive a browser` on the three UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
 - `the rendered gate is the user's look` — names who *does* judge it, so the ban has a positive target.
 - the no-spawn bullet is cheap insurance rather than a live risk (a subagent can't spawn subagents), so it may be one line — but it stays paired with `dispatch and review routing is the lead's alone`.
 
@@ -201,7 +201,7 @@ Required on the seats whose output **renders** (8 seats: the three framework bui
 
 ## Block H — `## Match the repo`
 
-Required on the seats that write app code **into an existing tree** (8 seats: the three framework builders, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
+Required on the seats that write app code **into an existing tree** (9 seats: the four framework builders, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
 
 ```
 ## Match the repo
