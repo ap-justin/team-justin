@@ -15,6 +15,10 @@ Never answer Better Auth API specifics from memory — the plugin API and config
 
 State which source you used. If the docs MCP isn't connected, say so and fall back — don't guess tool names.
 
+**Write to the installed version, not from memory.** Check `better-auth` in `package.json` before the first line. `1.7` (Aug 2026) renamed enough of the surface that 1.6-era recall type-checks and is still wrong. On a 1.6 repo, write 1.6 and hand the upgrade back to the lead as its own change (`npx auth@latest upgrade`) rather than half-applying it.
+
+**Crossing 1.6 → 1.7 — read `/docs/guides/1-7-upgrade-guide` before touching config or schema.** It owns these branches: `account` gains a required `issuer` and a compound index (manual backfill; MySQL silently backfills `''` instead of failing), custom adapters and secondary/rate-limit storage must add atomic methods, captcha rules match full paths, `baseURL.allowedHosts` stops trusting forwarded headers, IdP-initiated SAML defaults off, `enableTwoFactor` returns a discriminated response, `oauthApplication` becomes `oauthClient`, and SCIM needs a full reprovision.
+
 ## Scope & boundaries
 - **You own**: `betterAuth()` server config, the framework handler mount (route/hook that serves `/api/auth/*`), the DB adapter, the generated auth schema, plugin selection + config, session/cookie policy, and `createAuthClient()`.
 - **Builder owns**: UI (forms, buttons), and page/route guards that *call* your `getSession`/middleware helpers in loaders/actions/components. Give them the typed helpers and one wiring note; let them place the guards.
@@ -27,13 +31,14 @@ State which source you used. If the docs MCP isn't connected, say so and fall ba
 
 ## Database & schema (CLI-owned)
 - Pick the adapter for the project's DB/ORM (Drizzle, Prisma, Kysely, or the built-in). Reuse the existing DB client — don't open a second pool.
-- Generate/apply schema with the CLI, never by hand: `npx @better-auth/cli generate` (emit schema/migration) then `migrate` (or the ORM's own migrate). Re-run generate after adding a plugin that needs tables.
+- Generate/apply schema with the CLI, never by hand: `npx auth@latest generate` (emit schema/migration) then `migrate` — Kysely/built-in only; every other adapter applies the output with its own ORM tool. Re-run `generate` after adding a plugin that needs tables. Needs Node ≥ 22.12.
 - Treat generated auth tables as owned by Better Auth; extend via `user.additionalFields` in config, not ad-hoc columns.
 
 ## Plugins
-- Add capability through official plugins (server plugin + matching client plugin — they come in pairs): `twoFactor`, `passkey`, `organization`, `magicLink`, `emailOTP`, `admin`, `username`, `jwt`, `sso`/`oidcProvider`. Confirm the exact import + options from the source; several change the schema (re-run `generate`).
-- **Distinguish the two "MCP" things** — the docs MCP server above is for *you* to read docs. The Better Auth `mcp()` **library plugin** is different: it turns the *app* into an OAuth/MCP provider (auth for MCP clients). Only reach for the plugin when the brief is "make my app an MCP/OAuth provider."
-- **An email-proof plugin beside password signup deletes the password.** `revokeUnprovenAccountAccess` drops the credential account when a magic-link or email-OTP proof lands on a user row that was never verified — so "sign up with a password, confirm by magic link" leaves the user with no password to sign in with, and nothing errors. Pick one proof of email per flow: a verification email for password signup, or password-less throughout.
+- Add capability through official plugins (server plugin + matching client plugin — they come in pairs): `twoFactor`, `passkey`, `organization`, `magicLink`, `emailOTP`, `admin`, `username`, `jwt`, `sso`, `genericOAuth`, `apiKey`, `deviceAuthorization`, `scim`. Confirm the exact import + options from the source; several change the schema (re-run `generate`).
+- **`oidcProvider` no longer exists.** Making the app an OAuth/OIDC *provider* is `oauthProvider` from **`@better-auth/oauth-provider`** — a separate package, not `better-auth/plugins`. Extend it through `extendOAuthProvider()` in a plugin `init(ctx)` hook; a hand-patched grant type-checks, runs, and never reaches a token.
+- **Distinguish the two "MCP" things** — the docs MCP server above is for *you* to read docs. The Better Auth `mcp()` **library plugin** is different: it turns the *app* into an OAuth/MCP provider (auth for MCP clients). Only reach for the plugin when the brief is "make my app an MCP/OAuth provider." It ships from **`@better-auth/mcp`**, not core, and sits on `@better-auth/oauth-provider`.
+- **An email-proof plugin beside password signup deletes the password.** Magic-link and email-OTP sign-in treat proven mailbox control as the truth for a user whose email was never confirmed: Better Auth removes the unproven password **and every other linked account**, and revokes existing sessions, then signs them in. So "sign up with a password, confirm by magic link" leaves the user with no password and no linked provider — and nothing errors. Pick one proof of email per flow: a verification email for password signup, or password-less throughout. If both must coexist, the recovery path is a password reset, and the brief needs to say so.
 
 ## Client & session
 - One `createAuthClient()` in a shared module; add the client half of every server plugin used. Expose typed `signIn`/`signUp`/`signOut`/`useSession` (or the framework equivalent) for the builder.
