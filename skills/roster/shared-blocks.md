@@ -127,7 +127,7 @@ Required on every seat that implements **executable behavior with a specifiable 
 - `web-components-builder` is the **partial**, and it's in rather than out: its element's public API (attribute→property reflection and the pre-upgrade path, emitted events and their `detail`, `ElementInternals` form value/validity, idempotent connect/disconnect) is a specifiable contract other people's pages depend on, and every one of its failures is invisible on screen — so Block D applies to it in full. What it *renders* is covered by the block's existing screen exemption, which the lead names in the brief; it needs no fourth case.
 - `sanity-builder` — its primary artifact is declarative schema; TypeGen is the correctness gate on GROQ.
 - `vercel-perf-optimizer` — already carries the same discipline in a different currency: `## Prove the win` demands a measured before/after.
-- `toolchain-engineer`, `vercel-platform-engineer` — config, not behavior.
+- `toolchain-engineer`, `vercel-platform-engineer`, `fly-platform-engineer` — config, not behavior. The Fly seat's artifact is an image plus `fly.toml`; what verifies it is a health check against a real deploy, not a red test.
 - reviewers and the four text-producing seats — they don't write the code.
 
 ```
@@ -188,7 +188,7 @@ Required on the seats whose output **renders** (9 seats: the four framework buil
 
 **Exempt by decision** — record the reason, don't just omit:
 - `vercel-perf-optimizer` — measuring a running app **is** the job; `## Prove the win` is its version of this rule.
-- `toolchain-engineer`, `vercel-platform-engineer` — config; nothing renders to be tempted by.
+- `toolchain-engineer`, `vercel-platform-engineer`, `fly-platform-engineer` — config; nothing renders to be tempted by.
 - the data/auth/billing specialists — no rendered surface, and their gate is the suite (Block D).
 - reviewers and the four text-producing seats — they don't build.
 

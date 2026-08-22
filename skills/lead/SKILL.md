@@ -141,6 +141,7 @@ Two things you never restate in a handoff, because a restatement becomes a secon
 | Cloudflare Workers / Pages / `wrangler` / bindings / D1 / KV / R2 / Durable Objects / Queues / framework-on-Workers adapter | `cloudflare-builder` |
 | slow page / CWV / caching / bundle (post-build) | `vercel-perf-optimizer` |
 | Vercel platform-ops: deploy/CI-CD, env/secrets, `vercel.json`, Functions/edge runtime, Cron, domains, Firewall/WAF, AI Gateway, storage provisioning | `vercel-platform-engineer` |
+| Fly.io platform-ops: `fly deploy` / `fly.toml`, the `Dockerfile`, Machines + scaling, Volumes, `fly secrets`, regions, private networking, MPG/Tigris provisioning | `fly-platform-engineer` |
 | Postgres / Drizzle / Prisma / postgres.js | `postgres-architect` |
 | embedded SQLite — a local `.db` file the app opens directly (`better-sqlite3` / `node:sqlite` / `bun:sqlite`, Drizzle's `sqlite` dialect) | `sqlite-architect` |
 | auth / login / signup / sessions / social-OAuth / SSO / `better-auth` — the **server + session** half | `better-auth-specialist` |
@@ -165,6 +166,7 @@ Two things you never restate in a handoff, because a restatement becomes a secon
 **Contested lanes — the tie-breaks the table can't hold.** Each seat's own definition states its half; read that rather than a copy, and reach for these when two rows look plausible:
 - **SQLite three ways**: an embedded `.db` file the app opens = `sqlite-architect` · **D1** = `cloudflare-builder` (it's CF's SQLite) · a Postgres server = `postgres-architect`.
 - **Vercel two ways**: app code = the framework builder · deploy/env/infra = `vercel-platform-engineer` · speed and caching-for-speed = `vercel-perf-optimizer`.
+- **Three platform lanes, split by runtime shape, not by vendor preference**: Vercel = `vercel-platform-engineer` · the Workers runtime = `cloudflare-builder` · a **long-lived VM with a persistent disk** (a container that has to be a container, a background worker, scale-to-zero with state) = `fly-platform-engineer`. App code is the framework builder's in all three.
 - **Anything that renders** crosses *the UI seam* — see below. The domain seats (`stripe-specialist`, `better-auth-specialist`, the data seats) each name their handoff in a **Builder owns** line.
 - **`web-components-builder`'s trigger is the consumer, not the markup**: UI inside a React or Svelte app stays with that stack's UI builder.
 - **`graphic-designer` preflight**: generation needs `GOOGLE_API_KEY` + a one-time `npm install` in the plugin dir (video/cutouts also need ffmpeg/rembg). Before routing — or the moment the specialist returns `BLOCKED (setup)` — **surface the exact setup to the user** and let them choose: set it up for real assets, or proceed with the static fallback. Never silently degrade to a placeholder without telling them the real-asset path exists.
