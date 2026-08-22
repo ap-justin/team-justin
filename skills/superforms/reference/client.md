@@ -7,7 +7,7 @@ Defaults below are read from `dist/client/superForm.js` in `sveltekit-superforms
 | Option | Default | What it means in practice |
 |---|---|---|
 | `validators` | `undefined` | **No client-side validation at all.** You get HTML5 `constraints` and nothing more. |
-| `validationMethod` | `'auto'` | Reward early, validate late: `input` for a field that has or had an error, `blur` otherwise. |
+| `validationMethod` | `'auto'` | Reward early, validate late: `input` for a field that has or had an error, `blur` otherwise. Marks a **pristine** field on blur, before any submit — `SKILL.md` has the ladder. |
 | `dataType` | `'form'` | The DOM's fields are posted, not `$form`. Nested objects need `'json'`. |
 | `resetForm` | `true` | On a valid result, fields revert to the form the page currently holds. |
 | `invalidateAll` | `true` | A successful submit re-runs `load` first. |

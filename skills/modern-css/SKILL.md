@@ -41,6 +41,9 @@ The actual value of this skill: recognizing when a familiar workaround is now ob
 
 If a build is doing any of the left column, check the right column's Baseline status in `reference/baseline.md` before assuming it needs the old approach.
 
+## A font-relative unit resolves on the element that uses it
+`em`, `ch` and `ex` inside a custom property resolve at **use**, not at definition — one `--inset: 0.75em` is two different lengths on a 14px caption and an 18px heading, so a token meant to line two elements up doesn't. Derive a shared inset from a px- or rem-valued root token; leave font-relative only what is genuinely text-relative. (`lh` resolves the same way, which is exactly why the icon-alignment pattern above wants it.)
+
 ## Consult current status, don't guess
 This snapshot covers Baseline 2023–2025 only. For anything shipped after 2025, or a feature not in the reference list, or a project with an unusual support floor — don't answer from memory. Check live: MDN's Baseline badge on the feature's page, caniuse.com, or `web.dev/baseline/<feature-slug>` via WebFetch. Baseline status changes monthly; training data lags it.
 

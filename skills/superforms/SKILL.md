@@ -78,6 +78,23 @@ This is the one place the team's data-agnostic-component seam legitimately doesn
 
 Keep `.transform()` out of a form schema: `defaults(zod4(z.object({ n: z.string().transform(v => v.length) })))` returns **`{}`** — no default at all, so `$form.n` is `undefined` and the input binds to nothing. `superValidate` types the form from the schema's *output* while the browser posts its *input*.
 
+## No `validationMethod` gives the ladder
+The house ladder is submit-first, then correct-on-change (`ui-patterns` → `forms-and-mutations`), and no single value produces it. `'auto'` marks a **pristine** field invalid on blur, before any submit. `'onsubmit'`/`'submit-only'` skip every input **and** blur event (`dist/client/superForm.js:387`), so a field the user has already corrected stays marked until the next press.
+
+It's two settings, and the second one is a live write:
+
+```js
+const superform = superForm(data.form, {
+  validationMethod: 'onsubmit',
+  onSubmit(input) {
+    if (input.submitter?.hasAttribute('formnovalidate')) return  // runs no pass at all
+    superform.options.validationMethod = 'oninput'               // options are read per event
+  }
+})
+```
+
+The `formnovalidate` branch is the one that bites: a row-editor's Add/Remove submits without validating, and flipping on the way past leaves the whole form marking on every keystroke.
+
 ## Consult current docs (official sources first)
 `https://superforms.rocks/` is first-party and v2-native (there is **no `llms.txt`**; the v1 docs live on a separate host and will answer v1 questions as if current). Use it for API surface, Context7 (`sveltekit-superforms`) for exact call signatures. Neither tells you which successful validations are describing data nobody entered, which is what this file is for. Verify anything version-sensitive against the installed package.
 

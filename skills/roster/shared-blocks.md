@@ -61,7 +61,7 @@ Required on every seat carrying **Block B** (17 seats — the same list, and it 
 ```
 ## Comments (earn the line)
 A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
-- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes. A count decays the same way: `used in 11 places` is wrong at the next commit and nothing fails when it is — state a floor (`11+`) or nothing.
 - **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
 - **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
 - **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
@@ -69,7 +69,7 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 
 **Invariant clauses** — the two marked ⚠ are what keep the block from inverting into either of its two failure modes:
 - `earns its line by carrying what the code can't` + the three examples — the **positive target**. Without it the block reads as "fewer comments" and the seat prunes the useful ones alongside the noise.
-- ⚠ `Present tense, no archeology` — the largest single source of bloat and the fastest to go stale: the seat narrates the change it just made into the file, where git already holds it. Paired with the `is *why* and stays` clause, which is what stops the rule eating durable rationale — the reason a choice survives is exactly what no config confesses. This is the same rule `SKILL.md` applies to seat prompts; one vocabulary, two surfaces.
+- ⚠ `Present tense, no archeology` — the largest single source of bloat and the fastest to go stale: the seat narrates the change it just made into the file, where git already holds it. Paired with the `is *why* and stays` clause, which is what stops the rule eating durable rationale — the reason a choice survives is exactly what no config confesses. This is the same rule `SKILL.md` applies to seat prompts; one vocabulary, two surfaces. The count corollary rides this clause rather than its own bullet — same decay, no archeology in it.
 - ⚠ `Comments already in the file survive your edit` — a pruning rule reads as a licence to delete, and on brownfield that turns a hygiene block into a net loss. The bound is what the seat *writes*, never what it *finds*.
 - `not for whoever prompted you` + `belongs in your return` — names the wrong audience the seat defaults to, and where that text does go.
 - `Terse over grammatical` + `fragments fine` — grammar is not the bar, and a seat without this clause pays for full sentences it doesn't need.

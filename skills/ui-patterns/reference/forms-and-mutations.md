@@ -48,6 +48,14 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Why:** the operator is looking at the control they pressed, usually somewhere down a long form. Jumping to the top loses their place and reads as a failure — they can't see the thing they just changed, so they check it again. Only an outcome landing on a *different* screen earns the trip to the top.
 **Applies when:** the current screen persists — this is the rule the component's callbacks have to leave room for.
 
+## A confirmation step held in the URL keeps the operator where the trigger was
+
+**Trigger:** a destructive action that confirms through URL state — `?confirm=<id>`, a `/confirm` child route — rather than a dialog.
+**Pattern:** the confirm state appears without moving the operator: the page keeps its scroll position and focus stays on the trigger, which is where the confirm control now sits.
+**Default it corrects:** reaching the confirm state through an ordinary navigation, so whatever the stack does on a route change happens — scroll to the top, focus reset to the document — while the control the operator now has to press is back down where they were.
+**Why:** the confirm step exists to make the operator look before they act, and it just moved the thing to look at off screen. They pressed a control at the foot of a long list and the page appears to have jumped somewhere unrelated; the confirm becomes something to hunt for, which is the opposite of a deliberate second press.
+**Applies when:** the confirm state renders on the same screen. One that genuinely lands on a different screen is a navigation and resets normally — and where the stack resets nothing on a same-route change, there is nothing to do: the rule is the operator's position, not the opt-out.
+
 ## An explanation goes on screen; `aria-describedby` points the control at it
 
 **Trigger:** a control whose effect isn't obvious from its label — a toggle that changes what other people can see, a checkbox with a consequence, a destructive action.

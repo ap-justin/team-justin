@@ -13,7 +13,7 @@ Each entry states the pattern, then the **default it corrects** — the thing th
 |---|---|
 | a form · a submit button · validation · a checkbox, radio or switch and the words beside it · anything that mutates and has to report back | `reference/forms-and-mutations.md` |
 | a control that repeats per row — Remove, Edit, a per-row menu | `reference/lists-and-rows.md` |
-| an icon beside a label · helper text under a control · a caption · prose introducing a section | `reference/text-and-icons.md` |
+| an icon beside a label · helper text under a control · a caption · prose introducing a section · a claim about a fee, a date or a rate | `reference/text-and-icons.md` |
 
 One file is the normal load for a slice, two where it spans a form and the list it sits in. Nothing matched? `grep -ril "<term>" reference/`, then build it your way and name the gap in your return — silence here is an unwritten pattern, not a ruling.
 

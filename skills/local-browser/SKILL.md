@@ -85,11 +85,12 @@ agent-browser set device "iPhone 16 Pro"  # adds DPR + touch + mobile UA on top 
 ### 5b. Screenshots — the element-clip trap
 
 ```bash
-agent-browser screenshot --path shot.png                 # viewport
-agent-browser screenshot --path shot.png --full-page     # whole document
+agent-browser screenshot shot.png            # viewport
+agent-browser screenshot shot.png --full     # whole document
+agent-browser screenshot ".sel" shot.png     # element clip
 ```
 
-**An element-clipped screenshot of something scrolled out of view comes back blank or as empty space** — the clip rect is taken against the document, but offscreen regions aren't painted. Scroll it into view first; if it's still coming back empty (a tall element, a transformed ancestor, an offscreen slide/deck panel), stop fighting the clip and take a `--full-page` shot, or render the piece standalone at its own URL. Two blank captures is the signal to switch approach, not to retry the clip a third time.
+**An element-clipped screenshot of something scrolled out of view comes back blank or as empty space** — the clip rect is taken against the document, but offscreen regions aren't painted. Scroll it into view first; if it's still coming back empty (a tall element, a transformed ancestor, an offscreen slide/deck panel), stop fighting the clip and take a `--full` shot, or render the piece standalone at its own URL. Two blank captures is the signal to switch approach, not to retry the clip a third time.
 
 ### 6. Clean up
 
@@ -105,6 +106,7 @@ agent-browser close
 - **Always use `--headed`** so the user can see and intervene
 - **Re-snapshot after any page change** — refs expire on navigation/DOM updates
 - **Re-set the viewport after every navigation** — the emulation override is dropped on load, so a breakpoint set once at the top of a multi-route sweep only holds for the first route
-- **Two blank element screenshots = change approach** (`--full-page` or a standalone render), not a third attempt at the clip
+- **Two blank element screenshots = change approach** (`--full` or a standalone render), not a third attempt at the clip
+- **An unrecognized flag is taken as a positional argument, silently.** `screenshot` is `[selector] [path]` with `--full` for the whole document — pass `--full-page` or `--path` and it lands in a positional slot with no error, writing a file literally named `--full-page` into the cwd. Check `agent-browser <cmd> --help` when a capture turns up somewhere unexpected.
 - **Use `eval --stdin` with heredoc** for complex JS — shell escaping is unreliable
 - **Never name a shell variable `path`** (or `PATH`, `cdpath`, `fpath`, `manpath`) — in zsh `path` is tied to `$PATH` as an array, so assigning it wipes the command search path and every subsequent command in the run fails. Use `p`, `target`, `shot_path`

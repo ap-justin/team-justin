@@ -10,7 +10,7 @@
 ```css
 .icon { block-size: 1lh; align-self: start; }  /* one line tall, so it centers on the first line */
 ```
-**Applies when:** the text can wrap. A single-line label that cannot wrap centers fine either way — reach for this when the string is user-supplied or the container is narrow. `lh` units carry a Baseline status; `modern-css` owns whether this stack needs a fallback.
+**Applies when:** the text can wrap. A single-line label that cannot wrap centers fine either way — reach for this when the string is user-supplied or the container is narrow. `lh` units carry a Baseline status; `modern-css` owns whether this stack needs a fallback. **Where the mark is also a tap target**, the one-line box is the *layout* box and the target grows around it — padding, or an overlay pseudo-element — so the alignment above still holds. A 44px layout box measures more than one line, and `align-self: start` only moves whichever box is shorter than the row: inert while the label is single-line, and moving the *label* instead once it wraps past 44px. Measure both boxes before accepting a one-line alignment fix.
 
 ## No prose for what the UI already demonstrates
 
@@ -19,3 +19,11 @@
 **Default it corrects:** a paragraph restating what is visible — "Use the form below to update your profile" above a profile form, "Enter your email address" under a field labeled Email, a caption naming what the picture plainly shows.
 **Why:** every redundant line is one more thing between the reader and the control they came for, and each one costs the *next* line credibility: prose that has been useless three times gets skipped on the fourth, including the time it mattered. It's also a second thing to keep true when the UI changes.
 **Applies when:** always for decorative prose. Empty states, errors and confirmations are the opposite case — they say what happened and what to do next, because there is no UI demonstrating it.
+
+## Copy states what the system guarantees, not the outcome downstream of it
+
+**Trigger:** a line of copy claiming something about a number the product controls only one side of — a fee, a payout, a delivery date, a refund, a rate.
+**Pattern:** state the side the rule actually fixes. Where the rule sets what the user is charged, say what they pay; say what someone else receives only where nothing between here and there can change it.
+**Default it corrects:** promoting the rule into the outcome the reader cares about — "100% reaches the recipient" from a rule that only sets the sender's fee, so any cost further down the chain makes the sentence false.
+**Why:** it's a promise the code cannot keep, and unlike a wrong label it is not wrong *on the screen where it's written* — it fails later, elsewhere, to someone counting the difference. Nothing on this screen can catch it, so the check happens as the line is written or not at all.
+**Applies when:** money, time and quantity claims. A claim wholly inside the system's own control — "your changes are saved" — is not this.

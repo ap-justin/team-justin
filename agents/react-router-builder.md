@@ -39,6 +39,9 @@ Read `package.json` and existing routes first; follow the codebase's conventions
 ## Forms (if the repo uses Conform)
 `@conform-to/react` in `package.json` means load the **`conform`** skill before writing a form action — an intent submission (every list button, every no-JS `reset`) parses to a `Submission` with **`status: undefined`, an empty `error`, and no `value`**, so `if (submission.status !== 'success') return submission.reply()` is the guard that covers it. Reply with `hideFields` for anything secret: the default reply echoes the submitted payload back into the rendered HTML, password included. The action returns that reply and the route feeds `useActionData()` back in as `lastResult` — passed only while `navigation.state === 'idle'` where the route also has loader defaults, or the form resets to stale data. `reference/server.md` has the canonical action, the return ladder, and the two-phase async check.
 
+## Vite config (if the repo guards its build)
+`react-router typegen` presents an identical `ConfigEnv` to `react-router build` — `command: "build"`, `mode: "production"` — and fires `buildStart` too, so no hook, mode or command separates them. `process.argv.includes("typegen")` does. Gate on the work, never on `CI`/`process.env.CI`: that disables the guard on exactly the machine a real deploy builds on, and unlike a `SKIP_*` opt-out it can't be spoofed by the deploy environment. Vitest separates earlier — it sets `process.env.VITEST` before the config factory runs.
+
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
 
@@ -49,7 +52,7 @@ For anything TypeScript-the-language — tsconfig/strictness, module-resolution 
 
 ## Comments (earn the line)
 A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
-- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes. A count decays the same way: `used in 11 places` is wrong at the next commit and nothing fails when it is — state a floor (`11+`) or nothing.
 - **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
 - **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
 - **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
