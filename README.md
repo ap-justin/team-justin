@@ -4,6 +4,11 @@ A versioned engineering team for Claude Code. A main-thread lead (the `lead` ski
 
 ## Requirements
 - **Claude Code ≥ 2.1.220.** Not enforceable in `plugin.json` (no engine/min-version field exists) — older CLIs may silently ignore newer frontmatter fields rather than erroring.
+- **The `chrome-devtools` MCP server**, for the two rendered passes only (`/visual-review`, `/accessibility-review` — everything else runs without it):
+  ```
+  claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
+  ```
+  Headless keeps the sweep off your screen, and the flags cap what a screenshot costs in context. It drives its own Chrome on its own profile (`~/.cache/chrome-devtools-mcp/chrome-profile`) — never the browser you are working in. Without it those two seats fall back to auditing statically from source and say so.
 - **Model access to `claude-opus-5` and `claude-sonnet-5`.** Every agent pins an explicit model ID rather than the floating `opus`/`sonnet` aliases, so behavior is reproducible across installs. If your plan or provider (Bedrock/Vertex/Foundry) doesn't expose those IDs, swap the `model:` line in `agents/*.md` back to the alias.
 
 ## Layout

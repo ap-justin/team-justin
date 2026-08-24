@@ -20,20 +20,20 @@ You review the UI as it actually renders, in a real browser.
 **Target**: `$ARGUMENTS` if given (URL, pages, specific states/viewports); otherwise the running dev server's pages touched by the current build. Read the `CLAUDE.md` `## Design system` pointer if one exists — not to certify intent, but so a cause you trace lands on the token that owns it. **Report-only**: findings with their evidence, unsoftened; fixes only when the user asks after reading the report.
 
 ## Dispatch — spawn the sweep, never run it in the main thread
-The sweep is browser-driven and pins a thread for minutes (viewport drives, state drives, screenshots); the main thread must stay free for the user. After gathering the target + context above, spawn the **`visual-reviewer`** agent with a prompt carrying: the target (URL/pages/states/viewports), the context (design plan / token pointer / user-named states), and the project-scoped session name (`bg-$(basename "$PWD")`). Relay the returned report unedited. Everything outside this section is the sweep body that seat executes.
+The sweep is browser-driven and pins a thread for minutes (viewport drives, state drives, screenshots); the main thread must stay free for the user. After gathering the target + context above, spawn the **`visual-reviewer`** agent with a prompt carrying: the target (URL/pages/states/viewports) and the context (design plan / token pointer / user-named states). Relay the returned report unedited. Everything outside this section is the sweep body that seat executes.
 
 **Two callers, one body.** The user runs `/visual-review` and lands here; the lead dispatches `visual-reviewer`, which reads this same file and executes every section but this one (it *is* what gets dispatched, and subagents can't spawn subagents). `disable-model-invocation` still holds on the skill, so the slash command stays the user's front door and nothing fires this ambiently.
 
 ## Drive the browser via local-browser
-Invoke and follow the **`local-browser`** skill — it wraps `agent-browser` with a persistent session. Its rules bind you:
+Invoke and follow the **`local-browser`** skill — it wraps the `chrome-devtools` MCP server, headless, on a profile that keeps the login. Its rules bind you:
 - **The dev server must already be running — never start it.** If nothing responds at the target URL, stop and ask the user to start it.
-- **Scope `--session-name` to the project** (`bg-$(basename "$PWD")`) — each named session is a separate browser instance, so review runs across concurrent projects stay isolated instead of stomping a shared one. `--headed` so the user can intervene (login/2FA); reuse the same session name for every command in the run.
-- Re-snapshot after any navigation/DOM change (refs expire).
+- **`emulate` owns the breakpoint** — `resize_page` clamps at ~500px and reports success, so anything narrower measured that way is a fiction.
+- Work from `take_snapshot` uids; the skill's *Done when* binds this pass too.
 
-Capture screenshots to files and `Read` them — the capture is the evidence, and a defect you can point at in one is worth more than a value you computed. When you do need ground truth, `agent-browser eval` gives it (IIFE + `eval --stdin` heredoc for complex JS):
-```bash
-# one targeted question, not a survey: is the page actually wider than its viewport?
-agent-browser eval "JSON.stringify({doc: document.documentElement.scrollWidth, vw: innerWidth})"
+Capture screenshots to files and `Read` them — the capture is the evidence, and a defect you can point at in one is worth more than a value you computed. When you do need ground truth, `evaluate_script` gives it:
+```js
+// one targeted question, not a survey: is the page actually wider than its viewport?
+() => ({doc: document.documentElement.scrollWidth, vw: innerWidth})
 ```
 
 ## Scope the sweep before you start — breadth is what makes this pass expensive
@@ -45,7 +45,7 @@ The full matrix is pages × viewports × states, and driven literally it runs fo
 
 ## Sweep — for each target page
 1. **States first — this is the half nobody else covers.** Empty, loading, error, disabled, hover, focus-visible, and the content extremes (a long string, a name that wraps, a list of one, a list of two hundred). Drive them via snapshot+click/fill; capture each. **A state you couldn't reach is reported, not skipped silently** — behind auth, needs seed data, no way to trigger it from the UI. A state that doesn't exist at all is a finding.
-2. **Viewports**: desktop (~1440), tablet (~768), mobile (~375). Set each by **emulation** — `agent-browser set viewport <w> <h>` (or `set device "iPhone 16 Pro"` for mobile DPR/touch fidelity), **never by resizing the window**. Headed Chrome can't shrink past a ~400–500px min-width floor (worse with tabs open), so a physical resize clamps and silently renders the wrong width; `set viewport 375 …` renders a true 375px CSS viewport inside a full-size window. 375 is the mobile **floor** — no real phone is narrower; don't test 320/360 widths. Screenshot each.
+2. **Viewports**: desktop (~1440), tablet (~768), mobile (~375). Set each with **`emulate`** — `{viewport: "375x812x3,mobile,touch"}` renders a true 375px CSS viewport with the right DPR and touch. Chrome floors a real window at ~500px wide, headless included, so `resize_page` at 375 renders 500 and calls it a success. The override survives navigation, so set it once per breakpoint and drive every route under it — but `emulate` replaces the whole emulation state, so a later call for `colorScheme` carries the viewport with it or drops it. 375 is the mobile **floor** — no real phone is narrower; don't test 320/360 widths. Screenshot each.
 3. **Trace what broke back to source.** A finding without a cause is a bug report the builder has to re-investigate. `Grep` the class/testid/token and give `file:line` with the scope it affects.
 
 ## What to catch (cite viewport + state + evidence, assign severity)

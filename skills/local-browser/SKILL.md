@@ -1,112 +1,52 @@
 ---
 name: local-browser
-description: Test the local dev app in a real browser using agent-browser. Use when the user asks to test, check, verify, or QA something at localhost, or says "check with browser", "test in browser", "open localhost", etc. Handles auth session persistence so login is only needed once.
-allowed-tools: Bash(agent-browser:*), Bash(npx agent-browser:*)
+description: Drive the running local dev app in a real browser at localhost — QA a change, reproduce a UI bug, measure rendered DOM and computed styles. Use whenever the target URL is localhost.
+allowed-tools: mcp__chrome-devtools__new_page, mcp__chrome-devtools__navigate_page, mcp__chrome-devtools__list_pages, mcp__chrome-devtools__select_page, mcp__chrome-devtools__close_page, mcp__chrome-devtools__take_snapshot, mcp__chrome-devtools__take_screenshot, mcp__chrome-devtools__emulate, mcp__chrome-devtools__resize_page, mcp__chrome-devtools__click, mcp__chrome-devtools__hover, mcp__chrome-devtools__fill, mcp__chrome-devtools__fill_form, mcp__chrome-devtools__press_key, mcp__chrome-devtools__wait_for, mcp__chrome-devtools__evaluate_script, mcp__chrome-devtools__list_console_messages, mcp__chrome-devtools__list_network_requests, Read
 ---
 
-<!-- vendored (locally authored — no upstream) → `skills/local-browser`. Thin project wrapper over the `agent-browser` CLI (vercel-labs/agent-browser) with persistent-auth session handling, backing the `/visual-review` skill. NOTE: the provisioning table listed `mattpocock/skills` as the source, but no `local-browser` skill exists anywhere in that repo's tree (verified against main, sha 9603c1c); no matching upstream skill exists, so there is no re-sync source. Kept verbatim. -->
+<!-- vendored (locally authored — no upstream) → `skills/local-browser`. Thin project wrapper over the `chrome-devtools` MCP server (ChromeDevTools/chrome-devtools-mcp), backing the `/visual-review` and `/accessibility-review` passes. Every fact below was verified against chrome-devtools-mcp@1.7.0 on 2026-08-24 by driving the server directly — re-verify the clamp and the whole-state behaviour after a server upgrade rather than trusting this file. No upstream skill exists → no re-sync source; maintain it here. -->
 
 # local-browser
 
-Browser-test the local dev app using agent-browser with persistent auth.
+The tool schemas are in your context — this file carries only what they do not say.
 
-## Prerequisites
+The server runs **headless** on a persistent profile at `~/.cache/chrome-devtools-mcp/chrome-profile`, so nothing appears on the user's screen and logins survive across runs. One browser serves the whole session: every seat driving it shares the same pages.
 
-- The dev server must already be running — **never start it yourself**. If it's not running, ask the user to start it.
+## 1. The dev server is the user's
 
-## Workflow
+Ask the user to start it, and wait for their confirmation before opening anything. If nothing responds at the target URL, stop and ask — a failed load is theirs to fix, not yours to route around.
 
-### 1. Open with a project-scoped persistent session
+## 2. Work from snapshots, not screenshots
 
-```bash
-SESSION="bg-$(basename "$PWD")"
-agent-browser --session-name "$SESSION" --headed open <url>
-```
+`take_snapshot` returns the a11y tree with a `uid` per element, and every interaction tool takes that `uid`. Screenshots are for the human reading the report: capture with `filePath` and `Read` the file when a defect needs to be *seen*.
 
-- **Scope the session name to the project** (`bg-<dir>`) — each named session is a separate, isolated browser instance, so concurrent agents/projects don't stomp each other's tab/nav state. A single shared name (e.g. `bg-dev`) makes parallel runs collide.
-- `--session-name` saves/restores cookies + localStorage across runs (per project; auth persists after first login)
-- `--headed` shows the browser so the user can intervene (login, 2FA, etc.)
-- Reuse the **same** `$SESSION` for every command in a run so they hit the same instance.
+## 3. Set a breakpoint with `emulate`, and carry every override on every call
 
-### 2. Check if auth redirect happened
+`emulate` takes the viewport as a string — `"375x812x3,mobile,touch"` — and renders a true 375px CSS viewport. Two verified behaviours decide whether a sweep is measuring what it thinks:
 
-```bash
-agent-browser get url
-```
+- **`resize_page` clamps at ~500px.** It sizes the window, and Chrome's minimum window width floors it — headless included. `resize_page` to 375 leaves `innerWidth` at 500 and reports success. Widths below ~500 belong to `emulate`.
+- **`emulate` sets whole state, not a patch.** Each call replaces the emulation config, so an `emulate` carrying only `colorScheme: "dark"` silently drops a viewport set earlier and the page snaps back to 500px. Send every override you still want in the same call: `{viewport: "375x812x3,mobile,touch", colorScheme: "dark"}`.
 
-If redirected to `/signup` or `/login`:
-1. Tell the user to log in via the visible browser window
-2. Wait for them to confirm
-3. Navigate to the original target URL
+The viewport override **survives navigation** — set it once per breakpoint and drive the whole route list under it.
 
-### 3. Interact via snapshots
+## 4. On an auth redirect, hand back
+
+Headless means there is no window for the user to log into. The profile is the seam: it persists, so one interactive login serves every later run. Give them the command, wait for confirmation, then re-navigate.
 
 ```bash
-agent-browser snapshot -i              # interactive elements with @refs
-agent-browser snapshot -i -s ".class"  # scoped to a selector
-agent-browser click @e1                # click by ref
-agent-browser fill @e2 "text"          # fill input
-agent-browser type @e2 "text"          # type without clearing
+# user runs this, logs in, quits Chrome — the headless server picks up the cookies
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --user-data-dir="$HOME/.cache/chrome-devtools-mcp/chrome-profile"
 ```
 
-Re-snapshot after every navigation or DOM change — refs are invalidated.
+Chrome locks that directory, so their window and the server's browser take turns — confirm they have quit before driving again. For a deliberately **logged-out** state, `new_page` with `isolatedContext` gives a clean cookie jar without touching the profile.
 
-### 4. Inspect DOM / computed styles
+## 5. Measure with `evaluate_script`
 
-```bash
-cat <<'JSEOF' | agent-browser eval --stdin
-(() => {
-  const el = document.querySelector('.my-selector');
-  return JSON.stringify({
-    h: el?.getBoundingClientRect().height,
-    display: getComputedStyle(el).display,
-  });
-})()
-JSEOF
+It takes a function declaration — `() => getComputedStyle(document.querySelector('.x')).outlineWidth` — evaluated fresh each call, so there is no cross-call redeclaration to work around. Ask one question per call and put the value inline next to the finding. `filePath` diverts a large result to a file instead of your context.
 
-agent-browser eval "document.activeElement?.tagName"
-```
+`list_console_messages` and `list_network_requests` cover the errors a rendered page hides: a failed fetch, a hydration warning, a 404 on an asset that leaves a gap rather than an error.
 
-Use IIFE wrapper to avoid redeclaration errors across multiple eval calls.
+## Done when
 
-### 5. Change viewport by emulation — never resize the window
-
-To review a breakpoint, set the **emulated** viewport. Do **not** resize the OS window: real headed Chrome enforces a minimum window width (tab strip + controls, ~400–500px, wider with more tabs open), so a physical resize clamps and silently renders the wrong width.
-
-```bash
-agent-browser set viewport 375 812        # rendered innerWidth=375 while the window stays full-size (CDP device-metrics override — immune to the min-width floor)
-agent-browser set device "iPhone 16 Pro"  # adds DPR + touch + mobile UA on top of the viewport
-```
-
-- `set viewport <w> <h>` emulates the CSS viewport independently of the window — verified: `innerWidth` becomes 375 while `outerWidth` stays ~1470. Use it for arbitrary breakpoints (desktop 1440 / tablet 768 / mobile 375).
-- `set device "<name>"` for higher-fidelity mobile (correct devicePixelRatio, touch, user-agent). Valid names only: `iPhone 15`, `iPhone 16`, `iPhone 16 Pro`, `iPhone 17`, `iPad`, `iPad Pro`, `Pixel 9`, `Galaxy S25` (note: no "iPhone 15 Pro").
-- **The override does not survive a navigation — re-set it after every load.** Set viewport → navigate → and you're measuring at the default width again, silently. Sweep a breakpoint as `set viewport` *after* each `open`/`click`-through, not once at the top of the run, or every route after the first is wrong.
-
-### 5b. Screenshots — the element-clip trap
-
-```bash
-agent-browser screenshot shot.png            # viewport
-agent-browser screenshot shot.png --full     # whole document
-agent-browser screenshot ".sel" shot.png     # element clip
-```
-
-**An element-clipped screenshot of something scrolled out of view comes back blank or as empty space** — the clip rect is taken against the document, but offscreen regions aren't painted. Scroll it into view first; if it's still coming back empty (a tall element, a transformed ancestor, an offscreen slide/deck panel), stop fighting the clip and take a `--full` shot, or render the piece standalone at its own URL. Two blank captures is the signal to switch approach, not to retry the clip a third time.
-
-### 6. Clean up
-
-```bash
-agent-browser close
-```
-
-## Key rules
-
-- **Change breakpoints with `set viewport` / `set device` (emulated) — never resize the window.** A physical resize clamps at Chrome's min-width floor and renders the wrong width; emulation renders a true 375px inside a full-size window.
-- **Use `snapshot -i` + `@refs` for interaction** — not screenshots
-- **Always use a project-scoped `--session-name` (`bg-$(basename "$PWD")`)** so auth persists between runs *and* parallel projects stay isolated
-- **Always use `--headed`** so the user can see and intervene
-- **Re-snapshot after any page change** — refs expire on navigation/DOM updates
-- **Re-set the viewport after every navigation** — the emulation override is dropped on load, so a breakpoint set once at the top of a multi-route sweep only holds for the first route
-- **Two blank element screenshots = change approach** (`--full` or a standalone render), not a third attempt at the clip
-- **An unrecognized flag is taken as a positional argument, silently.** `screenshot` is `[selector] [path]` with `--full` for the whole document — pass `--full-page` or `--path` and it lands in a positional slot with no error, writing a file literally named `--full-page` into the cwd. Check `agent-browser <cmd> --help` when a capture turns up somewhere unexpected.
-- **Use `eval --stdin` with heredoc** for complex JS — shell escaping is unreliable
-- **Never name a shell variable `path`** (or `PATH`, `cdpath`, `fpath`, `manpath`) — in zsh `path` is tied to `$PATH` as an array, so assigning it wipes the command search path and every subsequent command in the run fails. Use `p`, `target`, `shot_path`
+Every claim about the app is backed by an observed snapshot, screenshot, or `evaluate_script` result — never inferred from source — and `close_page` has run on the pages you opened.

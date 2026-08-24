@@ -66,7 +66,7 @@ Audit for accessibility: @$1
 3. Screen reader testing (VoiceOver, NVDA)
 4. Zoom to 200% — does layout break?
 
-When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`agent-browser`) and read real values (`getBoundingClientRect` for touch-target size, tab order via focus events, computed styles for the focus indicator). **Every measured number on a rendered page is this pass's** — `/visual-review` hands target sizes here rather than tabling its own.
+When a dev server is running, prefer **measured** evidence over eyeballing — drive the live app via the `local-browser` skill (`chrome-devtools` MCP) and read real values with `evaluate_script` (`getBoundingClientRect` for touch-target size, tab order via focus events, computed styles for the focus indicator). `lighthouse_audit` (`mode: "snapshot"`, or `"navigation"` for a fresh load) sweeps the automatable criteria in one call — treat its output as a lead list, not the audit: it catches missing names and roles, and it cannot see focus order, keyboard traps, or whether a target is big enough to hit. **Every measured number on a rendered page is this pass's** — `/visual-review` hands target sizes here rather than tabling its own.
 
 ## Output
 
