@@ -106,6 +106,21 @@ Loading, empty, error, success, system status — does the interface say what's 
 
 ---
 
+## A confirmation worth asking for is modal
+
+**Principle:** once an action has earned a confirm, render it as a dialog that traps focus and disables the page behind it.
+**Mechanism:** the confirm exists to break a motor sequence already in flight, and a prompt drawn into the region the user is clicking through gets answered by the reflex that fired the first click. Modality is priced by the decision's cost, not the message's importance — the same reason everything short of irreversible gets undo instead (entry above).
+**Code signal:**
+  - a `confirmingId === row.id` / `pendingDelete` branch swapping a row's button for "Are you sure?" in place, the rest of the list still live
+  - a toast/snackbar carrying the affirmative action for an operation the data model can't reverse
+  - a hand-rolled overlay `<div>` with no `<dialog>`, `role="alertdialog"`, focus trap, or focus restored on close — an overlay that doesn't hold focus isn't modal
+**Fix:** render a real dialog: focus trapped, defaulted to the safe choice, returned to the trigger on dismiss.
+**Applies when:** only for actions that earned a confirm under the two entries above — a modal on a reversible action is the more common defect, and its fix is deletion, not relocation. The focus-trap signals overlap `accessibility-review`; cite it rather than re-auditing.
+**Detect:** STATIC
+**Source:** NN/g, "Modal & Nonmodal Dialogs: When (& When Not) to Use Them" · https://www.nngroup.com/articles/modal-nonmodal-dialog/ (2017)
+
+---
+
 ## A multi-step flow shows the step count and current position
 
 **Principle:** a flow that takes more than one screen to complete displays how many steps exist and which one the user is on.

@@ -115,3 +115,18 @@ Where am I, where can I go, can I get back? These entries catch the step a user 
 **Applies when:** this verdict has partly reversed — hold both dates. 2016 found hidden nav hurt task success and time-on-task outright, full stop. 2025 found the icon itself now well-recognized; the live objection narrowed to *hiding nav when there was room not to*, not the icon's use on genuinely narrow viewports.
 **Detect:** HEURISTIC — "room" is a judgment about this layout's available width versus item count, not a fact the component states outright.
 **Source:** NN/g, "The Hamburger-Menu Icon Today" · https://www.nngroup.com/articles/hamburger-menu-icon-recognizability/ (2025); supersedes "Hamburger Menus and Hidden Navigation Hurt UX Metrics" · https://www.nngroup.com/articles/hamburger-menus/ (2016)
+
+---
+
+## A gated setup shows its locked steps and unlocks them from state
+
+**Principle:** where later steps depend on earlier ones, render the whole sequence from the first screen — the unavailable steps locked and labelled with what they need — and unlock each from its prerequisite existing.
+**Mechanism:** one step at a time withholds the model of the process: the user can't see how much is left, or why the thing they came to configure isn't on screen. A step counter reading no real state also re-offers work whose side effects already happened — in setup, resources already created outside the app.
+**Code signal:**
+  - `useState(0)` / `?step=` / `activeStep` as the only input deciding which panel renders — nothing queries whether the previous step's resource exists
+  - `{step === 2 && <Panel/>}` gating with no disabled branch for the steps not yet reached
+  - a setup route whose loader fetches nothing already-provisioned, so a return visit restarts at zero
+**Fix:** derive the active step from the persisted prerequisites; render the full sequence on every screen with the unreached steps disabled.
+**Applies when:** infrequent configuration done once — a repeat run wants a direct path (one form, a CLI call) over the guided one. Inverts for a single-sitting sequence (address → payment) that provisions nothing and has nothing to resume. Orientation *within* a sequence the user can already see is `states-and-feedback` → "shows the step count and current position".
+**Detect:** STATIC
+**Source:** NN/g, "Wizards: Definition and Design Recommendations" · https://www.nngroup.com/articles/wizards/ (2017)
