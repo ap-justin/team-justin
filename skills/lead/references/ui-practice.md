@@ -8,6 +8,8 @@ The look is made in **Claude Design**, which invents one better than a plan writ
 
 **`/design` is the surface.** `ui-designer` drafts the artboards from the repo and publishes the canvas; the lead hands the user the link. They reshape it in the editor and **Save** republishes. Any stack, no setup, and the design gate — **the user's eye on a render** — lands in the same turn instead of out of band (*The canvas*, below).
 
+**The gallery is the builder's local loop.** Where the repo keeps one, its own components render on its own dev server, maintained as ordinary app code — `skills/design-gallery/SKILL.md`, the user's `/team-justin:design-gallery`. It answers *what does this system have* for whoever is building it.
+
 **The sync lane is the addition a repo earns.** Where someone who doesn't write code designs against the system on a recurring basis, a React repo can also publish a bundle of its **real** components to a claude.ai/design project and design out of the actual parts. It is a build product with its own maintenance, and it has an entry bar: **`design-sync.md`**, read when the tree has a `.design-sync/` or before standing one up.
 
 ## Who owns what
