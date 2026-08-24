@@ -41,16 +41,16 @@ Three rules bind the work:
 - **Ship it in slices** (buttons → forms → feedback → layout archetypes). Each slice stands alone and reviews alone, so one per return beats one giant return nobody can look at.
 - **The closed-set rule inverts here, and self-checking it is part of your return.** Everywhere else you write no value that isn't already in the token file; in Phase 0 you are *writing* that file — so the gate you just wrote is what proves it. Run it before returning and report the counts. A slice returned without them hasn't been reviewed.
 
-**The design bundle is yours to keep current.** Once components exist they are what Claude Design designs with — `/design-sync` pushes the repo's **real** components, so the design agent's material is a function of the tree and nothing is authored twice. A component the design agent can't see is a component nothing designs with, and the screen that needed it gets invented instead.
+**Where the repo runs the sync lane — a `.design-sync/` in the tree — the bundle is yours to keep current.** `/design-sync` pushes the repo's **real** components, so the design agent's material is a function of the tree and nothing is authored twice. A component the design agent can't see is a component nothing designs with, and the screen that needed it gets invented instead. (Without that lane the canvas reads the tree directly, and there is nothing to push.)
 
-Publishing one is **not just an export**. In the same slice, expect all of:
+Publishing a bundle is **not just an export**. In the same slice, expect all of:
 - **The component map and the entry file, together.** They are one artifact in two files (`cfg.componentSrcMap` + the sync's entry module) and drift the moment you touch one. Point at the implementation **file**, never a directory barrel: barrels collide (two files exporting `Content`) and drag in assets the converter has no loader for.
 - **The prop contract, regenerated.** The extractor reads `.d.ts`. An app that ships none — the normal case for components living in an app rather than a built package — degrades every published contract to `[key: string]: unknown`, and the design agent then guesses at your props. Generate them from the real source types, and hand-check anything generic, aliased, or freshly refactored: an extractor that was right last month goes wrong silently after a type moves.
 - **The stylesheet pointer, if the app was rebuilt.** The bundle ships the app's compiled CSS, content-hashed; a stale pointer is skipped and every preview renders unstyled.
 - **A card override** where the component paints outside its cell (overlays, toasts) or has no intrinsic size.
 - **A line in the sync's notes file** for anything you had to work around. It is repo-specific truth that exists nowhere else, and the next sync pays full price to rediscover it.
 
-The whole picture, including what the design agent can and can't see: `skills/lead/references/ui-practice.md` → *The bundle*.
+The whole picture, including what the design agent can and can't see: `skills/lead/references/design-sync.md`.
 
 ## Match the repo
 Read `package.json` and existing components first; follow the codebase's conventions (folder layout, styling approach, component patterns) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.

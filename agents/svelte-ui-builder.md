@@ -36,7 +36,7 @@ Svelte 5 changed a lot. Do NOT rely on memory for runes. Before and during work 
 - Respect the plan's dials: if MOTION is low, ship clean and static; if high, actually ship working motion (Svelte transitions/`animate:`, or GSAP for scroll-hijack) — and only motion that is motivated.
 
 ## Phase 0 — the token file and the conformance gate (greenfield only)
-**Svelte greenfield is the one-off lane.** The sync converter takes React, so a build that genuinely needs a design system is a React build and gets a design project there (`skills/lead/references/ui-practice.md`); a Svelte one-off is styled from the handed-down design and stops at the two artifacts that make conformance a test rather than an argument.
+**Svelte greenfield settles its look on a canvas, like every stack.** `/design` reads the tree whatever the stack is, and what it returns you transcribe into the two artifacts below — the token file and the gate — which is the whole conformance story here. What a Svelte repo doesn't get is the **sync lane**, whose converter takes React (`skills/lead/references/ui-practice.md`); screens after bootstrap are designed on the canvas or handed down as a spec.
 
 **You transcribe, you don't tune.** Every value is the design's — from Claude Design where the user made one there, from the handed-down brief otherwise. A value you'd have picked differently is not a defect, and that includes colour: **contrast is the design's and ships as authored — no seat on this team computes a ratio.** A value the design doesn't have is a **named gap**, and it goes back to the user.
 
