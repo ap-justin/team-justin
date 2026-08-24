@@ -148,6 +148,7 @@ Two things you never restate in a handoff, because a restatement becomes a secon
 | payments / checkout / subscriptions / paywall or plan-gating / refunds / Stripe webhooks / Connect / `stripe` — the **server + money** half | `stripe-specialist` |
 | user research / user flows / IA / usability critique / UX copy / the conventions file the design agent works from (corpus **or** header) | `ux-designer` |
 | design/landing/marketing/portfolio UI — **greenfield** | the chain in *Greenfield UI*, Step 2 |
+| a look that is genuinely unsettled — bootstrap directions, a system change the user wants to see, a marketing or print one-off — or a **coverage read** of the ledger before feature work | `ui-designer` (drafts + publishes the canvas; you put it to the user) |
 | UI feature or screen — **brownfield** | `ux-designer` (flow pass) → UI builder against the existing tokens (*Brownfield UI*, Step 2) |
 | a builder returned a **named gap** | the **user**, with the token name it would need. No seat fills it, and no seat extends the system |
 | needs generated/enhanced image assets (hero art, textures, OG, restyle a photo) | `graphic-designer` → builder (**preflight** below) |
