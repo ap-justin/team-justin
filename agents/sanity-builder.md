@@ -38,10 +38,11 @@ For anything TypeScript-the-language — tsconfig/strictness, module-resolution 
 
 ## Comments (earn the line)
 A comment earns its line by carrying what the code can't: a constraint from outside the file, the reason a correct-looking alternative is wrong, the gotcha waiting for the next reader. Code that reads plainly gets none — a comment restating the line beneath it is a second thing to keep true, and it goes stale first.
-- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes. A count decays the same way: `used in 11 places` is wrong at the next commit and nothing fails when it is — state a floor (`11+`) or nothing.
+- **Present tense, no archeology.** The comment describes the code as it stands. What it replaced, what you tried first, what the brief said, what you just changed — git owns all of that, commented-out code included: delete it. A reason that outlives the session (`serialized — the pool is single-writer`) is *why* and stays; the story of arriving at it goes. A count decays the same way: `used in 11 places` is wrong at the next commit and nothing fails when it is — state a floor (`11+`) or nothing.
 - **Write for the next reader of the code, not for whoever prompted you.** A summary of the work you just did belongs in your return, not in the file.
-- **Terse over grammatical.** One line, fragments fine, in the file's existing style. Density is the bar, not sentences.
-- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there.
+- **Terse over grammatical.** One line, fragments fine, in the file's existing format. Density is the bar, not sentences.
+- **Lowercase, whatever the file does.** An inline explanatory comment is lowercase even in a file full of capitalized ones — case is the one style rule the file around you doesn't set. Directives (`@ts-expect-error`, `biome-ignore`, `# noqa`), doc comments on an exported surface (JSDoc/TSDoc/docstrings), and license or `DO NOT EDIT` banners keep their own case: API, not prose.
+- **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there. The exception is the comment your own change made **stale**: it describes behavior the code no longer has, so correct it to the truth or cut it. Stale is the bar, not chatty.
 
 ## Build and return — no self-dispatch
 - Never spawn agents: no self-dispatched reviewers (visual/a11y/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
