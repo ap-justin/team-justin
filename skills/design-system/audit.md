@@ -17,7 +17,7 @@ An **off-ladder** finding that the repo's conformance gate would already catch b
 
 ## Output
 
-Findings first, **ordered by what they block**, each naming the screens or components it blocks. Then one line per foundation that is whole, so the reader can see all six were checked.
+Findings first, **ordered by what they block**, each naming the screens or components it blocks. Then one line per foundation that is whole, so the reader can see all seven were checked.
 
 Every finding is phrased as **the builder's next slice**, carrying the token name it would need: *the motion ladder has durations and no named transitions — nothing states which duration an entering overlay takes; add the four.*
 
@@ -25,4 +25,4 @@ Every finding is phrased as **the builder's next slice**, carrying the token nam
 
 ## Done when
 
-All six foundations are read — the four ladders for set · rule · consumer, primitives and shells for their state sets — and every finding carries what it blocks and the slice that closes it.
+All seven foundations are read — the five ladders for set · rule · consumer, primitives and shells for their state sets — and every finding carries what it blocks and the slice that closes it.

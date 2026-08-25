@@ -1,6 +1,6 @@
 ---
 name: design-system
-description: The shape of a design system before its values exist — the six foundations (color · typography · size · motion · primitives · shells) and whether each is whole. `create` writes that shape at bootstrap as source emitting a token file with every value `UNSET`; `audit` runs the rubric over an existing system and returns what has no set, what has no rule, and what spends a value off its ladder. Reach for it on a coverage read, or when the question is what a design system is missing rather than what it has.
+description: The shape of a design system before its values exist — the seven foundations (color · typography · size · elevation · motion · primitives · shells) and whether each is whole. `create` writes that shape at bootstrap as source emitting a token file with every value `UNSET`; `audit` runs the rubric over an existing system and returns what has no set, what has no rule, and what spends a value off its ladder. Reach for it on a coverage read, or when the question is what a design system is missing rather than what it has.
 argument-hint: "<create|audit> [influence…]"
 ---
 
@@ -22,9 +22,9 @@ Everything authored here is **shape**: a step count, what a step is for, the nam
 
 Those three are also the finding names — `audit.md`.
 
-## The six, in order
+## The seven, in order
 
-**Ladders before parts.** A part is spent ladder steps, so a primitive audited before its ladders exist can only be judged on taste, and taste is the design's. The four ladders don't block each other — settle them in parallel. Primitives precede shells: a shell's padding and radius are stated against the control heights it contains.
+**Ladders before parts.** A part is spent ladder steps, so a primitive audited before its ladders exist can only be judged on taste, and taste is the design's. The five ladders don't block each other — settle them in parallel. Primitives precede shells: a shell's padding and radius are stated against the control heights it contains.
 
 ### The ladders — closed sets of values
 
@@ -34,8 +34,11 @@ Those three are also the finding names — `audit.md`.
 **typography** — *set:* the scale's steps and ratio, the faces by role, the weights actually loaded. *Rule:* every step is a **bundle** — size, weight, line-height, tracking bound under one name, plus the measure it's read at. A component spends a bundle.
 **Default it corrects:** size and weight exposed as independent tokens, so *small bold* exists in nine slightly different forms, none named, and line-height gets set per component by whoever last noticed it was tight.
 
-**size** — *set:* one base unit and **five ladders** kept separate — space · radius · control height (density) · icon · container + breakpoint. *Rule:* which ladder a value comes from — padding from space, a control's height from density.
+**size** — *set:* one base unit and **five ladders** kept separate — space · radius · control height (density) · icon (the box, and the stroke the set is drawn at) · container + breakpoint. *Rule:* which ladder a value comes from — padding from space, a control's height from density.
 **Default it corrects:** one spacing scale doing all five jobs. A 40px control height and a 40px gap become the same token, so retuning density silently retunes every gap in the product and neither can be renamed.
+
+**elevation** — *set:* the separation levels, each a **bundle** — border width, fill step, shadow — that a surface takes to sit above the one beneath it (flush · raised · overlay · modal). *Rule:* which level by nesting depth, and by whether the surface sits in the page's flow or over it — a card is in it, a popover is over it.
+**Default it corrects:** a shadow scale (`sm` → `2xl`) with nothing saying which surface takes which. Depth gets picked by eye, and border-versus-shadow — the same separation done two ways — lands one way on the card and the other on the popover, so the two never read as the same depth and neither can be retuned.
 
 **motion** — *set:* the durations, the easings, and the **named transitions** binding a duration to an easing for a purpose (state change · enter · exit · emphasis). *Rule:* which named transition by what is moving — a colour swap is not an entering overlay — and reduced-motion resolves once, inside the token.
 **Default it corrects:** `transition: all 0.2s ease` written per component. It never becomes a token, so motion can't be retuned or audited, and `all` animates properties nobody intended.
@@ -45,7 +48,7 @@ Those three are also the finding names — `audit.md`.
 **primitives** — *set:* the controls the product cannot be built without: button, link, input, textarea, select, checkbox, radio, switch, badge, icon, avatar, spinner. *Rule:* the state set each carries — rest · hover · focus-visible · active · disabled · loading · invalid · read-only — and which of them a given control has.
 **Default it corrects:** the state set designed once, for the button, and inherited nowhere. The input gets rest and invalid, the select gets rest, and the first screen that disables a select invents what that looks like.
 
-**shells** — *set:* the containers everything sits inside: card/panel, dialog, sheet, popover, page shell + nav, section, list/table row. *Rule:* the separation ladder — how a surface distinguishes itself from the one beneath it (border, fill step, elevation) at each nesting depth — and that **a shell owns its padding and radius while its contents own none**.
+**shells** — *set:* the containers everything sits inside: card/panel, dialog, sheet, popover, page shell + nav, section, list/table row. *Rule:* which **elevation** level each container takes at each nesting depth, and that **a shell owns its padding and radius while its contents own none**.
 **Default it corrects:** padding set on the card in one screen and on the card's children in the next. Both render; composing them doesn't, and no gate catches it because every value used was on-system.
 
 ## Dispatch

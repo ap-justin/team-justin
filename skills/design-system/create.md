@@ -11,6 +11,7 @@ Defaults when nothing is named, each because it is the cheapest thing to expand 
 - **12 colour steps** — the smallest ramp separating border-at-rest from border-at-hover without a `color-mix()`.
 - **A named modular type ratio**, steps enumerated.
 - **A 4px base**, the five ladders separate from step one.
+- **4 elevation levels**, and the bundle each binds.
 - **3 durations × 3 easings**, and the named transitions binding them.
 
 ## What lands
@@ -65,4 +66,4 @@ The token file is a build product now, so the generated header names `design-sys
 
 ## Done when
 
-Every one of the six foundations has a **set** and a **rule** in `design-system.ts`; emit and check both run green in the repo's runner; every influence the user named is recorded with the half of it that was declined; and the return states the unfilled count and the token names the design has yet to settle.
+Every one of the seven foundations has a **set** and a **rule** in `design-system.ts`; emit and check both run green in the repo's runner; every influence the user named is recorded with the half of it that was declined; and the return states the unfilled count and the token names the design has yet to settle.
