@@ -28,6 +28,8 @@ Writing v1 code against 0.45 fails at import. Writing 0.45 code and pasting a v1
 
 **Renames are guesses.** A dropped column plus an added column looks identical to a rename in a snapshot diff; the CLI asks, and a wrong answer is a `DROP COLUMN` on live data. Answer it deliberately, and never let it run unattended in CI.
 
+**Reviewed means every statement in the file is named** — safe, or destructive and with the rows it touches said out loud. A file skimmed for the statement you expected is a file not read.
+
 ## SQLite: the generated table rebuild deletes child rows
 The single most dangerous interaction in this skill, verified end-to-end and not covered by any community source.
 
@@ -63,12 +65,12 @@ Verified to preserve all 3 child rows with a clean `foreign_key_check`. Back it 
 `push` diffs your schema against the live database and applies it with no migration file. Official guidance: **`push` for local prototyping, `generate` + `migrate` for production** — and the drizzle-kit docs do note teams running `push` in production behind blue/green deploys. Take that as a claim about their deployment model, not a default: `push` leaves no reviewable artifact, no ordering, and no record of what ran. Pick one per project and hold it; alternating between them desynchronizes the snapshots that both commands diff against.
 
 ## What Drizzle does not do for you
-- **Connection settings.** The `drizzle('./app.db')` string form builds the driver itself and you never touch the handle — measured defaults are `journal_mode=delete` and `synchronous=FULL`, i.e. **no WAL**. Construct the driver yourself and set pragmas on it, or reach the handle via `db.$client`.
+- **Connection settings.** The string form (`drizzle('./app.db')`, `drizzle(process.env.DATABASE_URL)`) builds the driver itself and hands you no handle — so every setting stays at the driver's default. Construct the driver yourself and pass it in; `reference/sqlite.md` has the pragma block that depends on it.
 - **Pooling.** Drizzle wraps a pool you configure; it has no opinion on size or lifetime.
 - **Down migrations.** There are none. A rollback is a new forward migration you write.
 - **Column defaults, unless `schema.ts` carries them too.** Drizzle names *every* column in an `insert` and, for a key absent from the values object, binds the **schema-level** `.default(...)` as a parameter — it never emits the SQL `DEFAULT` keyword (sqlite rejects it in a `VALUES` list). So a column with `DEFAULT x NOT NULL` in the migration but no `.default(x)` in `schema.ts` binds `null` and trips `NOT NULL` on every insert that omits it. The two defaults are a **pair**; write both.
 - **Backfills.** Schema diffing only. Data movement is `generate --custom`.
-- **Validation.** Column types constrain SQL, not input. Parse at the boundary.
+- **Validation.** Column types constrain SQL, not input; parse at the boundary. `.$type<T>()` is a cast, not a parser — it constrains what TS lets you write, validates nothing on read, and old rows keep their old shape.
 
 ## A brand has to reach the column
 A branded type (`PostableAccountId`, `ParsedContact`) exists to make a value unforgeable, and it only holds as far as it's carried. Put it on the **column** — `text().$type<PostableAccountId>()` — not just on the argument of the function that writes it. Otherwise the first caller that reads the value back out of the database gets a raw `string`, writes `as PostableAccountId`, and the brand is dead from that seam onward. Costs nothing: `$type<T>()` is compile-time only — no migration, no runtime change.
@@ -87,5 +89,4 @@ Pull the file that matches the task, not all four.
 - **Engine semantics** — WAL, `busy_timeout`, `IMMEDIATE` transactions, the official 12-step rebuild, `STRICT`: the **`sqlite`** skill. Indexing strategy, normalization, lock impact of DDL: the **`postgres-architect`** seat's own discipline. This skill is only the ORM layer over them.
 - **MySQL / SingleStore / MSSQL / CockroachDB dialects** — no seat owns them; the recipes here are pg + sqlite and mislead if stretched.
 - **Cloudflare D1** — `cloudflare-builder`'s. It is the sqlite dialect, but the binding and migration CLI are Workers-shaped.
-- **Prisma / Kysely comparisons** — not a decision this skill makes.
 - **Typing the query surface** (generics, inference, `.d.ts`) — the `typescript` skill, in whichever seat owns the code.

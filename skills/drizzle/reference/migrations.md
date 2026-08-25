@@ -37,7 +37,7 @@ Schema diffing never moves data. A constraint that existing rows violate makes t
 2. `generate --custom` — write the `UPDATE` that backfills it.
 3. `generate` — add the `NOT NULL` / `CHECK` / unique constraint.
 
-Same shape for a rename done safely (add, dual-write, backfill, switch reads, drop) and for anything destructive. Splitting across **deploys**, not just migrations, is what makes it zero-downtime — old code must survive the intermediate schema.
+Same shape for a rename done safely and for anything destructive — **expand/contract**: add, dual-write, backfill, switch reads, drop. Splitting it across **deploys**, not just migrations, is what makes it zero-downtime — old code must survive the intermediate schema.
 
 ## There are no down migrations
 Drizzle does not generate them and `migrate` cannot reverse. A rollback is a new forward migration you write and test. Which means:
@@ -51,4 +51,4 @@ The file is already recorded in the ledger by timestamp, so editing it does not 
 ## Running migrations
 - **Server (pg):** one deploy step, before the new instances take traffic. Not from app boot — the migrator takes no advisory lock, so concurrent instances race (see `reference/postgres.md`).
 - **Embedded (sqlite):** at app boot, because you are not present when the user upgrades. Back up first, and refuse a database newer than the code.
-- Keep the migration credentials separate from the app's, and point drizzle-kit at a direct connection rather than a transaction-mode pooler.
+- Keep the migration credentials separate from the app's; which connection string drizzle-kit gets is in `reference/postgres.md`.

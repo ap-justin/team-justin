@@ -34,7 +34,6 @@ export const users = pgTable('users', {
 
 - **The third argument returns an array.** The object-returning form is marked `@deprecated` in the shipped `pg-core/table.d.ts` ("will only accept an array instead of an object"). Most material in circulation — including the skills.sh `drizzle-orm` package — still teaches the object form.
 - **The column-name string is optional.** `text()` infers `email` from the key. Mixing inferred and explicit names in one table is how a column silently gets the wrong name; pick one convention per project. On 0.45.x, `drizzle({ casing: 'snake_case' })` is the connection-level switch (per-table casing is v1).
-- **`.$type<T>()` is a cast, not a parser.** It constrains what TS lets you write; it validates nothing on read, and old rows keep their old shape.
 - **`timestamp` without `withTimezone` is `timestamp`, not `timestamptz`** — the default is the one you almost never want. `mode: 'string'` avoids the driver's Date parsing when you want the raw value.
 
 ## Migrations

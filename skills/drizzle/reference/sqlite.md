@@ -54,9 +54,7 @@ Either way the writes going through Drizzle are typed at the TS boundary — the
 | boolean | `integer({ mode: 'boolean' })` | stores `0`/`1`, maps to `boolean` in TS |
 | timestamp | `integer({ mode: 'timestamp' })` or `'timestamp_ms'` | seconds vs milliseconds — pick one per project; they are not interchangeable and nothing warns you |
 | date as text | `text()` holding ISO-8601 | comparisons are lexical, so pad and use UTC consistently |
-| json | `text({ mode: 'json' }).$type<Shape>()` | `$type` is a compile-time assertion only — nothing validates the stored bytes |
-
-`$type<T>()` casts; it does not parse. Rows written before the shape changed still deserialize into the new type with no error.
+| json | `text({ mode: 'json' }).$type<Shape>()` | stores a JSON string; the shape is a TS assertion (`SKILL.md`) |
 
 ## Migrations for a file you don't control
 An embedded database ships on someone's disk. On top of `reference/migrations.md`:
