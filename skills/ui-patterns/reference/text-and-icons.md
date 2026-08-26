@@ -27,3 +27,20 @@
 **Default it corrects:** promoting the rule into the outcome the reader cares about — "100% reaches the recipient" from a rule that only sets the sender's fee, so any cost further down the chain makes the sentence false.
 **Why:** it's a promise the code cannot keep, and unlike a wrong label it is not wrong *on the screen where it's written* — it fails later, elsewhere, to someone counting the difference. Nothing on this screen can catch it, so the check happens as the line is written or not at all.
 **Applies when:** money, time and quantity claims. A claim wholly inside the system's own control — "your changes are saved" — is not this.
+
+## A stored display name sits after a fixed phrase
+
+**Trigger:** attribution copy rendering a name the system stored — "set by", "edited by", an activity row, a byline.
+**Pattern:** park the name after a phrase the product owns: `set by {name}`, `removed by {name}`, `worked on by {name}`.
+**Default it corrects:** `{name} removed this` at the head of a sentence, or `{name}'s changes` — both assuming the stored string is capitalised and grammatically a person's name.
+**Why:** display names are not reliably capitalised (an account seeded from a credentials file stores the lower-cased username), and capitalising one at render is a different bug — it rewrites someone's name. The English possessive fails on a name already ending in *s*, and on anything that is not a person. Neither breaks on the screen where it is written; both break on one user's row, in production.
+**Applies when:** the name is user- or system-supplied. A literal the product controls is prose and reads normally.
+
+## A section's status word reads standalone
+
+**Trigger:** a per-section state summary in a settings or setup screen — one word per section, scanned down a column.
+**Pattern:** pick words that parse alone — **Configured** / **Incomplete** — and spell the incomplete state the same way in every section. A section that cannot determine its own status reports one page-level failure, said once, in the shape the app already uses for a lost connection.
+**Default it corrects:** relative words that only parse while reading the whole ledger top to bottom ("Ready", "Not yet", "None yet"), spelled differently per section — and the incomplete word doubling as the state a failed status fetch falls back to.
+**Why:** per-section spellings read as variety to the author and as inconsistency to everyone else. The fallback is the expensive half: telling an operator their working setup is unconfigured sends them to fix something that is not broken, and a status word that can lie about a working system is worth less than no status word.
+**Applies when:** several sections report status side by side. A lone status word has no column to be inconsistent with.
+

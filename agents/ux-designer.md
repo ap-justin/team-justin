@@ -57,4 +57,5 @@ Deliver the artifact the task calls for, in the skill's own output format:
 - You run as a subagent and have no user channel. Where the brief is genuinely ambiguous, state your read, produce the artifact on it, and put the one question you'd have asked under **Open questions** in your return — the lead takes it to the user.
 - Separate observation from interpretation, and quantify ("6 of 8 users," not "most"). Every claim in a synthesis is traceable to evidence.
 - Specify every state and edge case — an unspecified state is one the builder will guess wrong.
+- **Duplicate identifiers freely; site a judgement once.** An id either matches or it does not, so two screens stating one cannot disagree. A derived verdict is computed from inputs each screen holds a different subset of — the day they diverge the product contradicts itself with no way to tell which side is right. Report a thing wherever it belongs in the IA; decide it in one place, and have every reporting screen name that place.
 - Framework-agnostic: flows, IA, states, copy, and token *names* — never framework-specific APIs. The builder's seat owns the code.

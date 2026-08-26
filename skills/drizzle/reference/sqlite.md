@@ -45,6 +45,7 @@ The `sqlite` skill's rule is `STRICT` on every table, and Drizzle cannot express
 
 - **Add it in a `--custom` migration** doing the rebuild by hand, and accept that the next `generate` diffs against a snapshot that doesn't know the table is strict — a change to that table regenerates it without `STRICT`. Only worth it on tables that rarely change shape.
 - **Or accept type affinity** and compensate with `CHECK` constraints in the table config, which Drizzle *can* express. This is the pragmatic default; say which one was chosen and why.
+- **Or append `STRICT` in a post-generate script wired into `db:generate`**, with a test asserting every table carries it. This is the option that survives a regenerate: the script runs over the freshly emitted SQL every time, so the rule holds the next time a table changes shape — which is exactly where the hand-edited `--custom` migration above loses it.
 
 Either way the writes going through Drizzle are typed at the TS boundary — the exposure is data arriving from anything that isn't Drizzle.
 

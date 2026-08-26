@@ -11,3 +11,12 @@
 <button aria-label="Remove {row.name}">Remove</button>
 ```
 **Applies when:** any repeated control. Where the row's name is itself rendered adjacent, `aria-labelledby` pointing at both nodes beats duplicating the string.
+
+## A "this is yours" marker resolves by id, server-side
+
+**Trigger:** a row, comment or record rendering differently for the viewer who owns it — a *you* badge, an edit affordance, a highlighted row.
+**Pattern:** compare ids on the server and send the boolean down with the row.
+**Default it corrects:** comparing the display name snapshotted onto the record at write time against the current viewer's name, in the client.
+**Why:** display names collide and they change. Two users sharing one name each see the other's rows as their own, and a rename silently un-owns everything that person wrote before it. The failure is toward silence — nothing throws, the marker simply sits on the wrong row — so it survives every test that lacks two same-named users.
+**Applies when:** any per-viewer treatment. A name rendered purely as attribution needs no comparison at all.
+

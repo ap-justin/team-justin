@@ -56,6 +56,14 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Why:** the confirm step exists to make the operator look before they act, and it just moved the thing to look at off screen. They pressed a control at the foot of a long list and the page appears to have jumped somewhere unrelated; the confirm becomes something to hunt for, which is the opposite of a deliberate second press.
 **Applies when:** the confirm state renders on the same screen. One that genuinely lands on a different screen is a navigation and resets normally — and where the stack resets nothing on a same-route change, there is nothing to do: the rule is the operator's position, not the opt-out.
 
+## A confirm dialog itemises only what the press will touch
+
+**Trigger:** a save that commits several fields at once, at least one of them destructive or irreversible.
+**Pattern:** list one line per *changed* field, naming the act against the operator's own values — `Password · Removed`, `Mail host · Replaced`. Focus lands on the dismiss control.
+**Default it corrects:** a generic "Are you sure?" over a paragraph of consequences written above the form in the abstract, and a dialog that opens with focus on the control that commits.
+**Why:** this is the trade that lets the page carry no prose — the explanation is relocated to the one moment it changes a decision, stated against real values rather than in general. An untouched field listed anyway dilutes the three lines that matter. And focus on the committing control hands the operator the answer before the question, which is worse than no dialog.
+**Applies when:** the press is hard to walk back. A save with no destructive branch reports at its control instead.
+
 ## An explanation goes on screen; `aria-describedby` points the control at it
 
 **Trigger:** a control whose effect isn't obvious from its label — a toggle that changes what other people can see, a checkbox with a consequence, a destructive action.
@@ -80,3 +88,11 @@ Every entry here is the behavior the stack has to produce; the API that produces
 <label><input type="checkbox" name="public"> Make this public</label>
 ```
 **Applies when:** the text sits beside the control. A label placed elsewhere in the layout uses `<label for>` — same one-string rule, different mechanism.
+
+## A field's own content states whether a value is stored
+
+**Trigger:** a settings field holding a secret or a connection value — a key, a host, a sender address — that may or may not already be set.
+**Pattern:** one label, one box. Empty means nothing is stored; seeded with a mask means something is, and focusing it clears it to retype. Semantics stay blunt — change it and it changes, empty it and it is deleted.
+**Default it corrects:** a status row above the input ("Not set" / "Configured"), a second label, or a Remove checkbox beside the field — plus a snap-back on blur that refills an emptied box.
+**Why:** the status row is a second representation of one fact, and the day it disagrees with the box the operator has no way to tell which is right. The snap-back is the costlier half: it makes deletion the one intent the form cannot express, so the operator retypes a value they meant to remove.
+**Applies when:** the stored value is a scalar the field can seed. A list, or a value the server declines to echo, carries its own state; this is the single-slot case.

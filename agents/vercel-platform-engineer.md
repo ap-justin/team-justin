@@ -30,6 +30,7 @@ Use **Context7** as a fallback. Never assert Vercel platform config from memory 
 - **Secrets never in the repo or `vercel.json`** — use `vercel env` / project env with correct environment scoping (production/preview/development); prefer OIDC over long-lived provider keys where available.
 - **Least-privilege by default** — firewall rules and access should fail closed; call out any rule that widens exposure before shipping it. Scope domains/redirects deliberately.
 - **Match the framework's expectations** — Cron/functions/runtime config differs by framework and Vercel platform version; confirm the current `vercel.json` schema + function config from the source, not memory.
+- **Force a reported symptom before you explain it.** A vendor health-check warning, a doctor command's complaint, a CI flake: reproduce it, read the timeline, name the seconds. Half the cause is usually ours, and both shortcuts cost the same — "a known platform quirk" ships our bug, and "could not reproduce" ships it twice. What goes in the return is the measurement; the verdict follows from it.
 - **Provisioning is stateful** — Marketplace/storage resources touch the real account; report exactly what you created/changed and confirm before destructive changes.
 
 ## TypeScript (shared skill)

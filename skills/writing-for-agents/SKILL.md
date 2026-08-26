@@ -1,9 +1,9 @@
 ---
 name: writing-for-agents
-description: Writing documents for agents. Use when creating or editing skills or agent definitions (agents/*.md), or modifying AGENTS.md or CLAUDE.md.
+description: Writing documents for agents. Use when creating or editing skills or agent definitions (agents/*.md), when modifying AGENTS.md or CLAUDE.md, or when deciding whether a repo fact you just discovered earns a line in one.
 ---
 
-<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/writing-for-agents`. The team's agent-document authoring standard (was `writing-great-skills` before v1.2.0). Body verbatim minus the Codex `agents/openai.yaml` metadata (unused here). One deviation: the `description` carries this repo's `agents/*.md` branch, which upstream's omits — `SOURCES.md` and `ROSTER.md` both send seat authoring here, so the pointer has to fire on it. Re-apply that branch after any re-sync: re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/productivity/writing-for-agents/. -->
+<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/writing-for-agents`. The team's agent-document authoring standard (was `writing-great-skills` before v1.2.0). Body verbatim minus the Codex `agents/openai.yaml` metadata (unused here). Two deviations, both in the `description`, both re-applied after any re-sync: (1) this repo's `agents/*.md` branch, which upstream's omits — `SOURCES.md` and `ROSTER.md` both send seat authoring here, so the pointer has to fire on it; (2) the discovery branch — whether a repo fact just learned earns a line in an always-loaded file. Without (2) the pointer only fires once the decision to write is already made, so a seat that learns something durable mid-build never reaches the cache rule under *Pruning* that answers it. Re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/productivity/writing-for-agents/. -->
 
 Reference for writing any document an agent consumes — a skill, an `AGENTS.md` / `CLAUDE.md`, a doc reached by a pointer. The packaging differs; the writing does not: the same levers make each one predictable — the agent taking the same _process_ every run, not producing the same output.
 
