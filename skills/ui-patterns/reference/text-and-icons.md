@@ -12,13 +12,13 @@
 ```
 **Applies when:** the text can wrap. A single-line label that cannot wrap centers fine either way — reach for this when the string is user-supplied or the container is narrow. `lh` units carry a Baseline status; `modern-css` owns whether this stack needs a fallback. **Where the mark is also a tap target**, the one-line box is the *layout* box and the target grows around it — padding, or an overlay pseudo-element — so the alignment above still holds. A 44px layout box measures more than one line, and `align-self: start` only moves whichever box is shorter than the row: inert while the label is single-line, and moving the *label* instead once it wraps past 44px. Measure both boxes before accepting a one-line alignment fix.
 
-## No prose for what the UI already demonstrates
+## Explanatory prose enters on request, and the request is a defect report
 
-**Trigger:** about to write helper text under a control, a sentence introducing a section, a caption beside an image, or an explanatory line at the top of a screen.
-**Pattern:** write the words only where they carry what the interface can't show — a constraint, a consequence, a format the field doesn't reveal, what happens after the button.
-**Default it corrects:** a paragraph restating what is visible — "Use the form below to update your profile" above a profile form, "Enter your email address" under a field labeled Email, a caption naming what the picture plainly shows.
-**Why:** every redundant line is one more thing between the reader and the control they came for, and each one costs the *next* line credibility: prose that has been useless three times gets skipped on the fourth, including the time it mattered. It's also a second thing to keep true when the UI changes.
-**Applies when:** always for decorative prose. Empty states, errors and confirmations are the opposite case — they say what happened and what to do next, because there is no UI demonstrating it.
+**Trigger:** about to write helper text under a control, a sentence introducing a section, a caption beside an image, or an explanatory line at the top of a screen — or handed a request to add one.
+**Pattern:** ship the screen without it. When prose is asked for, read the ask as a report that the control, its label, or the step order is unreadable — fix that, and write the line only where the words themselves were what was wanted.
+**Default it corrects:** deciding on your own that the screen needs explaining — "Use the form below to update your profile" above a profile form, "Enter your email address" under a field labeled Email, a caption naming what the picture plainly shows — and then, once someone does ask for a line, pasting the sentence in and shipping, leaving the control that earned the ask exactly as it was.
+**Why:** every redundant line is one more thing between the reader and the control they came for, and each one costs the *next* line credibility: prose that has been useless three times gets skipped on the fourth, including the time it mattered. That skip rate is also why the requested sentence is the wrong fix alone — the line reaches the few who read prose, while the unreadable label meets everyone. It's a second thing to keep true when the UI changes, too.
+**Applies when:** always, for prose explaining the interface. Empty states, errors and confirmations are the opposite case — they say what happened and what to do next, because there is no UI demonstrating it. A constraint the control genuinely can't express — a format, a limit, what happens after the button — is not a licence to write it unasked: build the control so it carries the constraint, and where nothing can, name the gap in your return.
 
 ## Copy states what the system guarantees, not the outcome downstream of it
 
