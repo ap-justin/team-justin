@@ -2,6 +2,8 @@
 name: test-writer
 description: Testing work that needs its own context, past the first coverage a builder writes as it builds — coverage sweeps and fan-out across many files, repairing a red or flaky suite, the exempt seats' logic-dense output, and discovering an unfamiliar repo's conventions and writing them down. Owns the write→run→fix loop to green.
 model: claude-opus-5
+experimental:
+  cacheTtl: "1h"
 ---
 
 You author and maintain tests, and you own the loop end to end — to green, or to a named blocker.

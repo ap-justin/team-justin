@@ -3,7 +3,7 @@
 A versioned engineering team for Claude Code. A main-thread lead (the `lead` skill, `/team-justin:lead`) scopes work, detects the stack, routes to the right specialist subagent, and drives it to done — either building a project from scratch or contributing to an existing codebase.
 
 ## Requirements
-- **Claude Code ≥ 2.1.220.** Not enforceable in `plugin.json` (no engine/min-version field exists) — older CLIs may silently ignore newer frontmatter fields rather than erroring.
+- **Claude Code ≥ 2.1.248** — the floor is set by the newest frontmatter key the seats use (`experimental.cacheTtl`, 2.1.248). Not enforceable in `plugin.json` (no engine/min-version field exists) — older CLIs silently ignore a newer frontmatter field rather than erroring, so a seat below the floor runs, just without the setting.
 - **The `chrome-devtools` MCP server**, for the two rendered passes only (`/visual-review`, `/accessibility-review` — everything else runs without it):
   ```
   claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
@@ -56,6 +56,7 @@ Skills/agents load namespaced as `team-justin:*` (e.g. the lead is `/team-justin
 - The four are their own skills, so you type them directly and the lead never loads. All user-invoked by design: the agent can't fire them, which is what keeps a deferred want from becoming work you didn't ask for.
 - Land it: `/team-justin:landed` — the PR merged, so sync the session back onto the base branch and retire the spent one. It verifies the merge on GitHub rather than in git, because a squash merge makes `git branch -d` refuse a branch that has landed; it stops on uncommitted changes, on commits the PR never had, and on a base that diverged locally.
 - Fix the comments: `/team-justin:comment-fix [<path> | <branch> | <pr number>]` — audits the target's comments against the house standard (lowercase, written for the next reader of the code, never for whoever asked) and fixes them in place: cuts narration, restatement and commented-out code, restores comments a refactor dropped, and leaves directives, doc comments and code untouched. Every hunk it produces is a comment line.
+- Keep up: `/team-justin:update` — sweeps what shipped to Claude Code since the last sweep and reports what the team should adopt, consider, or has already declined, each with the file it lands in. Verdicts only; `/team-justin:roster` wires them. Its ledger (`skills/update/reviewed.md`) carries the mark and the standing decisions.
 
 ## Principles
 - **Official sources first** — no agent answers framework/API specifics from training data; it resolves via the official MCP/skill/plugin in `SOURCES.md`.
