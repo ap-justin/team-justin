@@ -28,7 +28,7 @@ Those three are also the finding names — `audit.md`.
 
 ### The ladders — closed sets of values
 
-**color** — *set:* N steps per ramp × the ramps the product needs (neutral, accent, one per status the copy actually distinguishes). *Rule:* what each step is for, by role — app background · component background at rest/hover/active · border at rest/hover/focus · the solid fill · the ink that reads on it · low- and high-contrast text.
+**color** — *set:* N steps per ramp × the ramps the product needs (neutral, accent, one per status the copy actually distinguishes). *Rule:* what each step is for, by role — app background · component background at rest/hover/active · border at rest/hover/focus · the solid fill · the ink that reads on it · low- and high-contrast text. The index **is** the job, so interaction is step arithmetic — a solid's hover is the next step along the ramp, its press the one beyond — and it inverts for free in dark mode, where a ladder named for lightness (50–900) has to be rewritten. A ramp declares only the steps something spends: a two-step status ramp is **whole**, not a stub.
 **Default it corrects:** a palette declared straight into semantics (`--primary`, `--primary-hover`, `--primary-light`) with no ramp beneath. The fourth state anyone needs has no step to take, so someone reaches for a one-off `color-mix()`, and the **fill-vs-ink** distinction — the largest single source of drift — is unrecoverable from the values.
 
 **typography** — *set:* the scale's steps and ratio, the faces by role, the weights actually loaded. *Rule:* every step is a **bundle** — size, weight, line-height, tracking bound under one name, plus the measure it's read at. A component spends a bundle.

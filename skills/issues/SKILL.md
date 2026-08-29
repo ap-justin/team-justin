@@ -28,7 +28,7 @@ Print the defect files the store holds. `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *
 
    Count severities, and count repeated paths across the `Call sites` lines that **are** filled in. A cluster earns its line at two or more files. Nothing concentrates, or too few files carry call sites to tell → print the counts alone and stop; a cluster is worth naming only when the files actually name one.
 4. **With `$ARGUMENTS`** → an exact slug, else a case-insensitive substring over slug and heading. One hit prints whole. Several print as a list of just those, for the user to pick from. No hit says so and stops.
-5. **Every file listed is live.** Membership is the status — a defect file exists until the change that fixes its bug deletes it — so the list carries no status column and you infer none.
+5. **Every file listed is open.** Membership is the status — a defect file exists until the change that fixes its bug deletes it — so the list carries no status column and you infer none.
 6. **Hand it back and stop.** Filling a stub in is a normal `/team-justin:lead <task>`, and the user is the one who picks it. Return to whatever was in flight.
 
 ## Guardrails
