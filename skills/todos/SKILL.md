@@ -44,6 +44,6 @@ Stale says *old*, which is a fact off the line — never *done*, which nothing h
 
 ## Guardrails
 
-- **`/team-justin:todo` is the only writer.** A line that looks stale, shipped, or duplicated prints exactly as filed; a quiet edit loses a want silently.
+- **A `todos` run leaves the file exactly as it found it.** A line that looks stale, shipped, or duplicated prints exactly as filed — a quiet edit loses a want silently. Two verbs move the file and neither is this one: `/team-justin:todo` files a line, and `/team-justin:lead pull` retires one once the work has actually landed.
 - **Anything you'd have to fetch stays out** — no `Explore`, no grep, no opening a file a line names, no checking whether it's since been done. The `ls` in *Stale* is the one exception and goes no further. That fetch is the work the user deferred, and *which of these to do next* stays `brief`'s call to make with the user: this skill orders the list, it doesn't pick off it.
 - **Defects live in `issues/`** — `/team-justin:issues` prints those.
