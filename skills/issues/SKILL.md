@@ -1,39 +1,73 @@
 ---
 name: issues
-description: Print the project's known defects — the plan store's issues/, listed or one file in full.
+description: Work the project's known defects — reconcile issues/ against the code, size each fix, propose a batch, and fix what the user picks.
 disable-model-invocation: true
 argument-hint: "[slug | substring]"
 ---
 
-Print the defect files the store holds. `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`issues/`* holds the lifecycle; this skill runs without reading it.
+Take the defect list to the user as a decision, not a listing. The artifact is `issues/` at the plan store root, one file per bug; `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`issues/`* holds its lifecycle. Membership is the status: a file exists until the change that fixes its bug deletes it, so an empty dir is a true *no known defects*.
 
-**Verbatim.** A defect file reaches the user in its own words, every `_not investigated_` marker intact — that marker is what keeps a cheap stub from reading as a finished write-up, and summarizing one launders exactly the claim `issues/` exists to keep honest. **Zero-derail**: read, print, inline, spawn nothing, then back to whatever was in flight.
+**The gate is the verb.** Steps 1–3 compute a proposal — no file is edited or deleted until the user has answered §4. Fix *order* is the user's call; they're the PM. This skill is user-invoked so the defect list can't be pulled into a task nobody pointed at it.
 
-## Do
+## 1. Reconcile — every file against the code
 
-1. **List the dir** — `issues/` at `~/.claude/team-justin/management/<project-slug>/`, where `<project-slug>` is the working repo's dir name (no repo → the cwd's). Missing or empty → *no known defects*, said plainly: a fix **deletes** the defect file, so an empty dir is a true claim rather than a shrug. Name `/team-justin:issue <what's wrong>` as the way to open one; the store dir stays exactly as you found it.
-2. **Bare `$ARGUMENTS`** → one line per file, read from its frontmatter and `#` heading (a few lines per file, never the whole write-up):
+List `issues/` at `~/.claude/team-justin/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → *no known defects*, name `/team-justin:issue <what's wrong>`, stop.
 
-   ```
-   critical · <kebab-slug> — <what's wrong, the file's one-liner>   [stub]
-   ```
+Then check each file against the codebase — resolve every cited `file:line`, read the code around it, budgeted at a read pass per file, not a repro. Every file lands in one bucket:
 
-   `[stub]` on any file still carrying `_not investigated_`, so the list is as honest as the files under it. Order `critical` → `high` → `medium` → `low`, alphabetical within a severity. Close on the count and the dir's path. Done when every file in the dir has a line.
-3. **Close the list on concentration** — the Pareto read, and it is arithmetic over filed fields, never a guess. Two or three lines at most, each stating its own denominator:
+- **fixed** — the wrong behaviour is verifiably gone: the path was removed or the condition is now handled. Cite the `file:line` or commit that shows it.
+- **moved** — still wrong, but a cited `file:line` no longer resolves. Note the new anchor.
+- **open** — still wrong where it says.
 
-   ```
-   7 defects — 1 critical, 2 high, 4 medium · 3 are stubs
-   4 of 7 cite `src/billing/` in Call sites — the densest cluster
-   ```
+A file still carrying `_not investigated_` is a **stub**; a read pass may fill a stub's `Call sites` from what it actually found, filed as a proposal for §4 — never `Root cause`, `Repro` or `Blast radius`, which need the investigation a fix is.
 
-   Count severities, and count repeated paths across the `Call sites` lines that **are** filled in. A cluster earns its line at two or more files. Nothing concentrates, or too few files carry call sites to tell → print the counts alone and stop; a cluster is worth naming only when the files actually name one.
-4. **With `$ARGUMENTS`** → an exact slug, else a case-insensitive substring over slug and heading. One hit prints whole. Several print as a list of just those, for the user to pick from. No hit says so and stops.
-5. **Every file listed is open.** Membership is the status — a defect file exists until the change that fixes its bug deletes it — so the list carries no status column and you infer none.
-6. **Hand it back and stop.** Filling a stub in is a normal `/team-justin:lead <task>`, and the user is the one who picks it. Return to whatever was in flight.
+**Done when every file has a bucket** — fixed + moved + open equals the number of files in the dir.
+
+## 2. Score — every open file carries an effort
+
+`severity` is filed (`low`–`critical`) and is the value axis; leave it as filed. `effort` is `1`–`5` (`TRACKER.md` anchors), sized from the §1 read: a bare digit is the user's, `~n` is a proposal. A file with none gets `~n` now; a `~n` is re-read and kept or revised, still `~`. The user confirms or corrects at §4 and the tilde drops then — never on your own read.
+
+## 3. Rank and propose the batch
+
+**Rank**: `critical` → `high` → `medium` → `low`, then `effort` ascending, then **newest first** (file mtime) — a fresh defect is still reproducible in the code as filed. A `~n` ranks as `n`.
+
+**Batch** = the top-ranked open files whose `effort` is `1`–`2`, on **different seams** so one review pass covers them, capped at what one session fixes without a brief. `$ARGUMENTS` narrows: an exact slug takes that file, anything else filters slug and heading by case-insensitive substring. A filtered run still reconciles and scores the whole dir; only the batch narrows.
+
+## 4. Gate — show it, then wait
+
+One message, then stop:
+
+```
+reconcile
+  fixed   <slug> — src/x.ts:42 now handles the nil case          → delete?
+  moved   <slug> — src/x.ts:42 → src/y.ts:18                     → re-anchor?
+scores
+  high     <slug> — effort: ~1   (new)                 [stub · call sites found: src/x.ts:42]
+  medium   <slug> — effort: ~3 → ~2                    (rescored)
+batch
+  critical <slug> — effort: ~1 — <one sentence: the fix you'd make>
+  high     <slug> — effort: 2  — <one sentence>
+rest: 4 open, ranked: <slug> (medium · 3) · <slug> (low · ~2 · stub) · …
+```
+
+The user strikes, adds, confirms and corrects digits, accepts or declines each file edit. **Nothing is written before they answer.** No answer → the dir is exactly as you found it; say so and return to whatever was in flight.
+
+## 5. Fix what they picked
+
+On the user's answer, in this order:
+
+1. **Apply the file edits they confirmed**: delete confirmed-fixed files; re-anchor confirmed moves; write found call sites into stubs; write confirmed digits bare, still-unconfirmed ones `~`.
+2. **Each accepted batch file** → one of three outcomes, named individually:
+   - **fixed** — `lead` Step 3 routing, Step 4 review, **one commit per file** with the repro test that replaces the write-up; the file is **deleted** at Step 4.5, in the same change.
+   - **already fixed** — turned out gone on contact. Delete the file, change nothing.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/team-justin:lead brief`. Say which; never half-fix it to justify the batch.
+3. **Report**: what was fixed against which commits, what was deleted as fixed, what was rescored and to what, and the dir's file count before and after.
+
+**Completion criterion: every accepted file has a named outcome, and every file edit the user confirmed is on disk.**
 
 ## Guardrails
 
-- **The bug stays broken here.** Being shown the list is not being asked to fix one: no repro attempt, no root-cause theory, no patch, no offer of one, and no reading of the code a write-up cites. Fixing a defect deletes its file in that same change, along with the repro test that replaces it (`lead` Step 4.5).
-- **The dir goes out unchanged.** `severity` prints as filed even where it reads wrong, and a file that looks stale still prints — only the change that fixes the bug removes one.
-- **The concentration read counts; it doesn't rank.** Severity order and a cited-path cluster both come off what the files say. Fix *order* needs impact and frequency, and a stub's `Blast radius`, `Root cause` and `Call sites` all read `_not investigated_` — so a Pareto curve drawn over stubs is invented, and the honest 80/20 line is the one the filed fields support. What to fix next stays the user's call; they're the PM.
-- **Wants live in `IDEAS.md`** — `/team-justin:todos` prints those.
+- **No write before §4.** Reconcile, found call sites and scores are proposals until the user answers; the dir survives an interrupted run untouched.
+- **Delete only what the user confirmed or what a landed fix closes.** A file that looks stale is *moved* or *open* until §1 shows the behaviour gone.
+- **A stub stays legible as one.** Fields the read pass didn't reach keep their `_not investigated_` marker — an unanchored claim that looks investigated is what `issues/` exists to prevent.
+- **Wants live in `IDEAS.md`** — `/team-justin:todos` works those the same way.

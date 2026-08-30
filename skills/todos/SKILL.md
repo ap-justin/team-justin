@@ -1,49 +1,80 @@
 ---
 name: todos
-description: Print the project's parked wants — the plan store's IDEAS.md, ranked high-value/low-effort first, or one line in full.
+description: Work the project's parked wants — reconcile IDEAS.md against the code, score what's unsized, propose a batch, and build what the user picks.
 disable-model-invocation: true
 argument-hint: "[n | substring]"
 ---
 
-Print what past sessions parked, so the user can see it. The artifact is `IDEAS.md` at the plan store root; `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`IDEAS.md`* holds its lifecycle, and this skill runs without reading it.
+Take the parking lot to the user as a decision, not a listing. The artifact is `IDEAS.md` at the plan store root; `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`IDEAS.md`* holds its lifecycle. This is the one verb where a filed want meets the codebase: `IDEAS.md` only ever grows otherwise — `issues/` is emptied by the fix that closes a file, and a want has no other exit.
 
-**Verbatim, reordered.** Every line reaches the user in the words it was **filed** in, and *filed* is the whole skill: you print what someone else wrote, in the order two numbers someone else wrote put it. That order is the one thing computed here. **Zero-derail**: one read, inline, spawn nothing, then back to whatever was in flight.
+**The gate is the verb.** Steps 1–3 compute a proposal — nothing touches the file until the user has answered §4. The order is arithmetic, the batch is a proposal, *what gets built* is the user's call. Building off the ranking alone is the autonomous triage the parking lot exists to prevent, which is why this skill is user-invoked.
 
-## Do
+**Not a smaller `brief`.** `brief` takes one subject and grills it to exhaustion. `todos` takes several unrelated lines, none of which earns a brief, and lands them. A line that needs the grill leaves here for there (§5).
 
-1. **Read the file** — `IDEAS.md` at `~/.claude/team-justin/management/<project-slug>/`, where `<project-slug>` is the working repo's dir name (no repo → the cwd's). One command. Missing or empty → say so, name `/team-justin:todo <the thing>` as the way to add one, and stop; a read leaves the store exactly as it found it.
-2. **Bare `$ARGUMENTS`** → every headline, ranked (*Rank*), each numbered by its **capture position** — the nth entry in the file:
+## 1. Reconcile — every line against the code
 
-   ```
-   4. <the want> — value: 5 · effort: 1 · plan: — · 2026-07-12
-   1. <the want> — value: ~3 · effort: ~2 · plan: checkout · 2026-05-02 · 119d · effort archived
-   ```
+Read `IDEAS.md` at `~/.claude/team-justin/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → say so, name `/team-justin:todo <the thing>`, stop.
 
-   Out-of-order numbers are the design: `n` survives an append, so `/team-justin:todos 4` means the same line tomorrow. Headlines only — sub-bullets are drill-in detail. Past ~30 entries print the top 20 ranked and count the rest; the **legacy block prints whole at any length**, since a line that never prints is a want that can never be re-decided.
+Then check each headline against the codebase — a targeted grep or file-open per line, `Explore` for the vague ones, budgeted at a read pass, not an investigation. Every line lands in one bucket:
 
-   **Done when every entry is printed or counted** — the ranked block, the legacy block, and any cut count reconcile against the number of entries in the file. Close on that count, the stale count, the `~` count still awaiting the user's read, and the path.
-3. **With `$ARGUMENTS`** → an integer picks that capture-numbered line; anything else is a case-insensitive substring over the headlines. One hit prints whole — headline plus its `_from session:_` sub-bullets, which carry the `file:line`, the constraint, and why it was deferred, none of it reconstructible from the headline. Several hits print as a shorter ranked list keeping their numbers. No hit says so and stops.
-4. **Hand it back** and return to whatever was in flight. A line becomes work when the user takes it to `/team-justin:lead brief`, which reads this same file back during the grill.
+- **done** — the code has since grown it, or another change made it moot. Cite the `file:line` or commit that shows it.
+- **archived** — `plan: <slug>` whose `plan/<slug>/` is gone (`TRACKER.md` deletes it at merge). Still open; note it.
+- **open** — still wanted, as far as the code says.
 
-## Rank — filed `value` over filed `effort`
+Mark age on every line captured 90+ days ago (`· 119d`). Age is a fact off the line; *done* is only what §1 verified.
 
-`value ÷ effort`, descending: `5/1` leads `4/1` leads `5/3`. Ties break to higher `value`, then capture order.
+**Done when every entry has a bucket** — the count of done + archived + open equals the number of entries in the file.
 
-**A `~n` ranks as `n` and prints with its tilde.** The tilde is `todo`'s mark for a number the capturing session proposed and the user has not yet confirmed — it orders the list like any other, and stays visible so the user knows which ranks are theirs. The numbers are the file's, always: a line with none is printed, never sized here — sizing it is the fetch the *Guardrails* ban, wearing a digit.
+## 2. Score — every open line carries two digits
 
-**Legacy lines** — `effort:` holding a slug rather than a digit, from before the field split, or a `?` from before proposals — are unranked and print below under a plain `legacy` heading, in capture order. Say so once at the close: they predate `value:`/`effort:`, and re-filing with `/team-justin:todo` is what scores them.
+`value` / `effort`, `1`–`5` (`TRACKER.md` anchors). Three cases:
 
-## Stale — two signals already in hand
+- **both bare digits** — the user's. Leave them.
+- **`~n`** — a past session's proposal. Re-read it against what §1 just looked at; keep or revise, still `~`.
+- **legacy** (`effort:` holding a slug, a `?`, or no numbers) — size it now from the §1 read, filed `~n`.
 
-Marked on the printed line, never sorted on: an old want filed `value: 5` is still the top line.
+Every `~` is confirmed or corrected by the user at §4 and drops its tilde then. The digits are the user's the moment they answer; they never become bare on your own read.
 
-- Captured **90+ days ago** → append the age (`· 119d`).
-- `plan: <slug>` whose `plan/<slug>/` is gone → append `· effort archived`. `TRACKER.md` deletes that dir once its work merges, so the line has outlived the change it was raised against. One `ls` of the store's own `plan/` reads it — the only lookup this skill makes.
+## 3. Rank and propose the batch
 
-Stale says *old*, which is a fact off the line — never *done*, which nothing here has checked. Close on the count and one sentence: they're re-decided in the next `/team-justin:lead brief` grill.
+**Rank** `value ÷ effort` descending (`5/1` leads `4/1` leads `5/3`); ties to higher `value`, then **newest first** — a fresh line still has its context in the user's head and the code hasn't drifted from it; an old one already wears its age. A `~n` ranks as `n`.
+
+**Batch** = the top-ranked open lines whose `effort` is `1`–`2`, on **different seams** so one review pass covers them, capped at what one session lands without a brief. `$ARGUMENTS` narrows: an integer takes that capture-numbered line (the nth entry in the file — stable across appends), anything else filters headlines by case-insensitive substring. A filtered run still reconciles and scores the whole file; only the batch narrows.
+
+## 4. Gate — show it, then wait
+
+One message, then stop:
+
+```
+reconcile
+  done      3. <headline> — src/x.ts:42 already does this           → delete?
+  archived  7. <headline> — plan: checkout gone                      (stays)
+scores
+  5. <headline> — value: ~4 · effort: ~1   (was legacy)
+  9. <headline> — value: ~3 → ~2 · effort: ~2                          (rescored)
+batch
+  5. <headline> — value: ~4 · effort: ~1 — <one sentence: what you'd do>
+  2. <headline> — value: 5 · effort: 2  — <one sentence>
+rest: 6 open, ranked: 1 (5/3) · 8 (4/3 · 119d) · …
+```
+
+Every done line, every `~` score, and the batch go back **numbered by capture position**. The user strikes, adds, confirms and corrects digits. **Nothing is written before they answer.** No answer → the file is exactly as you found it; say so and return to whatever was in flight.
+
+## 5. Land what they picked
+
+On the user's answer, in this order:
+
+1. **Apply the file edits they confirmed**: delete confirmed-done lines; write confirmed digits bare, corrected digits bare, still-unconfirmed ones `~`.
+2. **Each accepted batch line** → one of three outcomes, named individually:
+   - **built** — `lead` Step 3 routing, Step 4 review, **one commit per line** so a bad one reverts alone; the line is **deleted** at Step 4.5, in the same reconciliation as the commit.
+   - **already done** — turned out moot on contact. Delete the line, build nothing.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it parked or hand it to `/team-justin:lead brief`. Say which; never half-build it to justify the pull.
+3. **Report**: what landed against which commits, what was deleted as done, what was rescored and to what, and the file's entry count before and after. Lines the batch never reached are exactly as filed, plus whatever digit the user confirmed.
+
+**Completion criterion: every accepted line has a named outcome, and every file edit the user confirmed is in the file.** A line that quietly stays without an outcome is a want the user now believes was handled.
 
 ## Guardrails
 
-- **A `todos` run leaves the file exactly as it found it.** A line that looks stale, shipped, or duplicated prints exactly as filed — a quiet edit loses a want silently. Two verbs move the file and neither is this one: `/team-justin:todo` files a line, and `/team-justin:lead pull` retires one once the work has actually landed.
-- **Anything you'd have to fetch stays out** — no `Explore`, no grep, no opening a file a line names, no checking whether it's since been done. The `ls` in *Stale* is the one exception and goes no further. That fetch is the work the user deferred, and *which of these to do next* stays `brief`'s call to make with the user: this skill orders the list, it doesn't pick off it.
-- **Defects live in `issues/`** — `/team-justin:issues` prints those.
+- **No write before §4.** Reconcile and score are proposals until the user answers; the file survives an interrupted run untouched.
+- **Delete only what the user confirmed or what a landed commit satisfies.** Stale is old, not done; a duplicate is two lines until the user says which one goes.
+- **Defects live in `issues/`** — `/team-justin:issues` works those the same way.
