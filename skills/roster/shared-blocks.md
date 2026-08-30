@@ -44,13 +44,13 @@ Full form (13 seats — the default for any seat writing app code; re-derive wit
 For anything TypeScript-the-language — tsconfig/strictness, module-resolution or path-alias breakage, a cryptic type error, a gnarly generic/inference or a `.d.ts`, ESM/CJS, monorepo project references, JS→TS migration, or slow type-checking — load the **`typescript`** skill (cheat-sheet baseline + type craft) and solve it in-context, not from memory. It's ambient craft in the code you're already writing, not a separate hand-off. (That skill excludes the formatter/linter + monorepo task/package graph — Biome/ESLint/Prettier, pnpm, Turborepo are the `toolchain-engineer` seat's; route that to the lead for it.)
 ```
 
-**Short form** — correct when the seat only meets TypeScript at its own narrow surface. Name that surface, then the invariant tail. `cloudflare-builder` (typed `Env`/bindings, `wrangler types`), `toolchain-engineer` (+ the "you own the *task*, that skill owns the *tsconfig*" seam), `vercel-platform-engineer` (config-adjacent), `vercel-perf-optimizer` (typed `dynamic()`, `next.config.ts`) all use it correctly. **These are tailoring, not drift — do not converge them onto the full form.**
+**Short form** — correct when the seat only meets TypeScript at its own narrow surface. Name that surface, then the invariant tail. `cloudflare-builder` (typed `Env`/bindings, `wrangler types`), `toolchain-engineer` (+ the "you own the *task*, that skill owns the *tsconfig*" seam), `vercel-platform-engineer` (config-adjacent), `vercel-perf-optimizer` (typed `dynamic()`, `next.config.ts`), `go-fullstack-builder` (the client side of its wire — its app code is Go) all use it correctly. **These are tailoring, not drift — do not converge them onto the full form.**
 
 Invariant in both forms: loads `` **`typescript`** `` **and** `solve it in-context`, plus a not-from-memory clause.
 
 ## Block I — `## Comments (earn the line)`
 
-Required on every seat carrying **Block B** (18 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
+Required on every seat carrying **Block B** (19 seats — the same list, and it sits **immediately after** Block B in every one of them: both are ambient craft in the code the seat is already writing, so they read as a pair). Re-derive with `grep -L 'Comments (earn the line)' $(grep -l 'TypeScript (shared skill)' agents/*.md)` — it must return nothing.
 
 **Exempt by decision** — record the reason, don't just omit:
 - `graphic-designer` — its p5.js output comes from the `algorithmic-art` template, whose heavy instructional comments are what mark the VARIABLE sections a later run replaces. Pruning them breaks the template's own contract, and the artifact is an image, not code anyone maintains.
@@ -125,7 +125,7 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 
 ## Block D — `## Test-first (shared skill)`
 
-Required on every seat that implements **executable behavior with a specifiable contract** (10 seats: the four framework builders, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
+Required on every seat that implements **executable behavior with a specifiable contract** (11 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
 
 **Exempt by decision** — record the reason, don't just omit:
 - `react-ui-builder`, `svelte-ui-builder` — you can't go red on a layout or a motion curve; their gate is the user's visual-intent inspection. Logic-dense component internals (a reducer, validation rules) route to `test-writer` after the build.
@@ -165,7 +165,7 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 
 ## Block F — `## Scope — build the real path, not every path`
 
-Required on every seat that **writes app code** (13 seats: the four framework builders, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
+Required on every seat that **writes app code** (14 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
 
 ```
 ## Scope — build the real path, not every path
@@ -184,7 +184,7 @@ This bounds **breadth, never rigor**{, and where the bound bites hardest on this
 
 ## Block G — `## Build and return — no self-dispatch`
 
-Required on the seats whose output **renders** (9 seats: the four framework builders, the three UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
+Required on the seats whose output **renders** (10 seats: the four framework builders, `go-fullstack-builder`, the three UI component builders, `cloudflare-builder`, `sanity-builder`) — the ones tempted to boot the app and look.
 
 ```
 ## Build and return — no self-dispatch
@@ -207,7 +207,7 @@ Required on the seats whose output **renders** (9 seats: the four framework buil
 
 ## Block H — `## Match the repo`
 
-Required on the seats that write app code **into an existing tree** (9 seats: the four framework builders, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
+Required on the seats that write app code **into an existing tree** (10 seats: the four framework builders, `go-fullstack-builder`, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
 
 ```
 ## Match the repo
