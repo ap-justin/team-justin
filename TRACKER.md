@@ -81,14 +81,14 @@ The store only stays truthful if the plan moves **with** the code. There is no g
 **`IDEAS.md` — captured, untriaged.** A single flat file at the **store root**, deliberately outside `plan/` so it survives both a `brief.md` rewrite and the effort dir being archived. It is a lossless parking lot: raw ideas don't pollute the current change's brief, and nothing is lost mid-task. Entry format:
 
 ```markdown
-- <one-line want> — _pitched|discovered · value: <1-5|?> · effort: <1-5|?> · plan: <slug> · 2026-07-12_
+- <one-line want> — _pitched|discovered · value: <1-5|~1-5> · effort: <1-5|~1-5> · plan: <slug> · 2026-07-12_
 ```
 
 `pitched` = user, `discovered` = team; `plan` is the effort slug it surfaced in (`—` when none applies); the date is when captured. Capture has no precondition: no store yet → create the dir and the file. The lead **does not triage it** — the next `brief` verb run reads the file back to the user during the grill, and the user (the PM) decides what gets pulled into the change's scope and what stays parked. Until then a line here is a reminder, explicitly **not** a commitment.
 
 **Two numbers, so the list can be read.** `value` and `effort` are `1`–`5`, filed by whoever captured the line and overwritten by the user on sight. They carry no commitment — they exist so `/team-justin:todos` can print the file **ranked `value ÷ effort`**, high value and low effort first, which is the only thing a parking lot that only grows needs to stay usable. Anchors: `value` `1` marginal · `3` clearly worth doing · `5` unblocks other work or fixes something hit repeatedly; `effort` `1` one file under an hour · `3` one focused session · `5` multi-session, wants a brief first.
 
-**`?` is a filed answer, not a gap.** The same cost rule that governs expansion governs scoring: the user's own words win, the loaded session may estimate, and a cold capture writes `value: ? · effort: ?` — opening a file to size the work is the task the user just declined. An unscored line is unrankable by construction and prints below the ranked ones; nothing downstream fills a `?` in, because a guessed score reads identical to a filed one. (`effort` held the plan slug before this split; a line carrying a slug there is legacy, unscored, and rescored only by re-filing.)
+**A `~` marks whose number it is.** The same cost rule that governs expansion governs scoring: the user's own words win and are filed bare; a number the capturing session supplied — from loaded context or from the line's own wording — is filed `~n`, a proposal. It ranks like any digit and prints with its tilde, so the user always sees which ranks they set; it drops when they confirm or correct it (`todo`'s confirmation line, `pull`'s batch gate). Opening a file to sharpen a proposal is the task the user just declined. (`effort` held the plan slug before this split; a line carrying a slug there, or a `?` from before proposals, is legacy, unranked, and rescored only by re-filing.)
 
 **Expansion, when the writer already knows more.** A capture made mid-session — by the lead's sweep, or by `/todo` while a build is loaded — may carry at most **two indented sub-bullets** holding what the writer already had in context: the `file:line`, the constraint, why it's deferred, what it depends on.
 

@@ -14,7 +14,7 @@ The full procedure behind `SKILL.md` → Step 2.56. Reached when the user types 
 
 Default proposal: the top-ranked lines whose filed `effort` is `1`–`2`, touching **different seams** so one review batch covers them, capped at what a session lands without a brief. `$ARGUMENTS` narrows it — an integer takes that capture-numbered line, anything else filters by substring.
 
-**An unscored (`?`) line stays out of the default batch.** Nobody sized it, so a rank it never had can't select it. The user can name one directly; sizing it then becomes the first thing you do, in §3.
+**A `~` line is in the batch on its proposed rank, and the proposal names the tilde.** The user's strike-and-add on the batch is where that number gets confirmed — a line they keep loses its tilde in §3, a line they rescore takes their digit. A legacy line with no digits stays out; the user can name one directly, and sizing it then becomes the first thing you do, in §3.
 
 **Then stop and show it.** The batch goes back numbered, each line with the one-sentence account of what you'd do, and you **wait**. The user strikes and adds. This gate is the whole guardrail: the order is arithmetic, the batch is a proposal, and *what gets built* stays the user's call — the same call `brief` hands them when it reads this file back. Building off the ranking alone is the autonomous triage the parking lot is built to prevent.
 

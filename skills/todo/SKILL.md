@@ -19,15 +19,15 @@ This is the one judgment the skill makes, and the line is **cost, not usefulness
 
 **Expansion adds detail, never commitment.** Past the two numbers below, no triage, no scheduling, no scoping it into the current effort, no verdict on whether it's a good idea. The parking lot is pre-decision by construction — the user is the PM, and thinking it through is `lead brief`'s job, later, if the line is ever pulled into scope.
 
-## Score it in two numbers, or write `?`
+## Score it in two numbers — yours wear a `~`
 
-Every line carries **`value:`** and **`effort:`**, `1`–`5`. They exist for one reason: `/team-justin:todos` ranks the file by them — high value, low effort first — so a parking lot that only grows stays readable. They are **estimates the user overwrites**, and they bind nobody.
+Every line carries **`value:`** and **`effort:`**, `1`–`5`. They exist for one reason: `/team-justin:todos` ranks the file by them — high value, low effort first — so a parking lot that only grows stays readable. They are **estimates the user overwrites**, and they bind nobody. **A number you supplied is written `~n`; a number the user gave is a bare digit.** The tilde is what keeps your read from being mistaken for theirs — it ranks, it prints, and it drops the moment the user confirms or corrects it.
 
 Same cost rule as expansion — score from what you already hold, never from a fetch:
 
 - **The user named it** — "quick one", "big job", "this matters", an explicit `value 4 effort 1` → theirs wins over your read, always.
-- **The session already knows** — you just read the file and it's a one-line change in `src/x.ts`; you just hit the thing this would fix for the third time → estimate.
-- **Neither** → write **`?`**. A cold capture is `value: ? · effort: ?` and that is the correct write, not an unfinished one. Opening a file to size the work *is* the task the user just declined, and a guessed number ranks a line the user never scored.
+- **The session already knows** — you just read the file and it's a one-line change in `src/x.ts`; you just hit the thing this would fix for the third time → estimate, written `~n`.
+- **Neither** → estimate from the line's own words and the anchors below, written `~n`. A cold `value: ~3 · effort: ~2` is a proposal the confirmation hands back for correction; opening a file to sharpen it *is* the task the user just declined.
 
 | n | `value` — payoff if it lands | `effort` — work to land it |
 | --- | --- | --- |
@@ -45,7 +45,7 @@ Same cost rule as expansion — score from what you already hold, never from a f
    Cold — one line, the standing format:
 
    ```markdown
-   - <the thing, one line> — _pitched · value: <1-5|?> · effort: <1-5|?> · plan: <slug|—> · <YYYY-MM-DD>_
+   - <the thing, one line> — _pitched · value: <1-5|~1-5> · effort: <1-5|~1-5> · plan: <slug|—> · <YYYY-MM-DD>_
    ```
 
    With context worth keeping — same line, plus at most two indented sub-bullets:
@@ -57,7 +57,7 @@ Same cost rule as expansion — score from what you already hold, never from a f
 
    `pitched` always — this is the user's channel (`discovered` is for what the team turns up mid-task, the lead's Step 4.5 sweep). `plan` is the effort slug it surfaced in, and takes a slug only when the user names one or the store has exactly one `plan/<effort>/`; otherwise `—`. Never guess an effort to make the line look complete. Cite `file:line` for anything you name — the store sits outside the repo, so an unanchored reference is unfollowable.
 3. **Stay short.** The headline stays one line no matter how much you know; the sub-bullets cap at two. If it's genuinely paragraphs of half-formed thinking the user wants kept whole, write `notes/<slug>.md` instead and say which you did — a note is input, never authority.
-4. **Confirm in one line** — echo the headline **with both numbers**, and its path, and say whether you expanded it or logged it as-is. The numbers ride the confirmation so a wrong one is cheap to fix: if the user corrects either, rewrite that line in place and stop. Then return to whatever was in flight. The next `lead brief` run reads it back; until then it's a reminder, explicitly **not** a commitment.
+4. **Confirm in one line** — echo the headline **with both numbers**, and its path, and say whether you expanded it or logged it as-is. The numbers ride the confirmation so a wrong one is cheap to fix: a `~` number is a proposal awaiting their read — if the user confirms or corrects either, rewrite that line in place with the bare digit and stop. Then return to whatever was in flight. The next `lead brief` run reads it back; until then it's a reminder, explicitly **not** a commitment.
 
 ## Don't
 

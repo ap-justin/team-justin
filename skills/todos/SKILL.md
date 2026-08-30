@@ -16,12 +16,12 @@ Print what past sessions parked, so the user can see it. The artifact is `IDEAS.
 
    ```
    4. <the want> — value: 5 · effort: 1 · plan: — · 2026-07-12
-   1. <the want> — value: 3 · effort: 2 · plan: checkout · 2026-05-02 · 119d · effort archived
+   1. <the want> — value: ~3 · effort: ~2 · plan: checkout · 2026-05-02 · 119d · effort archived
    ```
 
-   Out-of-order numbers are the design: `n` survives an append, so `/team-justin:todos 4` means the same line tomorrow. Headlines only — sub-bullets are drill-in detail. Past ~30 entries print the top 20 ranked and count the scored ones below them; the **unscored block prints whole at any length**, since a `?` that never prints is a want that can never be re-decided.
+   Out-of-order numbers are the design: `n` survives an append, so `/team-justin:todos 4` means the same line tomorrow. Headlines only — sub-bullets are drill-in detail. Past ~30 entries print the top 20 ranked and count the rest; the **legacy block prints whole at any length**, since a line that never prints is a want that can never be re-decided.
 
-   **Done when every entry is printed or counted** — the ranked block, the unscored block, and any cut count reconcile against the number of entries in the file. Close on that count, the stale count, and the path.
+   **Done when every entry is printed or counted** — the ranked block, the legacy block, and any cut count reconcile against the number of entries in the file. Close on that count, the stale count, the `~` count still awaiting the user's read, and the path.
 3. **With `$ARGUMENTS`** → an integer picks that capture-numbered line; anything else is a case-insensitive substring over the headlines. One hit prints whole — headline plus its `_from session:_` sub-bullets, which carry the `file:line`, the constraint, and why it was deferred, none of it reconstructible from the headline. Several hits print as a shorter ranked list keeping their numbers. No hit says so and stops.
 4. **Hand it back** and return to whatever was in flight. A line becomes work when the user takes it to `/team-justin:lead brief`, which reads this same file back during the grill.
 
@@ -29,9 +29,9 @@ Print what past sessions parked, so the user can see it. The artifact is `IDEAS.
 
 `value ÷ effort`, descending: `5/1` leads `4/1` leads `5/3`. Ties break to higher `value`, then capture order.
 
-**A `?` in either number is unrankable, and stays that way.** Those entries print below the ranked ones under a plain `unscored` heading, placed in capture order — by the file, never by a number you supplied. A number you supplied reads identical to a filed one and ranks a want nobody sized; sizing it yourself is the fetch the *Guardrails* ban, wearing a digit.
+**A `~n` ranks as `n` and prints with its tilde.** The tilde is `todo`'s mark for a number the capturing session proposed and the user has not yet confirmed — it orders the list like any other, and stays visible so the user knows which ranks are theirs. The numbers are the file's, always: a line with none is printed, never sized here — sizing it is the fetch the *Guardrails* ban, wearing a digit.
 
-**Legacy lines** — `effort:` holding a slug rather than a digit, from before the field split — are unscored. Say so once at the close: they predate `value:`/`effort:`, and re-filing with `/team-justin:todo` is what scores them.
+**Legacy lines** — `effort:` holding a slug rather than a digit, from before the field split, or a `?` from before proposals — are unranked and print below under a plain `legacy` heading, in capture order. Say so once at the close: they predate `value:`/`effort:`, and re-filing with `/team-justin:todo` is what scores them.
 
 ## Stale — two signals already in hand
 
