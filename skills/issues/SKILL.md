@@ -18,12 +18,13 @@ Then check each file against the codebase — resolve every cited `file:line`, r
 - **fixed** — the wrong behaviour is verifiably gone: the path was removed or the condition is now handled. Cite the `file:line` or commit that shows it.
 - **moved** — still wrong, but a cited `file:line` no longer resolves. Note the new anchor.
 - **open** — still wrong where it says.
+- **tombstone** — `status: resolved` in the frontmatter: a question the user closed as *will not fix*. Counted, never scored, never batched, never proposed for deletion — it exists so this pass does not re-raise it (`TRACKER.md` → *issues/*).
 
 A file still carrying `_not investigated_` is a **stub**; a read pass may fill a stub's `Call sites` from what it actually found, filed as a proposal for §4 — never `Root cause`, `Repro` or `Blast radius`, which need the investigation a fix is.
 
 **Candidates** are the files the read pass covers — the whole dir up to ~15; past that, the top 15 by §3's rank plus every file `$ARGUMENTS` names. Files outside the window stay untouched and are counted at the gate.
 
-**Done when every candidate has a bucket** — fixed + moved + open + counted-out equals the number of files in the dir.
+**Done when every candidate has a bucket** — fixed + moved + open + tombstone + counted-out equals the number of files in the dir.
 
 ## 2. Score — every open file carries an effort
 
@@ -64,6 +65,8 @@ On the user's answer, in this order:
    - **fixed** — `lead` Step 3 routing, Step 4 review, **one commit per file** with the repro test that replaces the write-up; the file is **deleted** at Step 4.5, in the same change.
    - **already fixed** — turned out gone on contact. Delete the file, change nothing.
    - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/team-justin:lead brief`. Say which; never half-fix it to justify the batch.
+   - **declined** — the user chose to carry the risk. Move the file to `archive/declined-<date>/` and add it to that dir's `README.md` with the one-line reason they gave; create both on first use.
+   - **tombstone** — the user closed the premise as wrong. Write `status: resolved` into the frontmatter and their reasoning at the top; the file stays.
 3. **Report**: what was fixed against which commits, what was deleted as fixed, what was rescored and to what, and the dir's file count before and after.
 
 **Completion criterion: every accepted file has a named outcome, and every file edit the user confirmed is on disk.**
