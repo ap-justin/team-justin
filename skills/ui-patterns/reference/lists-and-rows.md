@@ -20,3 +20,15 @@
 **Why:** display names collide and they change. Two users sharing one name each see the other's rows as their own, and a rename silently un-owns everything that person wrote before it. The failure is toward silence — nothing throws, the marker simply sits on the wrong row — so it survives every test that lacks two same-named users.
 **Applies when:** any per-viewer treatment. A name rendered purely as attribution needs no comparison at all.
 
+
+## A table wider than the viewport scrolls inside its own frame
+
+**Trigger:** a data table on a phone-width viewport.
+**Pattern:** wrap the table in one `overflow-x: auto` frame; one rendering at every width.
+**Default it corrects:** a breakpoint that swaps in a second, stacked (card) rendering of the same rows — or a table squeezed to fit because something collapsed its natural minimum.
+**Why:** two renderings are two DOMs to keep true, doubling the markup, the a11y surface and every later edit; a scroller keeps the columns readable and the DOM singular. And the squeeze is usually self-inflicted — `overflow-wrap: anywhere` on an ancestor drops min-content to one character, so the table *can* shrink and does — check what destroyed the minimum before reaching for a breakpoint.
+**Shape:**
+```html
+<div style="overflow-x: auto"><table>…</table></div>
+```
+The frame scrolls; the page never does.

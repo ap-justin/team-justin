@@ -23,9 +23,10 @@ Comments are the deliverable and the only thing that moves. The house standard, 
    **A diff target audits what the change wrote, not every comment in the files it grazed.** Restyling a file's existing comments because a two-line diff passed through buries the change under noise nobody asked for. A path target is the one that means whole files — because the user named them.
 2. **Read the hunks.** Comments are found by reading, not by pattern: a grep for `//` hits every URL in the file, `#` hits every fragment and every shell string, and `/*` hits a regex literal. `git diff -U0` narrows a large target to the changed lines.
 3. **Cut what the file shouldn't be carrying.** Each is a class, not a phrasing:
-   - **Narration** — *added error handling*, *changed from X to Y*, *as requested*, *NEW:*, *this fixes the bug*. A note addressed to whoever asked. The commit is where the change is explained; the file has no memory of the request.
-   - **Restatement** — the comment says what the line says (`// increment the counter`). Pays a line, adds nothing, and goes stale the moment the line changes.
-   - **Archeology** — *previously we used X*, or a compat note naming something no longer in the repo.
+   - **Narration** — *added error handling*, *changed from X to Y*, *as requested*, *NEW:*, *this fixes the bug*, and the decision record — *a throw here beats a cast because…* — that argues for the chosen form over an alternative. A note addressed to whoever asked. The commit is where the change is explained; the file has no memory of the request.
+   - **Restatement** — the comment says what the line says (`// increment the counter`), what the type checker already enforces (*must match the sdk* on a literal typed to one value), or what `package.json` / the lockfile already records (a dependency version). Pays a line, adds nothing, and goes stale the moment the line changes.
+   - **Archeology** — *previously we used X*, a compat note naming something no longer in the repo, or a transition date (*became X at 2024-04-10*) the code is past — say what the default *is*.
+   - **Elsewhere** — the comment describes state that lives in another file, a dashboard, or a setting (*the webhook endpoint pins api_version …* in the client). Written for a reader who isn't in this file, stale when that other thing moves. Move it to where that reader is, or to the plan store.
    - **Commented-out code** — delete it. git has it.
    - **Stale** — the comment describes behavior the code no longer has. Rewrite it to the truth, or cut it. A wrong comment outranks the code in the reader's head, which is why it's the worst line in the file.
 4. **Keep, always:**
