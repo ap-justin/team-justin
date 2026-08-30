@@ -15,7 +15,7 @@ Take the parking lot to the user as a decision, not a listing. The artifact is `
 
 Read `IDEAS.md` at `~/.claude/team-justin/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → say so, name `/team-justin:todo <the thing>`, stop.
 
-Then check each headline against the codebase — a targeted grep or file-open per line, `Explore` for the vague ones, budgeted at a read pass, not an investigation. Every line lands in one bucket:
+Then check each **candidate** against the codebase — a targeted grep or file-open per line, `Explore` for the vague ones, budgeted at a read pass, not an investigation. Every candidate lands in one bucket:
 
 - **done** — the code has since grown it, or another change made it moot. Cite the `file:line` or commit that shows it.
 - **archived** — `plan: <slug>` whose `plan/<slug>/` is gone (`TRACKER.md` deletes it at merge). Still open; note it.
@@ -23,9 +23,11 @@ Then check each headline against the codebase — a targeted grep or file-open p
 
 Mark age on every line captured 90+ days ago (`· 119d`). Age is a fact off the line; *done* is only what §1 verified.
 
-**Done when every entry has a bucket** — the count of done + archived + open equals the number of entries in the file.
+**Candidates** are the lines the read pass covers — the whole file up to ~15 entries; past that, the top 15 by §3's rank (scored lines by `value ÷ effort`, unscored ones by **newest first**, since recency is the only order a digit-less line has) plus every line `$ARGUMENTS` names. A 99-line legacy file is not a read pass; a session that touched 15 and counted 84 is honest, one that skimmed 99 is not. Lines outside the window stay untouched and are counted at the gate.
 
-## 2. Score — every open line carries two digits
+**Done when every candidate has a bucket** — done + archived + open + counted-out equals the number of entries in the file.
+
+## 2. Score — every open candidate carries two digits
 
 `value` / `effort`, `1`–`5` (`TRACKER.md` anchors). Three cases:
 
@@ -56,6 +58,7 @@ batch
   5. <headline> — value: ~4 · effort: ~1 — <one sentence: what you'd do>
   2. <headline> — value: 5 · effort: 2  — <one sentence>
 rest: 6 open, ranked: 1 (5/3) · 8 (4/3 · 119d) · …
+not read: 84 legacy lines, oldest first — next run works the next 15, or name one
 ```
 
 Every done line, every `~` score, and the batch go back **numbered by capture position**. The user strikes, adds, confirms and corrects digits. **Nothing is written before they answer.** No answer → the file is exactly as you found it; say so and return to whatever was in flight.

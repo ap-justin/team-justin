@@ -21,7 +21,9 @@ Then check each file against the codebase — resolve every cited `file:line`, r
 
 A file still carrying `_not investigated_` is a **stub**; a read pass may fill a stub's `Call sites` from what it actually found, filed as a proposal for §4 — never `Root cause`, `Repro` or `Blast radius`, which need the investigation a fix is.
 
-**Done when every file has a bucket** — fixed + moved + open equals the number of files in the dir.
+**Candidates** are the files the read pass covers — the whole dir up to ~15; past that, the top 15 by §3's rank plus every file `$ARGUMENTS` names. Files outside the window stay untouched and are counted at the gate.
+
+**Done when every candidate has a bucket** — fixed + moved + open + counted-out equals the number of files in the dir.
 
 ## 2. Score — every open file carries an effort
 
@@ -48,6 +50,7 @@ batch
   critical <slug> — effort: ~1 — <one sentence: the fix you'd make>
   high     <slug> — effort: 2  — <one sentence>
 rest: 4 open, ranked: <slug> (medium · 3) · <slug> (low · ~2 · stub) · …
+not read: 12 files — next run works the next 15, or name one
 ```
 
 The user strikes, adds, confirms and corrects digits, accepts or declines each file edit. **Nothing is written before they answer.** No answer → the dir is exactly as you found it; say so and return to whatever was in flight.
