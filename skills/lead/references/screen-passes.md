@@ -18,9 +18,10 @@ The other half is tracing: a defect the user spots in a second costs them an hou
 
 What `visual-reviewer` no longer does is table numbers — tap targets are `accessibility-reviewer`'s, off-token values are the repo gate's, and asking this seat for them buys a browser-priced duplicate. **Contrast is nobody's**: the design decided it and it ships as authored, so neither seat reports a ratio and neither one is briefed for one.
 
-Two things bound the batch:
+Three things bound the batch:
 
 - **Cost** — `visual-reviewer` drives a browser for minutes; run it on a slice that renders, not on every commit, and hand it the target pages **and the states you want reached** rather than "the app."
+- **A report path, named per seat** — the brief hands each one the `report:` destination from `SKILL.md` Step 4; the transcripts, path maps and screenshots land there, and the return stays a capped fix list plus a pointer. A "Report" heading only earns its keep once the path under it is written.
 - **Run the suite first on a token-shaped defect** — a literal hex or an off-scale value is already a failing test, and finding it in a browser costs a hundred times more.
 
 ## The user's passes
