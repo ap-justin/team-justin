@@ -9,11 +9,13 @@ A versioned engineering team for Claude Code. A main-thread lead (the `lead` ski
   claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
   ```
   Headless keeps the sweep off your screen, and the flags cap what a screenshot costs in context. It drives its own Chrome on its own profile (`~/.cache/chrome-devtools-mcp/chrome-profile`) — never the browser you are working in. Without it those two seats fall back to auditing statically from source and say so.
+- **`jq`**, for the dispatch-audit hooks (`hooks/`) only — macOS ships it since Sequoia. The hooks fail open without it: sessions run normally, the team just stops journaling its own dispatches for `dispatch-auditor`. Set `TEAM_JUSTIN_NO_AUDIT=1` to switch the audit loop off entirely.
 - **Model access to `claude-opus-5` and `claude-sonnet-5`.** Every agent pins an explicit model ID rather than the floating `opus`/`sonnet` aliases, so behavior is reproducible across installs. If your plan or provider (Bedrock/Vertex/Foundry) doesn't expose those IDs, swap the `model:` line in `agents/*.md` back to the alias.
 
 ## Layout
 - `skills/lead/SKILL.md` — the lead / orchestrator; invokes as `/team-justin:lead` (add the `brief` verb to grill a change and persist its brief). **You are the PM** — the team has no roadmap or prioritization function.
 - `agents/*.md` — specialist subagents.
+- `hooks/` — the dispatch-audit loop: `log-dispatch.sh` journals every team-seat dispatch to a session ledger, `nudge-audit.sh` blocks a stop once while one stands so `dispatch-auditor` runs; findings land in the preference inbox for `/roster learn`.
 - `TRACKER.md` — the user-level plan store: the change's `brief.md` (incl. commit/PR cadence), `planner`'s tickets, captured `IDEAS.md` lines, one file per known defect under `issues/`, and freeform brainstorming under `notes/`. Nothing of it is written into the working repo.
 - `SOURCES.md` — official MCP/skill/plugin each stack must use (official sources first).
 - `ROSTER.md` — current + planned agents, and how to grow the team.

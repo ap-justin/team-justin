@@ -95,7 +95,7 @@ Pick by seat kind, not by whichever peer you opened.
 
 Required on `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`. It **follows** `## Output` and never replaces it: `## Output` is the **report**, this block is the **return**, and separating them is the whole point. Three of these seats say their Output is a skill's template *verbatim* — the caps here must not read as an edit to that template, or the two-callers-one-body rule forks.
 
-Not on the builders/specialists: their `Return:` line is already a path list, which is the shape this block exists to produce. Not on the four text-producing seats: their output **is** the deliverable a next seat consumes.
+Not on the builders/specialists: their `Return:` line is already a path list, which is the shape this block exists to produce. Not on the four text-producing seats: their output **is** the deliverable a next seat consumes. Not on `dispatch-auditor`: its report is the inbox lines it files — the durable artifact lives in the preference store, not in a return — and its return is a single closing line, already the shape this block exists to produce.
 
 ```
 ## What you return (the return is not the report)
