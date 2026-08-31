@@ -41,7 +41,7 @@ Every `~` is confirmed or corrected by the user at §4 and drops its tilde then.
 
 **Rank** `value ÷ effort` descending (`5/1` leads `4/1` leads `5/3`); ties to higher `value`, then **newest first** — a fresh line still has its context in the user's head and the code hasn't drifted from it; an old one already wears its age. A `~n` ranks as `n`.
 
-**Batch** = the top-ranked open lines whose `effort` is `1`–`2`, on **different seams** so one review pass covers them, capped at what one session lands without a brief. `$ARGUMENTS` narrows: an integer takes that capture-numbered line (the nth entry in the file — stable across appends), anything else filters headlines by case-insensitive substring. A filtered run still reconciles and scores the whole file; only the batch narrows.
+**Batch** = the top-**`value`** open lines whose `effort` is `1`–`2`, on **different seams** so one review pass covers them, capped at what one session lands without a brief. Value picks and effort only qualifies — a `value ≤ 2` line stays parked however cheap. Asked why a line is in, answer in product terms — what the user gets — and offer to strike it. `$ARGUMENTS` narrows: an integer takes that capture-numbered line (the nth entry in the file — stable across appends), anything else filters headlines by case-insensitive substring. A filtered run still reconciles and scores the whole file; only the batch narrows.
 
 ## 4. Gate — show it, then wait
 
@@ -80,4 +80,5 @@ On the user's answer, in this order:
 
 - **No write before §4.** Reconcile and score are proposals until the user answers; the file survives an interrupted run untouched.
 - **Delete only what the user confirmed or what a landed commit satisfies.** Stale is old, not done; a duplicate is two lines until the user says which one goes.
+- **A `discovered` line enters the batch only when the user names it** (`$ARGUMENTS`) — a want is the user's to pull; the team's own captures wait at the gate for that.
 - **Defects live in `issues/`** — `/team-justin:issues` works those the same way.

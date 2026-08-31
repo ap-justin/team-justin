@@ -21,6 +21,8 @@ srv := &http.Server{Handler: csrf.Handler(mux)}
 
 Wrap the whole mux, not the routes you remember. `AddInsecureBypassPattern` exists for a webhook route that legitimately has no browser origin — name it in the return when you use it. Pre-1.25 modules do the double-submit cookie by hand: the `__Host-` CSRF cookie compared in constant time against the header the client echoes.
 
+**Vite's dev proxy needs `changeOrigin: false` to pass this guard.** `server.proxy` defaults `changeOrigin: true`, rewriting `Host` to the target while forwarding the browser's `Origin` untouched — the `Origin`-vs-`Host` fallback then refuses every dev mutation with a blanket 403 (dev only; verified on vite 8). Fix the proxy entry — relaxing the guard or rewriting `Origin` in the proxy weakens the shipped check instead.
+
 ## Headers middleware
 One middleware, outermost after recovery, exact values:
 
