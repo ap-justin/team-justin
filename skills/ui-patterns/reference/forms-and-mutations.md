@@ -96,3 +96,24 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Default it corrects:** a status row above the input ("Not set" / "Configured"), a second label, or a Remove checkbox beside the field — plus a snap-back on blur that refills an emptied box.
 **Why:** the status row is a second representation of one fact, and the day it disagrees with the box the operator has no way to tell which is right. The snap-back is the costlier half: it makes deletion the one intent the form cannot express, so the operator retypes a value they meant to remove.
 **Applies when:** the stored value is a scalar the field can seed. A list, or a value the server declines to echo, carries its own state; this is the single-slot case.
+
+## A decoration inside a control is contained by the control, not by its own position
+
+**Trigger:** a control carrying a painted layer behind its text — a fill that tracks progress, a hover wash, a pressed ground.
+**Pattern:** give the label its own `position: relative` so it stacks above the decoration, and `overflow: hidden` to the control so the decoration is clipped to its shape.
+**Default it corrects:** absolutely positioning the decoration inside the control and leaving the text static — which paints the decoration over the words, and runs it past the control's rounded corners.
+**Why:** a positioned element outranks static siblings in paint order whatever the source order, so the text loses without a stacking claim of its own; and a `border-radius` clips only what its element owns an overflow rule for. Both read correct at rest and surface only once the decoration has extent, which is the state a screenshot of the default rarely catches.
+**Shape:**
+```css
+.control { position: relative; overflow: hidden; border-radius: var(--radius-2); }
+.control > .fill  { position: absolute; inset: 0 auto 0 0; }
+.control > .label { position: relative; }
+```
+
+## A control that repairs one of a rung's reasons needs its own condition
+
+**Trigger:** one derived state — `disabled`, `locked`, `pending` — closing both a submit button and the field beside it.
+**Pattern:** before a control reads a shared rung, ask whether *this* control is where one of that rung's reasons gets fixed. Where it is, give it the subset of reasons it cannot repair.
+**Default it corrects:** deriving the text box's `disabled` from the same expression as its button's, once a second reason — nothing entered yet — joins the first on that rung.
+**Why:** the box is closed in exactly the state the operator would type their way out of, so the one input that clears the condition is the one the condition removed. Nothing throws and both controls are correct read alone; the deadlock exists only in the empty state, which is the state nobody opens twice.
+**Applies when:** a rung gains a reason. A rung shared by controls that all merely observe it stays shared.

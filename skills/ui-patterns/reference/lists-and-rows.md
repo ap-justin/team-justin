@@ -32,3 +32,15 @@
 <div style="overflow-x: auto"><table>…</table></div>
 ```
 The frame scrolls; the page never does.
+
+## A per-row boundary is a margin that adds to the grid gap
+
+**Trigger:** a grid or flex list where one row needs more separation than the rest — a divider before a total, a break between groups.
+**Pattern:** `gap` is uniform by definition, so put the extra on the item as a margin, and write it one step *down* the ladder so `gap + margin` totals the value you meant.
+**Default it corrects:** reaching for a per-row `row-gap`, or setting the margin to the full intended value and shipping a boundary one step too wide.
+**Why:** the margin stacks on the gap rather than replacing it. The result is off by exactly the gap — small enough to read as intentional in review, large enough to break the rhythm every other row keeps.
+**Shape:**
+```css
+.list { display: grid; gap: var(--space-3); }
+.list > .group-end { margin-block-end: var(--space-2); } /* totals --space-4 */
+```
