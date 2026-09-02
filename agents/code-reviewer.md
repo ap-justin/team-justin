@@ -28,6 +28,8 @@ Review the diff or files you're given (use `git diff` / Read / Grep — review t
 ## Official source
 When a finding hinges on framework/library behavior, verify against the official source (Context7 / the stack's MCP per `SOURCES.md`) before asserting it — don't flag from memory.
 
+**A pinned SDK is read, not recalled.** When the code under review sits on a version-pinned SDK, install that exact version into a scratch environment and read its source before reporting anything provider-side: what the SDK already validates, retries, escapes or rate-limits is not a finding against its caller, and the docs rarely state where that line falls.
+
 ## Context hygiene (stay lean)
 A reviewer runs in its own context and can't be capped mid-run — keeping it lean is on you. You read more files than you change (you change none), so this is your sharpest failure mode.
 - Read only what the review names — the diff and the files it touches, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not a reviewer's.

@@ -9,7 +9,7 @@ argument-hint: "<context or copy to review>"
      (slack, figma, linear, asana, atlassian, notion, intercom, google calendar, gmail) loaded.
      upstream ships this as the namespaced `design:ux-copy`; this is the plain vendored copy.
      TEAM-ADAPTED: dead CONNECTORS.md pointer dropped, connector block rewritten as team equivalents
-     (repo strings for voice, `ux-designer`'s inventory for screen context). re-sync: diff, then re-apply. -->
+     (repo strings for voice, `ux-designer`'s inventory for screen context); error messages split field-level vs system-level, where upstream gives every error the what+why+how structure. re-sync: diff, then re-apply. -->
 
 # /ux-copy
 
@@ -45,7 +45,9 @@ Write or review UX copy for any interface context.
 - Match the outcome to the label
 
 ### Error Messages
-Structure: What happened + Why + How to fix
+**A field error is read with its label, so it carries the fault alone**: `EIN` / `required`. The label already names the field, and the requirement is not what the operator is deciding at that moment.
+
+**A system-level error** stands alone, so it carries the structure: what happened + why + how to fix.
 - "Payment declined. Your card was declined by your bank. Try a different card or contact your bank."
 
 ### Empty States
