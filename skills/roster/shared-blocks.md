@@ -35,7 +35,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 
 ## Block B — `## TypeScript (shared skill)`
 
-Required on every seat that **writes or edits TypeScript**.
+Required on every seat that **writes or edits TypeScript**. `python-developer` is the one code-writing seat outside it — its artifact is Python and its packaging, with no TS surface at all, so there is nothing for the block to bind; it carries Block I on its own, and the `Comments`-follows-`TypeScript` grep is unaffected because it never enters that grep's input set.
 
 Full form (13 seats — the default for any seat writing app code; re-derive with `grep -lc 'cheat-sheet baseline' agents/*.md` rather than trusting this number):
 
@@ -83,7 +83,7 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 - `not for whoever prompted you` + `belongs in your return` — names the wrong audience the seat defaults to, and where that text does go. The TODO clause rides this bullet rather than its own: same wrong reader (pp. 58–59 — a TODO is not an excuse to leave bad code), and `name it in your return and let the lead call it` is deliberately Block F's escape-hatch phrasing, because a deferred piece of work is a scope call and scope calls route.
 - `Terse over grammatical` + `fragments fine` — grammar is not the bar, and a seat without this clause pays for full sentences it doesn't need.
 
-**Tailored slots**: none. Identical on every seat carrying it, by design — `audit`'s cluster check treats any divergence as drift, same as Block E.
+**Tailored slots**: the **surface syntax only**, and only on a seat whose language isn't JS/TS — an exhaustive list, because anything outside it is drift: the manifest named in the opener (`package.json` → `pyproject.toml`, `go.mod`), the comment marker (`//` → `#`), the identifier casing in the absorbed-comment example (`isEligibleForFullBenefits()` → `is_eligible_for_full_benefits()`), the closing-brace tag where the language has no braces (`} // end try` → `# end try`), and the throw/raise keyword. Every clause, every example's *meaning*, and the bullet order are invariant — normalize those five and the text must match canonical exactly, which is the check to run rather than a visual diff (`python-developer` passes it). Two seats in the same language differing at all is drift, same as Block E.
 
 ## Block C — the return contract
 
@@ -129,7 +129,7 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 
 ## Block D — `## Test-first (shared skill)`
 
-Required on every seat that implements **executable behavior with a specifiable contract** (11 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`).
+Required on every seat that implements **executable behavior with a specifiable contract** (12 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, `web-components-builder`, `python-developer`).
 
 **Exempt by decision** — record the reason, don't just omit:
 - `react-ui-builder`, `svelte-ui-builder` — you can't go red on a layout or a motion curve; their gate is the user's visual-intent inspection. Logic-dense component internals (a reducer, validation rules) route to `test-writer` after the build.
@@ -169,7 +169,7 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 
 ## Block F — `## Scope — build the real path, not every path`
 
-Required on every seat that **writes app code** (14 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
+Required on every seat that **writes app code** (15 seats: the four framework builders, `go-fullstack-builder`, `cloudflare-builder`, `sanity-builder`, both data architects, `better-auth-specialist`, `stripe-specialist`, the three UI component builders, `python-developer`). Reviewers, config seats and the four text-producing seats don't build, so there is no breadth to bound.
 
 ```
 ## Scope — build the real path, not every path
@@ -199,7 +199,7 @@ Required on the seats whose output **renders** (10 seats: the four framework bui
 **Exempt by decision** — record the reason, don't just omit:
 - `vercel-perf-optimizer` — measuring a running app **is** the job; `## Prove the win` is its version of this rule.
 - `toolchain-engineer`, `vercel-platform-engineer`, `fly-platform-engineer` — config; nothing renders to be tempted by.
-- the data/auth/billing specialists — no rendered surface, and their gate is the suite (Block D).
+- the data/auth/billing specialists and `python-developer` — no rendered surface, and their gate is the suite (Block D). The Python seat carries the never-boot clause anyway, tailored: an MCP server is verified by calling its tools in-process from a test, never by launching it and driving a client.
 - reviewers and the four text-producing seats — they don't build.
 
 **Invariant clauses:**
@@ -211,7 +211,7 @@ Required on the seats whose output **renders** (10 seats: the four framework bui
 
 ## Block H — `## Match the repo`
 
-Required on the seats that write app code **into an existing tree** (10 seats: the four framework builders, `go-fullstack-builder`, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
+Required on the seats that write app code **into an existing tree** (11 seats: the four framework builders, `go-fullstack-builder`, the three UI component builders, `sanity-builder`, `vercel-perf-optimizer`, `python-developer`). The specialists that own a whole layer (data, auth, billing, platform, toolchain) carry their own brownfield rule instead — `toolchain-engineer`'s "match the repo's actual package manager" is that rule, and converging it onto this block would lose the package-manager specifics.
 
 ```
 ## Match the repo
@@ -222,7 +222,7 @@ Read `package.json` and {the seat's peer artifacts — existing routes / compone
 - `follow the codebase's conventions` + `over your defaults` — the whole point; a seat that keeps this as "follow conventions" alone loses the tie-break rule
 - ⚠ `Check `package.json` before importing anything — output the install command` — it lives **inside this block** on every seat, never under a heading of its own and never in the quality floor. One home, or it goes missing from whichever seat is written next.
 
-**Tailored slots**: the peer artifacts and the convention axes only.
+**Tailored slots**: the peer artifacts and the convention axes only — plus the **manifest name** in the install-command clause where the seat's stack isn't Node (`go.mod` + `package.json` on `go-fullstack-builder`, `pyproject.toml` + the lockfile with `uv add …` on `python-developer`). The clause's shape is invariant; which file it names is not.
 
 ## Block J — the contrast clause
 

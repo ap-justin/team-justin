@@ -1,8 +1,8 @@
 {
   "name": "team-justin",
   "displayName": "Claude Engineering Team",
-  "version": "0.47.0",
-  "description": "A versioned engineering team for Claude Code — a lead skill that scopes work, detects the stack, and routes to 29 specialist subagents (builders, reviewers, design, platform).",
+  "version": "0.48.0",
+  "description": "A versioned engineering team for Claude Code — a lead skill that scopes work, detects the stack, and routes to 30 specialist subagents (builders, reviewers, design, platform).",
   "author": {
     "name": "ap-justin"
   },
