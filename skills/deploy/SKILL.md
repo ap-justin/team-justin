@@ -1,6 +1,6 @@
 ---
 name: deploy
-description: Mint this repo's team block — derive its standing answers and write them into .claude/CLAUDE.md. Re-run to re-derive.
+description: Mint this repo's in-repo lead — derive its standing answers, tune its always-loaded .claude/CLAUDE.md to the writing-for-agents standard, and write the team into it in the file's own voice. Re-run to re-derive.
 disable-model-invocation: true
 argument-hint: "[repo path — omit for cwd]"
 ---
@@ -11,11 +11,23 @@ carry is the engagement itself — this stack, this token file, this gate, this 
 again in the routing deliberation it spends reaching a conclusion this repo settled long ago.
 
 This skill runs that derivation once and writes the answers into the repo's `.claude/CLAUDE.md`,
-which loads on every session there with nothing typed. The block is deliberately thin — a pointer at
-`team-justin:lead` plus the sheet — because *how the team works* is needed only once work starts,
-while *who is on the team here* is what tells a session there is a team at all.
+which loads on every session there with nothing typed. **They arrive as prose in that file's own
+voice** — the file belongs to the repo, and a section that reads as a foreign object is one a human
+skips and a later hand-edit works around.
+
+Two jobs: **derive this repo's answers**, and **leave its always-loaded file better than you found
+it**. That file is what every
+session in the repo pays for on every turn, team or no team, and a repo already carrying its own
+sediment does not get better because a good section was appended to it.
 
 ## Do
+
+### 0. Load the standard
+**Load `writing-for-agents`.** Every line you write and every line you touch is always-loaded context
+in every session in this repo — the strictest tier that standard governs. Its `SKILL-MECHANICS.md` is
+skill-only and stays shut.
+
+Completion: the standard is loaded.
 
 ### 1. Derive the sheet
 Read the repo. Every line **cites what it came from**: a line with no derivation is a guess, and a
@@ -42,71 +54,118 @@ Completion: every field carries a value with its derivation, or is absent — be
 answer for it, or because the repo's own docs already are the answer (step 2).
 
 ### 2. Read what the repo already says
-Open the repo's `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*` and `AGENTS.md`. Everything there
-is **already loaded alongside your block**, so a line you repeat is paid for twice and drifts from
-whichever copy is edited first. Derive from those files; restate nothing in them.
+Open the repo's `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*`, `AGENTS.md`, and any nested
+member `CLAUDE.md`. That is the whole always-loaded surface, and reading it in one pass is the vantage
+step 3 works from.
 
-Completion: the sheet answers nothing the repo's own always-loaded files answer.
+Completion: every always-loaded file in the repo is read.
 
-### 3. What earns a line in the block
-The block is **always-loaded context** in every session in that repo, so it is held to
-`writing-for-agents` at its strictest — the two loads, the cache rule, and the no-op test
-(`${CLAUDE_PLUGIN_ROOT}/skills/writing-for-agents/SKILL.md`). Four bars, and a line clears all four
-or it stays out:
+### 3. The bars, and the pass
+Six bars. They govern **the line you add and the line already there alike** — which is what makes
+this a pass over the file rather than an append to it.
 
-1. **The environment is a source of truth; a line restating it is a cache.** A cache earns its load
+1. **Only this repo could produce it.** A line that would read the same in any repo is a no-op paying
+   rent: it changes no behavior against the default, and the model already had it from the plugin.
+   The team's own identity is the standing example — `team-justin:lead` carries it, so a sentence
+   introducing the team is a sentence the pointer already spent.
+2. **A meaning lives in one place.** Everything on this surface is loaded together, so a line
+   repeated across two of these files is paid for twice and drifts from whichever copy is edited
+   first.
+3. **The environment is a source of truth; a line restating it is a cache.** A cache earns its load
    only when the lookup is expensive. `pnpm test` sitting in `package.json` is a one-file lookup and
-   stays there — unless the sheet is adding what the file can't say (what the run *costs*). A **seat
+   stays there — unless the line is adding what the file can't say (what the run *costs*). A **seat
    pointer** earns its line for the opposite reason: reaching it means running a routing table over
    the manifest, which is exactly the expensive lookup a cache is for.
-2. **No line that would read the same in every repo.** That is a no-op paying rent — it changes no
-   behavior against the default, and the model already had it from the plugin.
-3. **The pointer line is a pointer, and its wording is what fires it.** Front-load the leading word,
-   name one trigger per branch, and cut identity the target already carries.
-4. **Every line cites its derivation**, which is what makes the cache checkable on a re-run.
+4. **A pointer's wording is what fires it.** Front-load the leading word, name one trigger per
+   branch, and cut identity the target already carries.
+5. **Every line cites its derivation** — what makes it checkable on a re-run, and what makes a line
+   that has gone stale findable at all.
+6. **Reference only some branches reach sits behind a pointer**, so the lines every session needs
+   stay legible.
 
-Completion: each line names an expensive lookup or an unwritten fact, and none restates the plugin,
-the repo's own docs, or the environment.
+An always-loaded file is added to far more often than it is cut from, so its default state is
+**sediment** — layers that settled because adding felt safe and removing felt risky. Run the bars
+over every line already in it:
 
-### 4. Assemble
-`${CLAUDE_PLUGIN_ROOT}/skills/deploy/block.md` is the shape: constant prose, then the sheet, between
-one pair of markers.
+| Fails | Edit |
+|---|---|
+| reads the same in any repo (1) | delete the sentence whole |
+| states what another always-loaded file states (2) | keep the copy nearest the work, cut the rest |
+| caches a one-file, one-command lookup (3) | cut it, unless it adds what the file can't say |
+| names a doc without the branch that reaches it (4) | front-load the leading word, one trigger per branch |
+| no longer matches disk (5) | re-derive it, or cut it |
+| in-file reference burying the steps around it (6) | disclose it behind a pointer |
+
+**What you keep is the whole point of the file**: the unwritten convention, the reason behind a
+choice, the gotcha no config confesses, the one-way door, the ban whose cost is invisible at the call
+site. Those are load-bearing however long they run — a paragraph earning its length is not sprawl,
+and the repo's voice is not noise. This pass exists to make room for them.
+
+**Every proposed cut names the file that already answers it.** A cut with no such file is not a
+duplication finding — it is a rule you are asking the user to drop, and it reaches them as that
+question, in their words, with what it would cost.
+
+Completion: every line, added or already there, clears all six bars — and every line proposed for
+cutting is named with the file that answers it.
+
+### 4. Blend
+The answers land as a **team section in the host file's own idiom** — the shape derived from that
+file the way the content is derived from the repo. Read what the file already does and match it:
+`${CLAUDE_PLUGIN_ROOT}/skills/deploy/sheet.md` carries the fields, the two lines whose wording is
+fixed, and one sheet rendered in two idioms.
+
+**Placement is the file's own order.** The pointer orients a session before work starts, so it sits
+with the file's other orienting material rather than appended below its last section. A derived fact
+with a natural home in an existing section goes *there* instead — a test's cost beside the repo's
+commands, a token file beside its gate — which leaves the team section holding the seats.
+
+**The stamp** is one HTML comment directly above that section:
 
 ```
-<!-- team-justin vX.Y.Z · /team-justin:deploy · re-run to re-derive -->
-…
-<!-- /team-justin -->
+<!-- team-justin vX.Y.Z · derived YYYY-MM-DD · /team-justin:deploy to re-derive -->
 ```
 
-The markers are what make a re-run an edit rather than a second copy. Rewrite between them and leave
-every other line of the file as it stands.
+It renders as nothing and does two jobs no prose does: it tells a later session the team was deployed
+here, and it carries the plugin version the answers came from — which is what makes them a cache
+rather than a fork.
+
+Completion: the section reads as though the file's own author wrote it, and the stamp carries the
+installed `VERSION`.
 
 ### 5. Confirm, then write
 `.claude/CLAUDE.md` is checked in and read by everyone who clones the repo — teammates without this
-plugin included. Show the block, name the file it lands in, and write on the user's OK.
+plugin included, and the hand that wrote whatever you are proposing to cut. Show one reviewable diff:
+the section going in, and the pass's edits grouped by what each one is (step 3's table). Write on the
+user's OK, per item — they accept, keep, or reword each.
 
-Completion: the file holds exactly one marked block, and the user has seen what went in it.
+Completion: the user has seen every line going in and every line coming out, and the file holds what
+they approved.
 
 ### 6. Report
-The seats this repo runs, the seats it does not, and anything the derivation turned up that the repo
-had never written down. One paragraph, in the user's vocabulary.
+The seats this repo runs, the seats it does not, anything the derivation turned up that the repo had
+never written down, and what the pass reclaimed. One paragraph, in the user's vocabulary.
 
-Completion: every line that went in the block is accounted for in what you said, and every line the
-bars deleted is named with the file that already answers it.
+Completion: every line that went in is accounted for in what you said, and every line that came out
+is named with the file that answers it.
 
-## Re-run — the block's only update path
-A block goes stale from two directions and one verb settles both, because it is a function of
-*(plugin version × repo state)* and re-deriving from scratch answers either.
+## Re-run — the only update path
+The file is a function of *(plugin version × repo state)*, so re-deriving from scratch settles both
+directions it goes stale from:
 
 - **The repo moved** — a dependency swap, a new gate, a design system where there was none. The
   citations are the signal: a derived line that no longer matches disk is a line to re-derive.
 - **The plugin moved** — `/roster learn` promoted a preference, a seat was hired or renamed. The
-  stamp is the signal: a block stamped below the installed `VERSION` is behind.
+  stamp is the signal: a stamp below the installed `VERSION` is behind.
 
-## The line between the plugin and the block
-The block holds the **engagement**; the plugin holds the **practice**. A rule that would still be true
-in the next repo belongs upstream — `/team-justin:remember` files it and `/roster learn` gates it
-(`${CLAUDE_PLUGIN_ROOT}/PREFERENCES.md`). A rule true only here stays in the block.
+**The citations are what make a re-run an edit rather than a second copy.** Each derived line carries
+what it came from, so a re-run reads the file, re-derives, and edits the lines it can account for.
+Everything else in the file is the repo's, whoever wrote it: an answer already stated in someone
+else's words is theirs — cite it and move on.
+
+## The line between the plugin and the repo
+The repo's file holds the **engagement**; the plugin holds the **practice**. A rule that would still
+be true in the next repo belongs upstream — `/team-justin:remember` files it and `/roster learn`
+gates it (`${CLAUDE_PLUGIN_ROOT}/PREFERENCES.md`). A rule true only here stays in the repo.
 
 The plan store stays outside the working repo, its pointer included
-(`${CLAUDE_PLUGIN_ROOT}/TRACKER.md`): the block describes the repo, never where the repo's plans live.
+(`${CLAUDE_PLUGIN_ROOT}/TRACKER.md`): the file describes the repo, never where the repo's plans live.

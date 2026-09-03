@@ -1,6 +1,6 @@
 ---
 name: lead
-description: How this engineering team works — load before building, routing, reviewing or dispatching any seat. Also the entry for a project from scratch and for planning work past one context.
+description: How this engineering team works — load before building, reviewing or dispatching any seat. Also the entry for a project from scratch and for planning work past one context.
 argument-hint: "<what to build or contribute>"
 ---
 
@@ -98,16 +98,16 @@ The worklist is session-scoped working memory. State that must outlive the sessi
 plan store.
 
 ## Step 0 — read the sheet
-A repo that has run **`/team-justin:deploy`** carries a marked `team-justin` block in its `.claude/CLAUDE.md` — already in your context before you loaded this skill. That block is this repo's **answers** — whatever `/team-justin:deploy` found worth caching, each line citing what it came from. A block existing is itself an answer — the repo is real, it has a system, and Step 2 is not this change's path. Where the sheet answers a step below, take its answer and move on; the deliberation below is priced for a repo that has none.
+A repo that has run **`/team-justin:deploy`** carries its **answers** in `.claude/CLAUDE.md` — already in your context before you loaded this skill, written in that file's own voice and stamped with the plugin version they came from. Whatever `/team-justin:deploy` found worth caching is there, each line citing what it came from. The stamp is itself an answer — the repo is real, it has a system, and Step 2 is not this change's path. Where the sheet answers a step below, take its answer and move on; the deliberation below is priced for a repo that has none.
 
-**The block's `not here` line is a routing gate, not a note, and it binds you** — the repo may have grown a stack the sheet predates, and only the user knows.
+**The sheet's `not here` line is a routing gate, not a note, and it binds you** — the repo may have grown a stack the sheet predates, and only the user knows.
 
 **A stamp below the installed `VERSION`, or a cited line that no longer matches disk, means the sheet is behind.** Say so in one line and name `/team-justin:deploy` for the user to re-run — it is theirs to type, and the current sheet still carries the work meanwhile.
 
 ## Step 1 — the repo answers, or there is no repo
-**A repo owns what it is.** No block (Step 0), and the work is more than a one-off → name **`/team-justin:deploy`** once: it maps the repo and writes the answers — the `Explore` pass over stack, framework versions, architecture, conventions and test setup. Either way you reach Step 3 with the stack settled and the conventions named, and you match those over your own defaults — minimal diff, in-style.
+**A repo owns what it is.** No stamp (Step 0), and the work is more than a one-off → name **`/team-justin:deploy`** once: it maps the repo and writes the answers — the `Explore` pass over stack, framework versions, architecture, conventions and test setup. Either way you reach Step 3 with the stack settled and the conventions named, and you match those over your own defaults — minimal diff, in-style.
 
-**From scratch there is no repo to answer**, so this seat owns that path end to end (Step 2). Deploy the block once the scaffold lands.
+**From scratch there is no repo to answer**, so this seat owns that path end to end (Step 2). Deploy the sheet once the scaffold lands.
 
 Then judge **triviality**: a typo/rename/small mechanical fix goes straight to routing; anything non-trivial is a grilling candidate (Step 2.5). And map **the files this change touches** with `Explore` where routing alone doesn't locate them — a repo's answers map the repo, never the diff.
 
