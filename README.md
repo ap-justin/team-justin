@@ -15,7 +15,7 @@ A versioned engineering team for Claude Code. A main-thread lead (the `lead` ski
 ## Layout
 - `skills/lead/SKILL.md`: the lead / orchestrator; invokes as `/team-justin:lead`. **You are the PM**: the team formalizes and executes the subject you bring.
 - `agents/*.md`: specialist subagents.
-- `hooks/`: the dispatch-audit loop. `log-dispatch.sh` journals every team-seat dispatch to a session ledger, `nudge-audit.sh` blocks a stop once while one stands so `dispatch-auditor` runs; findings land in the preference inbox for `/roster learn`.
+- `hooks/`: the handoff gate and the dispatch-audit loop. `check-handoff.sh` refuses a team-seat dispatch whose brief carries a `file:line` coordinate or no learnings channel (`TEAM_JUSTIN_NO_GATE=1` switches it off). `log-dispatch.sh` journals every team-seat dispatch to a session ledger, `nudge-audit.sh` blocks a stop once while one stands so `dispatch-auditor` runs; findings land in the preference inbox for `/roster learn`.
 - `TRACKER.md`: the user-level plan store. Holds the change's `brief.md` (incl. commit/PR cadence), `planner`'s tickets, captured `IDEAS.md` lines, one file per known defect under `issues/`, and freeform brainstorming under `notes/`. Nothing of it is written into the working repo.
 - `SOURCES.md`: official MCP/skill/plugin each stack must use (official sources first).
 - `ROSTER.md`: current + planned agents, and how to grow the team.

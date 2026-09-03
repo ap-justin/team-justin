@@ -16,6 +16,8 @@ The server runs **headless** on a persistent profile at `~/.cache/chrome-devtool
 
 Ask the user to start it, and wait for their confirmation before opening anything. If nothing responds at the target URL, stop and ask — a failed load is theirs to fix, not yours to route around.
 
+One 500 is not the app's: a workspace package's new `exports` entry doesn't reach a running Vite dev server — Node caches the `package.json` it already resolved, so every import of the new subpath fails with *is not exported under the conditions […]* while `tsc` and vitest both pass. Read it as a restart, never as a bad `exports` entry, and ask for the restart in the same slice.
+
 ## 2. Work from snapshots, not screenshots
 
 `take_snapshot` returns the a11y tree with a `uid` per element, and every interaction tool takes that `uid`. Screenshots are for the human reading the report: capture with `filePath` and `Read` the file when a defect needs to be *seen*.
@@ -46,6 +48,19 @@ Chrome locks that directory, so their window and the server's browser take turns
 It takes a function declaration — `() => getComputedStyle(document.querySelector('.x')).outlineWidth` — evaluated fresh each call, so there is no cross-call redeclaration to work around. Ask one question per call and put the value inline next to the finding. `filePath` diverts a large result to a file instead of your context.
 
 `list_console_messages` and `list_network_requests` cover the errors a rendered page hides: a failed fetch, a hydration warning, a 404 on an asset that leaves a gap rather than an error.
+
+## 6. A React-controlled input doesn't see `.value`
+
+Setting `.value` — `fill` with `""` included — fires no React `input` event, so a change-tracking hook never arms and the save press stays disabled. Go through the prototype setter and dispatch; to clear a field, set a different value first, since React skips a dispatch whose value matches its tracker:
+
+```js
+() => {
+  const el = document.querySelector('#host');
+  const set = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+  set.call(el, 'x'); el.dispatchEvent(new Event('input', { bubbles: true }));
+  set.call(el, '');  el.dispatchEvent(new Event('input', { bubbles: true }));
+}
+```
 
 ## Done when
 

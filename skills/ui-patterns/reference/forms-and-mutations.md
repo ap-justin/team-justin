@@ -117,3 +117,11 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Default it corrects:** deriving the text box's `disabled` from the same expression as its button's, once a second reason — nothing entered yet — joins the first on that rung.
 **Why:** the box is closed in exactly the state the operator would type their way out of, so the one input that clears the condition is the one the condition removed. Nothing throws and both controls are correct read alone; the deadlock exists only in the empty state, which is the state nobody opens twice.
 **Applies when:** a rung gains a reason. A rung shared by controls that all merely observe it stays shared.
+
+## A control closes over its own request and reopens over its own answer
+
+**Trigger:** a box or button whose `disabled` reads a page-wide pending flag — "the app is writing".
+**Pattern:** close a control while its own request is in flight and while another press writes; reopen it on the render its answer lands in. Derive `disabled` from the control's own request phase, never the page's.
+**Default it corrects:** `disabled={isSubmitting}` on every control from one global flag, plus an effect that focuses the field a refusal named.
+**Why:** the page-wide flag is still up on the render the refusal arrives in, and `element.focus()` on a disabled control is a silent no-op — the effect fires once, moves nothing, never re-runs once the flag drops. The operator reads a refusal on a box they can't type into. The fix is the disabled reading, not the effect.
+**Applies when:** the answer lands while the page is still revalidating; the framework seat's prompt names the mechanism.

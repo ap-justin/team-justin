@@ -31,6 +31,7 @@ The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a fo
 - **Flash** — `session.flash()` on cookie session storage, set before the redirect and consumed by the next `loader`.
 - **Same-screen save** — `useFetcher` (a fetcher doesn't navigate at all), or `<Form preventScrollReset>` where it must navigate.
 - **Validation failure** — the action returns the field error map with a 4xx rather than redirecting, and the route reads it back through `useActionData`/`fetcher.data`, so the form keeps its input and the component can put focus where the map says.
+- **Pending reading** — `navigation.formData` stays attached through `loading`, and `actionData` commits in the same update that starts it, so a label keyed on the intent alone reads *Sending…* over a refusal for the whole revalidation. Read the phase with the intent: `submitting` is pending, `loading` is the answer landing. `actionData` is the most recent submission's only — a later navigation or fetcher-driven revalidation drops it — so a refusal the form must keep holding a press back over is lifted into component state.
 
 ## Match the repo
 Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route config) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
