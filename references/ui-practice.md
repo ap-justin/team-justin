@@ -1,6 +1,6 @@
 # UI — the design is made in Claude Design, the system is owned by the repo
 
-Behind `SKILL.md` → Step 2, *Greenfield UI* **and** *Brownfield UI*. Read it when any UI build starts: greenfield enters at *Bootstrap*, brownfield enters at *Steady state*.
+The team's UI doctrine, read directly by the three UI component builders, `ux-designer`, `design-system`, `design-gallery`, and `lead`'s from-scratch path. Read it when any UI build starts: from scratch enters at *Bootstrap*, an existing repo at *Steady state*.
 
 The look is made in **Claude Design**, which invents one better than a plan written in prose and better than any seat here. What the team owns is the **material** it designs with — the repo's real token file and its real components — and the **conformance gate** that keeps a build inside them.
 

@@ -22,9 +22,17 @@ any project (cwd = someone's repo)         ~/.claude/team-justin/
                                 agents/<seat>.md              (targeted prompt edits)
                                 skills/<owner>/SKILL.md       (incl. lead — orchestration-wide rules)
                                 → commit + tag  (minor bump)
+                                              │
+                                     /team-justin:deploy      (typed in a repo)
+                                              ▼
+                              that repo's .claude/CLAUDE.md
+                                the marked block — this engagement's answers,
+                                stamped with the plugin version they came from
 ```
 
-Two halves, mirroring the `IDEAS.md` → `lead brief` promotion the team already runs: **cheap lossless capture**, then a **curated, human-gated sweep** that edits the team.
+Three arrows, one circuit. **Cheap lossless capture**, then a **curated, human-gated sweep** that edits the team (mirroring the `IDEAS.md` → `/team-justin:brief` promotion the team already runs), then the **return leg**: a repo picks the evolved practice back up by re-running `/team-justin:deploy`, which re-derives its block against the newer plugin.
+
+**The plugin holds the practice; a repo's block holds the engagement.** That split is what the sweep routes on — a preference that would still be true in the next repo goes upstream into a seat or a skill, one true only where it surfaced goes into that repo's block (`skills/roster/learn.md` → step 2). The plugin is the same in every engagement, which is exactly why nothing client-specific may land in it.
 
 ## Tier 1 — capture (the inbox)
 
@@ -47,7 +55,7 @@ Entry format — one line, untriaged, lossless (mirrors the `IDEAS.md` line):
 
 - **lane tag** `[design|code|workflow]` — routes the sweep to the right destination.
 - **source** `user` or `agent:<seat-slug>` — who captured it.
-- **project** the repo slug it surfaced in (context for the sweep), then the date captured.
+- **project** the repo slug it surfaced in, then the date captured. The slug is the **promotion bar**, not just context: the sweep collapses a group to its distinct slugs, and one slug reads as that client where two or more read as the team (`skills/roster/learn.md` → step 1).
 - Optional `→ patterns/<slug>.md` when a concrete artifact backs it.
 
 Capture never derails the task — park the line, keep working (`IDEAS.md` discipline).

@@ -5,7 +5,9 @@ The **promote** half of the preference loop (`PREFERENCES.md`): read the cross-p
 Run this **from the plugin source repo** (it commits the plugin), not a product repo. The inbox is user-global, so it's the same source wherever you run it.
 
 ## 1. Read the inbox
-Read `~/.claude/team-justin/inbox.md` (+ `~/.claude/team-justin/patterns/`). If missing or empty, say so and stop — nothing to sweep. Group the lines by lane (`design`/`code`/`workflow`), **dedupe** (collapse repeats, merge near-duplicates), and **drop noise** (one-off, contradictory, or too vague to act on — call these out so the user can override).
+Read `~/.claude/team-justin/inbox.md` (+ `~/.claude/team-justin/patterns/`). If missing or empty, say so and stop — nothing to sweep. Group the lines by lane (`design`/`code`/`workflow`), **dedupe** (collapse repeats, merge near-duplicates), and **drop noise** (contradictory, or too vague to act on — call these out so the user can override).
+
+**Count engagements, not lines.** Every inbox line is stamped with the project slug it came from, and that stamp is what separates an anecdote from a practice: the same preference from **one** repo is that client, from **two or more** it is the team. Collapse a group to its distinct slugs and carry the count into step 2 — it is what decides destination. The bar is advisory, so a one-slug line the user recognizes as doctrine still promotes; say the count and let them override.
 
 ## 2. Route each keeper to a destination
 For each surviving preference, pick the narrowest home:
@@ -14,7 +16,8 @@ For each surviving preference, pick the narrowest home:
 - **Cross-seat** (several seats should carry it) → the same targeted edit in each affected seat, or the owning skill (`lead` SKILL.md for orchestration-wide rules). There is no central style file — plugins can't ship auto-loaded context, so a preference lives where the seat already reads (see `PREFERENCES.md` → *The destination*).
 - **Reusable concrete pattern** → keep the `patterns/<slug>.md` artifact in the plugin (copy it under a repo path if you want it version-shared), referenced from the seat/skill that uses it.
 
-A preference that's really project-specific (not about the team) doesn't belong here — flag it to go to that project's plan store (`~/.claude/team-justin/management/<project-slug>/`, `TRACKER.md`) instead.
+- **One engagement, and it describes that repo rather than the team** (its gate, its runner's cost, its own subsystem) → the repo's **sheet**, the marked block `/team-justin:deploy` mints in its `.claude/CLAUDE.md`. Name the repo and the line you'd add, and leave the typing to the user: this skill edits the plugin, and a sweep that reaches into product repos would be the plugin editing engagements it isn't in.
+- **Project-specific and about the *product*** (a want, a defect, a decision) → that project's plan store (`~/.claude/team-justin/management/<project-slug>/`, `TRACKER.md`).
 
 ## 3. Propose, then gate
 Show the user the full set of proposed diffs (agent-prompt + skill edits), grouped by destination, each with the inbox line it came from. **Land nothing until the user approves** — editing an agent prompt has global blast radius. The user can accept, drop, or reword per item.

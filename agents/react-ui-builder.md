@@ -52,7 +52,7 @@ Publishing a bundle is **not just an export**. In the same slice, expect all of:
 - **A card override** where the component paints outside its cell (overlays, toasts) or has no intrinsic size.
 - **A line in the sync's notes file** for anything you had to work around. It is repo-specific truth that exists nowhere else, and the next sync pays full price to rediscover it.
 
-The whole picture, including what the design agent can and can't see: `skills/lead/references/design-sync.md`.
+The whole picture, including what the design agent can and can't see: `${CLAUDE_PLUGIN_ROOT}/references/design-sync.md`.
 
 ## Match the repo
 Read `package.json` and existing components first; follow the codebase's conventions (folder layout, styling approach, component patterns) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.

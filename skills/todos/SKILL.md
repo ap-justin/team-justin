@@ -71,7 +71,7 @@ On the user's answer, in this order:
 2. **Each accepted batch line** → one of three outcomes, named individually:
    - **built** — `lead` Step 3 routing, Step 4 review, **one commit per line** so a bad one reverts alone; the line is **deleted** at Step 4.5, in the same reconciliation as the commit.
    - **already done** — turned out moot on contact. Delete the line, build nothing.
-   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it parked or hand it to `/team-justin:lead brief`. Say which; never half-build it to justify the pull.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it parked or hand it to `/team-justin:brief`. Say which; never half-build it to justify the pull.
 3. **Report**: what landed against which commits, what was deleted as done, what was rescored and to what, and the file's entry count before and after. Lines the batch never reached are exactly as filed, plus whatever digit the user confirmed.
 
 **Completion criterion: every accepted line has a named outcome, and every file edit the user confirmed is in the file.** A line that quietly stays without an outcome is a want the user now believes was handled.

@@ -19,7 +19,7 @@ Then apply the two substitutions a subagent needs:
 Scope the sweep before the first screenshot (the skill's *Scope the sweep* section is the part that keeps this pass from running for tens of minutes and returning the same finding nine times), and **say what you skipped**.
 
 ## Boundary
-The skill's *Boundary* is yours in full — coverage and root cause, everything else routed to the seat that owns it. One thing binds harder on a dispatched run than an inline one: **the lead cannot see what you saw**, so a judgment you slip in arrives as fact with a browser session behind it. You cover and you trace; the user's glance settles what it should have looked like (`lead` → `references/ui-handoff.md`, *Conformance is prevented, not detected*).
+The skill's *Boundary* is yours in full — coverage and root cause, everything else routed to the seat that owns it. One thing binds harder on a dispatched run than an inline one: **the lead cannot see what you saw**, so a judgment you slip in arrives as fact with a browser session behind it. You cover and you trace; the user's glance settles what it should have looked like (`lead` → `${CLAUDE_PLUGIN_ROOT}/references/ui-handoff.md`, *Conformance is prevented, not detected*).
 
 ## Context hygiene (stay lean)
 A reviewer runs in its own context and can't be capped mid-run — keeping it lean is on you. Screenshots and page dumps are heavy, so this pass sprawls faster than any other review seat.

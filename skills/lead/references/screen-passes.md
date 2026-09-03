@@ -6,9 +6,9 @@ Detail behind `SKILL.md` → Step 4, *Screen passes*. Reached on UI work; a non-
 
 `visual-reviewer` and `accessibility-reviewer` are review-only agents whose entire body is the corresponding skill file — same rules, same output, same boundaries, read from the one copy. **Two callers, one body:** the user still types `/visual-review` · `/accessibility-review` and gets the pass inline; you spawn the seat and get it in an isolated context, in parallel with your other Step 4 gates.
 
-**Conformance is the repo's own gate**, written in Phase 0 and run at every commit (`ui-handoff.md` → *Conformance is prevented, not detected*) — so an off-token value is already a failing test by the time a pass could look, and neither seat here is briefed for one.
+**Conformance is the repo's own gate**, written in Phase 0 and run at every commit (`${CLAUDE_PLUGIN_ROOT}/references/ui-handoff.md` → *Conformance is prevented, not detected*) — so an off-token value is already a failing test by the time a pass could look, and neither seat here is briefed for one.
 
-What that reversal does **not** touch is what a pass may conclude. `visual-reviewer` returns **breakage and causes, never a verdict on intent** — whether the build looks like the design stays the user's glance, and it's prevented upstream by a closed token file (*Conformance is prevented, not detected*, `ui-handoff.md`). Dispatching the pass buys you coverage and rule violations; it does not buy you the design gate, and it never replaces the user's look.
+What that reversal does **not** touch is what a pass may conclude. `visual-reviewer` returns **breakage and causes, never a verdict on intent** — whether the build looks like the design stays the user's glance, and it's prevented upstream by a closed token file (*Conformance is prevented, not detected*, `${CLAUDE_PLUGIN_ROOT}/references/ui-handoff.md`). Dispatching the pass buys you coverage and rule violations; it does not buy you the design gate, and it never replaces the user's look.
 
 ## Brief them for coverage and cause, because that's the only part they win
 

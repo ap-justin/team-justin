@@ -64,7 +64,7 @@ On the user's answer, in this order:
 2. **Each accepted batch file** → one of three outcomes, named individually:
    - **fixed** — `lead` Step 3 routing, Step 4 review, **one commit per file** with the repro test that replaces the write-up; the file is **deleted** at Step 4.5, in the same change.
    - **already fixed** — turned out gone on contact. Delete the file, change nothing.
-   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/team-justin:lead brief`. Say which; never half-fix it to justify the batch.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/team-justin:brief`. Say which; never half-fix it to justify the batch.
    - **declined** — the user chose to carry the risk. Move the file to `archive/declined-<date>/` and add it to that dir's `README.md` with the one-line reason they gave; create both on first use.
    - **tombstone** — the user closed the premise as wrong. Write `status: resolved` into the frontmatter and their reasoning at the top; the file stays.
 3. **Report**: what was fixed against which commits, what was deleted as fixed, what was rescored and to what, and the dir's file count before and after.

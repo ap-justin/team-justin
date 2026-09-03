@@ -3,7 +3,7 @@ name: grilling
 description: Grill the user relentlessly about a plan, decision, or idea. Use when the user wants to stress-test their thinking, or uses any 'grill' trigger phrases.
 ---
 
-<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/grilling`. Plan/design stress-test — the engine under the lead's `brief` verb (Step 2.55) and its Step 2.5 grilling judgment; also feeds `planner`'s input. Kept verbatim minus the Codex `agents/openai.yaml` metadata (unused here); re-sync: re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/productivity/grilling/. -->
+<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/grilling`. Plan/design stress-test — the engine under `/team-justin:brief` and the lead's Step 2.5 grilling judgment; also feeds `planner`'s input. Kept verbatim minus the Codex `agents/openai.yaml` metadata (unused here); re-sync: re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/productivity/grilling/. -->
 
 Interview the user relentlessly until you reach a shared understanding. Map this as a **design tree**: every decision branches into the decisions that hang off it.
 

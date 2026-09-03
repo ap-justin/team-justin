@@ -17,7 +17,7 @@ This is the one judgment the skill makes, and the line is **cost, not usefulness
 - **Cold, or the context is unrelated** — fresh session, or they're parking something you know nothing about → **log the line as they said it** and stop. No exploration to make it look better.
 - **The test, before writing anything extra:** *would knowing this require a tool call?* If yes, you don't know it — leave it out. No `Explore`, no grep, no opening a file, no checking whether it's already done, no dedupe against existing lines. A skill that "helpfully" investigated would turn a deferred want into work nobody asked for.
 
-**Expansion adds detail, never commitment.** Past the two numbers below, no triage, no scheduling, no scoping it into the current effort, no verdict on whether it's a good idea. The parking lot is pre-decision by construction — the user is the PM, and thinking it through is `lead brief`'s job, later, if the line is ever pulled into scope.
+**Expansion adds detail, never commitment.** Past the two numbers below, no triage, no scheduling, no scoping it into the current effort, no verdict on whether it's a good idea. The parking lot is pre-decision by construction — the user is the PM, and thinking it through is `/team-justin:brief`'s job, later, if the line is ever pulled into scope.
 
 ## Score it in two numbers — yours wear a `~`
 
@@ -57,7 +57,7 @@ Same cost rule as expansion — score from what you already hold, never from a f
 
    `pitched` always — this is the user's channel (`discovered` is for what the team turns up mid-task, the lead's Step 4.5 sweep). `plan` is the effort slug it surfaced in, and takes a slug only when the user names one or the store has exactly one `plan/<effort>/`; otherwise `—`. Never guess an effort to make the line look complete. Cite `file:line` for anything you name — the store sits outside the repo, so an unanchored reference is unfollowable.
 3. **Stay short.** The headline stays one line no matter how much you know; the sub-bullets cap at two. If it's genuinely paragraphs of half-formed thinking the user wants kept whole, write `notes/<slug>.md` instead and say which you did — a note is input, never authority.
-4. **Confirm in one line** — echo the headline **with both numbers**, and its path, and say whether you expanded it or logged it as-is. The numbers ride the confirmation so a wrong one is cheap to fix: a `~` number is a proposal awaiting their read — if the user confirms or corrects either, rewrite that line in place with the bare digit and stop. Then return to whatever was in flight. The next `lead brief` run reads it back; until then it's a reminder, explicitly **not** a commitment.
+4. **Confirm in one line** — echo the headline **with both numbers**, and its path, and say whether you expanded it or logged it as-is. The numbers ride the confirmation so a wrong one is cheap to fix: a `~` number is a proposal awaiting their read — if the user confirms or corrects either, rewrite that line in place with the bare digit and stop. Then return to whatever was in flight. The next `/team-justin:brief` run reads it back; until then it's a reminder, explicitly **not** a commitment.
 
 ## Don't
 
