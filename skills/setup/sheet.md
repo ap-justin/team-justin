@@ -1,4 +1,4 @@
-<!-- The sheet's content and its renderings. `/team-justin:deploy` writes this into a repo's
+<!-- The sheet's content and its renderings. `/team-justin:setup` writes this into a repo's
      `.claude/CLAUDE.md` in that file's own idiom. What each line says is derived from the repo; how
      it is laid out is derived from the host file. A repo's copy is a cache the next re-run rewrites. -->
 

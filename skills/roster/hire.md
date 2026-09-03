@@ -22,7 +22,7 @@ Completion: file exists, meets the standard, description carries a boundary clau
 ## 3. Register (map #2–#5)
 - `ROSTER.md` *Current specialists* row and *Model tiers* entry (grouped `inherit` list, or a pinned row with a one-line why in the ROSTER rationale style).
 - `SOURCES.md` backing-source row (skip only if genuinely stack-agnostic — then say so in the ROSTER row).
-- `${CLAUDE_PLUGIN_ROOT}/references/routing.md` row — the `detected/needed → specialist`. That table has two callers (`lead` and `/team-justin:deploy`), so one row serves both; a repo already deployed picks the new seat up on its next `/team-justin:deploy`. A **review-only** seat wires into *Step 4* (review & verify) instead, next to its sibling reviewer.
+- `${CLAUDE_PLUGIN_ROOT}/references/routing.md` row — the `detected/needed → specialist`. That table has two callers (`lead` and `/team-justin:setup`), so one row serves both; a repo already deployed picks the new seat up on its next `/team-justin:setup`. A **review-only** seat wires into *Step 4* (review & verify) instead, next to its sibling reviewer.
 
 ## 4. Version + count (map #6–#8)
 Recompute the count — `ls agents/*.md | wc -l` — and set it in **both** `plugin.json` and `marketplace.json` descriptions (don't hand-increment). Minor bump: `VERSION`, `plugin.json` `version`, and the `ROSTER.md` header, all equal.

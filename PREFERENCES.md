@@ -23,14 +23,14 @@ any project (cwd = someone's repo)         ~/.claude/team-justin/
                                 skills/<owner>/SKILL.md       (incl. lead — orchestration-wide rules)
                                 → commit + tag  (minor bump)
                                               │
-                                     /team-justin:deploy      (typed in a repo)
+                                     /team-justin:setup      (typed in a repo)
                                               ▼
                               that repo's .claude/CLAUDE.md
                                 this engagement's answers, in that file's voice,
                                 stamped with the plugin version they came from
 ```
 
-Three arrows, one circuit. **Cheap lossless capture**, then a **curated, human-gated sweep** that edits the team (mirroring the `IDEAS.md` → `/team-justin:brief` promotion the team already runs), then the **return leg**: a repo picks the evolved practice back up by re-running `/team-justin:deploy`, which re-derives its answers against the newer plugin.
+Three arrows, one circuit. **Cheap lossless capture**, then a **curated, human-gated sweep** that edits the team (mirroring the `IDEAS.md` → `/team-justin:brief` promotion the team already runs), then the **return leg**: a repo picks the evolved practice back up by re-running `/team-justin:setup`, which re-derives its answers against the newer plugin.
 
 **The plugin holds the practice; a repo's own file holds the engagement.** That split is what the sweep routes on — a preference that would still be true in the next repo goes upstream into a seat or a skill, one true only where it surfaced goes into that repo's sheet (`skills/roster/learn.md` → step 2). The plugin is the same in every engagement, which is exactly why nothing client-specific may land in it.
 

@@ -16,7 +16,7 @@ For each surviving preference, pick the narrowest home:
 - **Cross-seat** (several seats should carry it) → the same targeted edit in each affected seat, or the owning skill (`lead` SKILL.md for orchestration-wide rules). There is no central style file — plugins can't ship auto-loaded context, so a preference lives where the seat already reads (see `PREFERENCES.md` → *The destination*).
 - **Reusable concrete pattern** → keep the `patterns/<slug>.md` artifact in the plugin (copy it under a repo path if you want it version-shared), referenced from the seat/skill that uses it.
 
-- **One engagement, and it describes that repo rather than the team** (its gate, its runner's cost, its own subsystem) → the repo's **sheet**, the answers `/team-justin:deploy` writes into its `.claude/CLAUDE.md`. Name the repo and the line you'd add, and leave the typing to the user: this skill edits the plugin, and a sweep that reaches into product repos would be the plugin editing engagements it isn't in.
+- **One engagement, and it describes that repo rather than the team** (its gate, its runner's cost, its own subsystem) → the repo's **sheet**, the answers `/team-justin:setup` writes into its `.claude/CLAUDE.md`. Name the repo and the line you'd add, and leave the typing to the user: this skill edits the plugin, and a sweep that reaches into product repos would be the plugin editing engagements it isn't in.
 - **Project-specific and about the *product*** (a want, a defect, a decision) → that project's plan store (`~/.claude/team-justin/management/<project-slug>/`, `TRACKER.md`).
 
 ## 3. Propose, then gate

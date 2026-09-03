@@ -98,14 +98,14 @@ The worklist is session-scoped working memory. State that must outlive the sessi
 plan store.
 
 ## Step 0 — read the sheet
-A repo that has run **`/team-justin:deploy`** carries its **answers** in `.claude/CLAUDE.md` — already in your context before you loaded this skill, written in that file's own voice and stamped with the plugin version they came from. Whatever `/team-justin:deploy` found worth caching is there, each line citing what it came from. The stamp is itself an answer — the repo is real, it has a system, and Step 2 is not this change's path. Where the sheet answers a step below, take its answer and move on; the deliberation below is priced for a repo that has none.
+A repo that has run **`/team-justin:setup`** carries its **answers** in `.claude/CLAUDE.md` — already in your context before you loaded this skill, written in that file's own voice and stamped with the plugin version they came from. Whatever `/team-justin:setup` found worth caching is there, each line citing what it came from. The stamp is itself an answer — the repo is real, it has a system, and Step 2 is not this change's path. Where the sheet answers a step below, take its answer and move on; the deliberation below is priced for a repo that has none.
 
 **The sheet's gate line binds you** — the repo may have grown a stack the sheet predates, and only the user knows.
 
-**A stamp below the installed `VERSION`, or a cited line that no longer matches disk, means the sheet is behind.** Say so in one line and name `/team-justin:deploy` for the user to re-run — it is theirs to type, and the current sheet still carries the work meanwhile.
+**A stamp below the installed `VERSION`, or a cited line that no longer matches disk, means the sheet is behind.** Say so in one line and name `/team-justin:setup` for the user to re-run — it is theirs to type, and the current sheet still carries the work meanwhile.
 
 ## Step 1 — the repo answers, or there is no repo
-**A repo owns what it is.** No stamp (Step 0), and the work is more than a one-off → name **`/team-justin:deploy`** once: it maps the repo and writes the answers — the `Explore` pass over stack, framework versions, architecture, conventions and test setup. Either way you reach Step 3 with the stack settled and the conventions named, and you match those over your own defaults — minimal diff, in-style.
+**A repo owns what it is.** No stamp (Step 0), and the work is more than a one-off → name **`/team-justin:setup`** once: it maps the repo and writes the answers — the `Explore` pass over stack, framework versions, architecture, conventions and test setup. Either way you reach Step 3 with the stack settled and the conventions named, and you match those over your own defaults — minimal diff, in-style.
 
 **From scratch there is no repo to answer**, so this seat owns that path end to end (Step 2). Deploy the sheet once the scaffold lands.
 

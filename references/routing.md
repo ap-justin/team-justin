@@ -1,6 +1,6 @@
 # Routing — detected stack to seat and skill
 
-The derivation tables, with three callers. **`/team-justin:deploy`** runs them once over a repo and
+The derivation tables, with three callers. **`/team-justin:setup`** runs them once over a repo and
 writes the answers into that repo's block — that block is then the repo's routing, in prose, and
 re-running the tables is what a block exists to retire. **`/team-justin:roster`** writes this file when
 a seat is hired or retired, or a conditional skill authored. **`lead`** runs them where no block has
