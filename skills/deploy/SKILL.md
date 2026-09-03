@@ -41,7 +41,6 @@ re-run has no way to check it.
 | `screens` | whether this repo renders UI, and what starts its dev server | the screen passes and the design gate |
 | `test` | the runner, its command, and **what a run costs** | rediscovering the repo's testing conventions |
 | `verify` | typecheck and lint commands | the behavior gate's generic form |
-| `not here` | every seat in `${CLAUDE_PLUGIN_ROOT}/ROSTER.md` with no footing in this repo | routing deliberation over stacks that are absent |
 
 **Cost is a field.** A runner that spawns a browser per test file, a suite that takes ten minutes, a
 machine that swaps under a fan-out — none of it is knowable from the plugin, and it decides whether a
@@ -142,8 +141,8 @@ Completion: the user has seen every line going in and every line coming out, and
 they approved.
 
 ### 6. Report
-The seats this repo runs, the seats it does not, anything the derivation turned up that the repo had
-never written down, and what the pass reclaimed. One paragraph, in the user's vocabulary.
+The seats this repo runs, anything the derivation turned up that the repo had never written down, and
+what the pass reclaimed. One paragraph, in the user's vocabulary.
 
 Completion: every line that went in is accounted for in what you said, and every line that came out
 is named with the file that answers it.

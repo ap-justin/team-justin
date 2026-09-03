@@ -11,15 +11,16 @@ Load **`team-justin:lead`** before building, reviewing, or dispatching a seat �
 team works.
 ```
 
-And **the gate** on the `not here` list, which is a routing instruction rather than an inventory:
+And **the gate**, which decides what happens at the edge of those answers, since a nearby seat is
+always available and an uncovered slice otherwise routes itself:
 
 ```
-A slice needing a seat listed under `not here` is a question for the user, naming that seat — never a
-nearby seat pressed into the gap.
+A slice reaching a stack no seat above covers is a question for the user, naming the seat it would
+need — never a nearby seat pressed into the gap.
 ```
 
 Everything between them is this repo's answers, one line per field, each citing what it was derived
-from. Roles first, then what this repo has no seat for.
+from.
 
 ## Renderings
 
@@ -31,9 +32,6 @@ routes     team-justin:react-router-builder   ← react-router 7.16.0 framework 
 ui         team-justin:react-ui-builder       ← packages/ui components, tailwind 4
 data       team-justin:postgres-architect     ← drizzle-orm, apps/api/.server/pg/migrations
 project    .claude/skills/db-admin · e2e      ← prefer these over a plugin seat
-
-not here   sveltekit-builder · svelte-ui-builder · nextjs-builder · go-fullstack-builder ·
-           python-developer · cloudflare-builder · sqlite-architect
 ```
 
 and bold-led bullets for a file written in prose:
@@ -43,8 +41,6 @@ and bold-led bullets for a file written in prose:
 - **ui** → `team-justin:react-ui-builder` — `packages/ui` components, tailwind 4
 - **data** → `team-justin:postgres-architect` — drizzle-orm, `apps/api/.server/pg/migrations`
 - **project seats** — `.claude/skills/db-admin`, `e2e`; prefer these over a plugin seat where they overlap
-- **not here** — sveltekit-builder, svelte-ui-builder, nextjs-builder, go-fullstack-builder,
-  python-developer, cloudflare-builder, sqlite-architect
 ```
 
 Both read in one pass, which is the property to preserve when the host file's idiom is a third thing.
