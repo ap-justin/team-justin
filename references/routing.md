@@ -67,6 +67,7 @@ and returns wrong data.
 | `drizzle-orm` | `drizzle` |
 | `zod` | `zod` |
 | `@conform-to/react` | `conform` |
+| `react-hook-form` | `react-hook-form` |
 | `sveltekit-superforms` | `superforms` |
 | `panda.config.*` or a `styled-system/` directory | `panda-css` |
 | `components.json` | `shadcn` — the repo has settled its primitive library, and `ark-ui`'s reach-for section is where that rule lives |
