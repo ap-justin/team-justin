@@ -37,6 +37,7 @@ re-run has no way to check it.
 |---|---|---|
 | seat pointers | the repo's dependency manifests and lockfile, run through **`${CLAUDE_PLUGIN_ROOT}/references/routing.md`** | that table, on every later session |
 | project seats | `.claude/skills/*`, `.claude/agents/*` | seats this plugin has no way to know exist |
+| `skills` | the same manifests, run through **`${CLAUDE_PLUGIN_ROOT}/references/routing.md`** → *Conditional skills* | a seat re-checking its library conditional on every dispatch — and the silence when a seat that never carried it writes against the library anyway |
 | `tokens` | the design system's file, and the gate that closes it (hook config, test script) | a builder's hunt for the `## Design system` pointer — and the from-scratch design chain, since a system already exists |
 | `screens` | whether this repo renders UI, and what starts its dev server | the screen passes and the design gate |
 | `test` | the runner, its command, and **what a run costs** | rediscovering the repo's testing conventions |

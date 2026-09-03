@@ -28,10 +28,11 @@ Match the host file. The same sheet, in the two idioms most files are already wr
 block for a file that reaches for code fences and tables:
 
 ```
-routes     team-justin:react-router-builder   ← react-router 7.16.0 framework mode, fs-routes
-ui         team-justin:react-ui-builder       ← packages/ui components, tailwind 4
-data       team-justin:postgres-architect     ← drizzle-orm, apps/api/.server/pg/migrations
-project    .claude/skills/db-admin · e2e      ← prefer these over a plugin seat
+routes     team-justin:react-router-builder     ← react-router 7.16.0 framework mode, fs-routes
+ui         team-justin:react-ui-builder         ← packages/ui components, tailwind 4
+data       team-justin:postgres-architect       ← drizzle-orm, apps/api/.server/pg/migrations
+skills     team-justin:drizzle · zod · conform  ← drizzle-orm 0.44 · zod 4.1 · @conform-to/react 1.9
+project    .claude/skills/db-admin · e2e        ← prefer these over a plugin seat
 ```
 
 and bold-led bullets for a file written in prose:
@@ -40,15 +41,19 @@ and bold-led bullets for a file written in prose:
 - **routes** → `team-justin:react-router-builder` — react-router 7.16.0 framework mode, fs-routes
 - **ui** → `team-justin:react-ui-builder` — `packages/ui` components, tailwind 4
 - **data** → `team-justin:postgres-architect` — drizzle-orm, `apps/api/.server/pg/migrations`
+- **skills** → `team-justin:drizzle`, `zod`, `conform` — drizzle-orm 0.44, zod 4.1, `@conform-to/react` 1.9
 - **project seats** — `.claude/skills/db-admin`, `e2e`; prefer these over a plugin seat where they overlap
 ```
 
 Both read in one pass, which is the property to preserve when the host file's idiom is a third thing.
 
+**`skills` stays one line** whatever the idiom — this repo's answered conditionals, each with the
+manifest entry it came from (`${CLAUDE_PLUGIN_ROOT}/references/routing.md` → *Conditional skills*).
+
 ## The fields past the seats
 
 A repo whose own always-loaded docs already carry its commands, its token file and the gate that
-closes it **ends at the seats** — those are the repo's lines to state and the sheet's to leave alone.
+closes it **ends at the seats and their skills** — those are the repo's lines to state and the sheet's to leave alone.
 Where one of them is genuinely unwritten anywhere, it joins in the same shape, with its evidence, in
 whichever section of the host file already owns that subject:
 

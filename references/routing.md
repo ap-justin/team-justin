@@ -1,11 +1,11 @@
-# Routing — detected stack to seat
+# Routing — detected stack to seat and skill
 
-The derivation table, with three callers. **`/team-justin:deploy`** runs it once over a repo and writes
-the answers into that repo's block — that block is then the repo's routing, in prose, and re-running
-the table is what a block exists to retire. **`/team-justin:roster`** writes this file when a seat is
-hired or retired. **`lead`** runs it where no block has resolved them, or where a
-slice reaches a stack the block never covered. A repo whose block already names the seat has this
-question answered — take the answer.
+The derivation tables, with three callers. **`/team-justin:deploy`** runs them once over a repo and
+writes the answers into that repo's block — that block is then the repo's routing, in prose, and
+re-running the tables is what a block exists to retire. **`/team-justin:roster`** writes this file when
+a seat is hired or retired, or a conditional skill authored. **`lead`** runs them where no block has
+resolved them, or where a slice reaches a stack the block never covered. A repo whose block already
+names the seat and its skills has this question answered — take the answer.
 
 | Detected / needed | Specialist |
 |---|---|
@@ -54,3 +54,27 @@ question answered — take the answer.
 - **`web-components-builder`'s trigger is the consumer, not the markup**: UI inside a React or Svelte app stays with that stack's UI builder.
 - **`graphic-designer` preflight**: generation needs `GOOGLE_API_KEY` + a one-time `npm install` in the plugin dir (video/cutouts also need ffmpeg/rembg). Before routing — or the moment the specialist returns `BLOCKED (setup)` — **surface the exact setup to the user** and let them choose: set it up for real assets, or proceed with the static fallback. Never silently degrade to a placeholder without telling them the real-asset path exists.
 
+## Conditional skills — the library choice inside a lane
+
+Ambient craft — TypeScript, `tdd` + `testing`, UI patterns, modern CSS/HTML, Ark UI, motion — loads on
+every dispatch in every repo, and a skill a seat *always* loads is already carried by that seat's own
+line. What earns deriving is the **library choice inside a lane**: the seat prompt holds it as a
+conditional and re-checks it on every dispatch, and what these skills catch is a call that *succeeds*
+and returns wrong data.
+
+| Detected in the repo | Skill |
+|---|---|
+| `drizzle-orm` | `drizzle` |
+| `zod` | `zod` |
+| `@conform-to/react` | `conform` |
+| `sveltekit-superforms` | `superforms` |
+| `panda.config.*` or a `styled-system/` directory | `panda-css` |
+| `components.json` | `shadcn` — the repo has settled its primitive library, and `ark-ui`'s reach-for section is where that rule lives |
+
+Which seats carry each: `ROSTER.md` → *Reused, not owned*.
+
+**Answered *yes* only.** The sheet holds what this repo *is*; a library it doesn't have is an absence.
+
+**The answer outruns the seat that owns the conditional**, which is half of why it is written down: a
+skill the boundary seats carry reaches a UI builder writing a schema in a component only once the repo
+says it is on that library.
