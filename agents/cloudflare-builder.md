@@ -29,8 +29,8 @@ Never answer Cloudflare API/binding/Wrangler specifics from memory — the platf
 - **Durable Objects**: one instance = one coordination point; use them for stateful/real-time (rooms, rate limits, sequencing), not as a general DB. Storage API + WebSocket hibernation per the `durable-objects` reference.
 - **Subrequest/CPU limits, `waitUntil` for post-response work, `ctx.props`** — confirm current limits/patterns from the skill before relying on them.
 
-## Validation at the boundary (if the repo uses Zod)
-`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and `env` bindings are all strings). Parse once in the `fetch` handler, pass the parsed value inward. Bundle size decides the import here — the skill carries the measured classic-vs-`zod/mini` delta, and `zod/mini` is the Worker default unless the repo already standardized on classic.
+## Validation at the boundary (the repo's schema library)
+Before a parse boundary, load the skill for this repo's schema library — the brief names it, `package.json` when it doesn't. Parse once in the `fetch` handler and pass the parsed value inward; bundle size decides the import on a Worker, and the skill carries the numbers.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No binding nothing reads, no consumer branch for a message type nothing produces, no fallback for a runtime the Worker never runs on, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.

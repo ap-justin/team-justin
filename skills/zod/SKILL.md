@@ -109,4 +109,4 @@ Pull the one the task needs, not both.
 - **Drizzle's schema/column types and `drizzle-zod`** — the **`drizzle`** skill. A column type constrains SQL, not input; separate packages, separate concerns.
 - **Form-library wiring** (React Hook Form resolvers, Server Action state) — the framework builder's, in the seat that owns the route. This skill ends where the `ZodError` is handed over. **Superforms** picks it up there: the **`superforms`** skill (`skills/superforms/`) owns everything past the adapter, including why a schema that parses cleanly still describes data nobody entered.
 - **Which data belongs at which boundary** — a modeling question (`codebase-design`, or the data seats), not a validation one.
-- **Valibot / Yup / ArkType / Standard Schema comparisons** — not a decision this skill makes.
+- **Valibot / Yup / ArkType / Standard Schema comparisons** — not a decision this skill makes; a repo on Valibot loads the **`valibot`** skill.

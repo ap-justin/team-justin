@@ -58,14 +58,15 @@ names the seat and its skills has this question answered — take the answer.
 
 Ambient craft — TypeScript, `tdd` + `testing`, UI patterns, modern CSS/HTML, Ark UI, motion — loads on
 every dispatch in every repo, and a skill a seat *always* loads is already carried by that seat's own
-line. What earns deriving is the **library choice inside a lane**: the seat prompt holds it as a
-conditional and re-checks it on every dispatch, and what these skills catch is a call that *succeeds*
-and returns wrong data.
+line. What earns deriving is the **library choice inside a lane**: the seat prompt carries one
+*libraries* section that loads the skill the brief names, and what these skills catch is a call that
+*succeeds* and returns wrong data.
 
 | Detected in the repo | Skill |
 |---|---|
 | `drizzle-orm` | `drizzle` |
 | `zod` | `zod` |
+| `valibot` | `valibot` |
 | `@conform-to/react` | `conform` |
 | `react-hook-form` | `react-hook-form` |
 | `vitest` | `vitest` — carried by the `testing` skill's discovery step, so every seat that writes a test reaches it |

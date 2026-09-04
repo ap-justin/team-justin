@@ -88,6 +88,8 @@ const Query = z.object({
 const { page, q, sort } = Query.parse(Object.fromEntries(url.searchParams))
 ```
 
+A route library that validates search params for you (TanStack Router's `validateSearch`) accepts the schema directly through Standard Schema and does the `getAll` for repeated keys itself; the coercions stay the same.
+
 Use `.parse()` (not `safeParse`) only where a malformed URL genuinely should 500; for user-facing pages `safeParse` and fall back to defaults, since a hand-edited query string shouldn't be an error page.
 
 ## Choose the string pattern deliberately

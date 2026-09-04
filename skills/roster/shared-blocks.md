@@ -258,3 +258,19 @@ Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-
 - ⚠ the `--accent` trap. It is the block's reason to exist — the part **no token file confesses**, because it's a plausible-looking line imported from shadcn's published components rather than a value the seat invented. Read backwards it tints every resting row, and it is expensive to unpick later.
 
 **Tailored slots**: none. The bullet is identical on all three seats by design — `audit`'s cluster check (step 6) treats any divergence between them as drift. `web-components-builder` carries **one added bullet after it**, never an edit to it: inside a shadow root distributed beyond the app the token names take a prefix, because custom properties inherit across the boundary and a generic `--primary` on a host page the team doesn't own bleeds in. An addition is fine; changing the block's own text is drift.
+
+## Block K — `## Validation and forms (the repo's libraries)`
+
+Required on the five **network-boundary seats** (`nextjs-builder`, `react-router-builder`, `tanstack-start-builder`, `sveltekit-builder`, `cloudflare-builder`) — the seats that own a parse boundary. One section per seat whatever the library: the library choice is a repo fact the brief carries (`references/routing.md` → *Conditional skills*), and each library's traps live in its own skill, so a new conditional skill adds a routing row and touches no seat.
+
+```
+## Validation and forms (the repo's libraries)
+Before a parse boundary or a form action, load the skill for this repo's schema library and the one for its form library — the brief names them, `package.json` when it doesn't — and take the {framework} wiring from its `reference/`. Parse once at the edge and pass the parsed value inward; {the seat's edges} are that edge.
+```
+
+**Invariant clauses:**
+- ⚠ `Before a parse boundary or a form action, load the skill` — the trigger leads the sentence. A library's silences (the calls that succeed and return wrong data) are the skill's to carry; a seat restating one is a cache of a file it is about to load, and the copy goes stale on the skill's schedule.
+- ⚠ ``the brief names them, `package.json` when it doesn't`` — the brief is the sheet's answer; `package.json` is the environment for a direct spawn or a repo with no sheet.
+- `Parse once at the edge and pass the parsed value inward` — the seat's own invariant, which no library skill states because none owns the route.
+
+**Tailored slots**: `{framework}` in the wiring clause, and `{the seat's edges}`. `cloudflare-builder` has no form library: its heading is `## Validation at the boundary (the repo's schema library)`, the form-action trigger and the wiring clause drop, and the edge sentence reads ``Parse once in the `fetch` handler and pass the parsed value inward; bundle size decides the import on a Worker, and the skill carries the numbers.``

@@ -44,11 +44,8 @@ The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a fo
 ## Match the repo
 Read `package.json` and existing routes first; follow the codebase's conventions (folder layout, data-loading style, route patterns) over your defaults. Minimal diff. Check `package.json` before importing anything — output the install command if a dep is missing, never assume it exists.
 
-## Validation at the boundary (if the repo uses Zod)
-`zod` in `package.json` means load the **`zod`** skill before writing a parse boundary — its failures return a value instead of throwing, so a wrong schema ships as data rather than an error (`z.coerce.boolean()` on the string `"false"` is `true`, and every form field and env var arrives as a string). Parse once at the edge, pass the parsed value inward. Form actions and `+server.ts` are that edge, and form data is the trap-rich one — `reference/boundaries.md` has the normalize-then-validate recipe.
-
-## Forms (if the repo uses Superforms)
-`sveltekit-superforms` in `package.json` means load the **`superforms`** skill before writing a form action — it reports **`valid: true` about data nobody entered**, because an absent field is filled from its schema type rather than rejected (an empty POST against `z.enum(['admin','editor','viewer'])` validates as `admin`). Validate before any side effect and before any other read of the body — `superValidate` calls `request.formData()` itself. `reference/actions.md` has the canonical action, the return ladder, and the rest of the traps.
+## Validation and forms (the repo's libraries)
+Before a parse boundary or a form action, load the skill for this repo's schema library and the one for its form library — the brief names them, `package.json` when it doesn't — and take the SvelteKit wiring from its `reference/`. Parse once at the edge and pass the parsed value inward; form actions and `+server.ts` are that edge.
 
 ## Scope — build the real path, not every path
 Pareto: traffic that exists gets built well; traffic that doesn't gets no branch. No `<noscript>` fallback, no shim for a browser nobody uses, no route branch for a state the app can't reach, no config knob with one caller. Code that never executes is never known to work — it reads as coverage while being the least trustworthy code in the file.
