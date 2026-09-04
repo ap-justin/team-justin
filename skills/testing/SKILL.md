@@ -42,6 +42,7 @@ Behavior-over-implementation, public-interface-only assertions, and boundary-onl
 - **Deterministic — no flakes.** Control time, randomness, and network, and reset mock/spy state between tests (the runner's restore-mocks config where it has one, otherwise explicit teardown) — a leaked spy is an order-dependent failure that passes locally and only appears in CI. No sleeps; wait on conditions. A flaky test is a failing test.
 - **A tolerance is calibrated against the smallest defect it must catch.** A golden image polices drawing, not text: measure what a one-character difference actually costs in pixels before picking a threshold, or a wrong string passes as a rounding error. Assert strings exactly, in a tier that doesn't go through the image.
 - **Right level.** Favor integration for confidence, unit for logic-dense pieces — and where a mock is unavoidable, `tdd`'s boundary rule decides whether it's allowed at all.
+- **A double mirrors one boundary, and says which.** A module double serving both a direct unit call and a rendered flow can only be shape-honest at one of them. Name the boundary it mirrors, assert the other through the mock's call args, never through a field the double invented.
 
 ## The run→fix loop
 
