@@ -1,6 +1,6 @@
 ---
 name: setup
-description: Set the team up in a repo — derive its standing answers, run the bars over its always-loaded CLAUDE.md/AGENTS.md, and write the team into it in that file's own voice. `prose` runs the pass alone. Re-run to re-derive.
+description: Set the team up in a repo — derive its standing answers, run the bars over its always-loaded CLAUDE.md/AGENTS.md, and write the team into it in that file's own voice. A blank repo is grilled first (what, stack, finalize) and the team deployed from the decision. `prose` runs the pass alone. Re-run to re-derive.
 disable-model-invocation: true
 argument-hint: "[prose | <repo path> — omit for cwd]"
 ---
@@ -27,6 +27,7 @@ it is a bigger hammer than the pruning needs.
 | *(none)* | this repo, both jobs — every step below |
 | a repo path | both jobs, there |
 | `prose` | the pass alone — every step below not marked *full run*. Read the surface, run the bars over every line already in it, propose the cuts. |
+| *(a blank repo)* | no manifest, lockfile or source to derive from — step 1b, then steps 4–6 |
 
 ## Do
 
@@ -58,8 +59,37 @@ coverage sweep is a scoped run or a stalled one. Where a cost binds, write the b
 Prefer a **project seat** over a plugin seat wherever the two overlap: a repo that wrote its own skill
 for its own subsystem knows something the plugin does not.
 
+**What the repo knows that a skill lacks goes upstream.** The derivation reads the repo's own testing
+docs, configs and `.claude/skills/*`; where one carries a recipe a plugin skill would need in the next
+repo too — a `vitest` gotcha `skills/vitest/` has no row for, a runner cost the skill doesn't state, a
+convention its docs are silent on — append it to `~/.claude/team-justin/inbox.md` in
+`${CLAUDE_PLUGIN_ROOT}/PREFERENCES.md`'s line format: lane `[code]`, source `setup`, citing the repo
+file it came from. The sheet still cites the fact for this repo (*The line between the plugin and the
+repo*, below).
+
 Completion: every field carries a value with its derivation, or is absent — because this repo has no
-answer for it, or because the repo's own docs already are the answer (step 2).
+answer for it, or because the repo's own docs already are the answer (step 2); every repo-held recipe a
+plugin skill lacks has an inbox line.
+
+### 1b. Blank repo — grill, then deploy — *full run*
+Nothing on disk answers step 1, so the user does, and the sheet is written from the **decision**. Load
+**`grilling`**; its rounds are these three:
+
+1. **What we are building** — the subject, who it is for, and the one job it has to do. Completion: one
+   paragraph the user has confirmed, in their words.
+2. **Suggest the stack** — one recommendation per lane, chosen from the lanes this team seats
+   (`${CLAUDE_PLUGIN_ROOT}/references/routing.md`) and the from-scratch defaults
+   (`${CLAUDE_PLUGIN_ROOT}/references/ui-practice.md`: `pnpm`, React where a design system will be
+   built), with the reason each fits *this* subject. A lane the subject needs and no seat covers is
+   named as exactly that — the gate line's case, put to the user now.
+3. **Finalize the stack** — the user accepts, swaps or strikes per lane. Completion: every lane the
+   subject needs has a named library, or is struck.
+
+Then **deploy the team**: steps 4–6 as on a full run, each line citing the decision it came from
+(shape in `sheet.md`). The scaffold that follows is `lead`'s (its Step 2); the first re-run after it
+lands swaps each decision citation for the manifest that now carries it.
+
+Completion: the sheet holds the decided stack with its seats.
 
 ### 2. Read what the repo already says
 Open the repo's `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*`, `AGENTS.md`, and any nested
@@ -175,8 +205,9 @@ Completion: the user has seen every line going in and every line coming out, and
 they approved.
 
 ### 6. Report
-What the pass reclaimed — and on a full run, the seats this repo runs and anything the derivation
-turned up that the repo had never written down. One paragraph, in the user's vocabulary.
+What the pass reclaimed — and on a full run, the seats this repo runs, anything the derivation
+turned up that the repo had never written down, and each inbox line filed upstream. One paragraph, in
+the user's vocabulary.
 
 Completion: every line that went in is accounted for in what you said, and every line that came out
 is named with the file that answers it.

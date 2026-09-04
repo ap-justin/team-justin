@@ -20,7 +20,7 @@ need — never a nearby seat pressed into the gap.
 ```
 
 Everything between them is this repo's answers, one line per field, each citing what it was derived
-from.
+from — a manifest entry, or on a blank repo the decision standing in for one (`← decided 2026-09-04 · /setup`).
 
 ## Renderings
 

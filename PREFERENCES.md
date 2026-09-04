@@ -15,6 +15,8 @@ any project (cwd = someone's repo)         ~/.claude/team-justin/
                                               │            (end-of-run, via lead handoff)
                                               │        ◀─── dispatch-auditor files process
                                               │            deviations (hook-fired at turn end)
+                                              │        ◀─── /setup files what a repo knows
+                                              │            that a plugin skill lacks
                                      /team-justin:roster learn
                                               │  (run from the plugin source repo; user gates each edit)
                                               ▼
@@ -54,7 +56,7 @@ Entry format — one line, untriaged, lossless (mirrors the `IDEAS.md` line):
 ```
 
 - **lane tag** `[design|code|workflow]` — routes the sweep to the right destination.
-- **source** `user` or `agent:<seat-slug>` — who captured it.
+- **source** `user`, `agent:<seat-slug>`, or `setup` — who captured it (`setup` files a recipe a repo holds that a plugin skill lacks, found while deriving its sheet).
 - **project** the repo slug it surfaced in, then the date captured. The slug is the **promotion bar**, not just context: the sweep collapses a group to its distinct slugs, and one slug reads as that client where two or more read as the team (`skills/roster/learn.md` → step 1).
 - Optional `→ patterns/<slug>.md` when a concrete artifact backs it.
 

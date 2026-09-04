@@ -107,7 +107,7 @@ A repo that has run **`/team-justin:setup`** carries its **answers** in `.claude
 ## Step 1 — the repo answers, or there is no repo
 **A repo owns what it is.** No stamp (Step 0), and the work is more than a one-off → name **`/team-justin:setup`** once: it maps the repo and writes the answers — the `Explore` pass over stack, framework versions, architecture, conventions and test setup. Either way you reach Step 3 with the stack settled and the conventions named, and you match those over your own defaults — minimal diff, in-style.
 
-**From scratch there is no repo to answer**, so this seat owns that path end to end (Step 2). Deploy the sheet once the scaffold lands.
+**From scratch there is no repo to answer**, so the user does: name **`/team-justin:setup`** — on a blank repo it grills the subject and the stack with them and deploys the sheet from the decision. You pick up at Step 2 with the stack settled.
 
 Then judge **triviality**: a typo/rename/small mechanical fix goes straight to routing; anything non-trivial is a grilling candidate (Step 2.5). And map **the files this change touches** with `Explore` where routing alone doesn't locate them — a repo's answers map the repo, never the diff.
 

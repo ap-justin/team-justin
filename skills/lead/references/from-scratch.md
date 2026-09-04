@@ -2,7 +2,7 @@
 
 Loaded by `lead` when the branch is live.
 
-1. Pin the subject, audience, and the one job of the thing. Pick the stack from the brief — **a UI that needs a design system built for it is React** (*UI from scratch*, below).
+1. The subject, audience, the one job and the stack are the sheet's — `/team-justin:setup` grilled them on the blank repo (its step 1b). Read them there; **a UI that needs a design system built for it is React** (*UI from scratch*, below).
 2. Consider grilling (Step 2.5) before architecting.
 3. Then spawn **`Plan`** (built-in) for the architecture, scaffold, and route implementation (Step 3).
 
