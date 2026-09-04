@@ -53,6 +53,18 @@ const items = fields.tags.getFieldList()
 ```
 `getButtonProps` renders `name="__intent__" value='{"type":…}' formNoValidate` and works without JS — the action re-renders the list from `submission.reply()`. The imperative `form.insert({ name, defaultValue })` is the same intent dispatched from an event handler; it needs JS. Field names inside a list are `tags[0]`, and the payload keys match, so a hand-written `name` has to use that syntax (`tags[name]` never parses).
 
+**An intent runs before the schema, on both sides.** `insert`/`remove` apply to the payload before validation, and the client applies them whether or not the last result carried errors — so a schema rule cannot stop an Add over rows that were just refused; the schema sees the list *after* the insert. Guard it on the button: an `onClick` that parses the live form, `preventDefault()`s when that list has errors, and calls `form.validate({ name })` so the refusal paints instead of the row appearing.
+```tsx
+<button {...form.insert.getButtonProps({ name: fields.tags.name, defaultValue: '' })}
+  onClick={(e) => {
+    const { error } = parseWithZod(new FormData(e.currentTarget.form!), { schema })
+    if (Object.keys(error ?? {}).some((k) => k.startsWith(fields.tags.name))) {
+      e.preventDefault()
+      form.validate({ name: fields.tags.name })
+    }
+  }}>Add</button>
+```
+
 ## Custom and UI-library controls
 A component that doesn't render a native control (Radix/shadcn `Select`, a combobox, a rich-text editor) needs one anyway — conform reads the DOM.
 

@@ -125,3 +125,11 @@ Every entry here is the behavior the stack has to produce; the API that produces
 **Default it corrects:** `disabled={isSubmitting}` on every control from one global flag, plus an effect that focuses the field a refusal named.
 **Why:** the page-wide flag is still up on the render the refusal arrives in, and `element.focus()` on a disabled control is a silent no-op — the effect fires once, moves nothing, never re-runs once the flag drops. The operator reads a refusal on a box they can't type into. The fix is the disabled reading, not the effect.
 **Applies when:** the answer lands while the page is still revalidating; the framework seat's prompt names the mechanism.
+
+## A field's error is the predicate its label completes
+
+**Trigger:** the message under an invalid field — required, out of range, malformed, a cross-field bound.
+**Pattern:** the column reads as one sentence — label, box, predicate. The predicate stands alone, as an instruction, in the operator's own figures: `is required`, `must be less than largest gift of $20`.
+**Default it corrects:** `Email is required` / `The email you entered is invalid` / `above the largest gift of $20.00` — the label restated, the value echoed under the box still showing it, a report of what went wrong where an instruction was owed, and `$20.00` from an operator who typed `20`.
+**Why:** the label and the box are already on screen; a message repeating either is read twice and trusted less. An instruction is the fix; a report leaves the operator to derive it. A figure in a form they never typed is a second value to reconcile. Consequence prose belongs to the confirm dialog, on the one press where it changes a decision.
+**Applies when:** the message sits under its own field. A summary that folds fields into one string has left the box, so it names the field — and that is where a secret gets masked, because the control showing it is out of view.

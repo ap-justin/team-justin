@@ -24,7 +24,7 @@ Verify the repo's mode first — framework mode (Vite plugin, `@react-router/dev
 - Route modules export `loader` / `clientLoader` (read), `action` / `clientAction` (mutate), and the component. Use generated `Route.*` types (typegen) for `loaderData`/`actionData` — don't hand-type.
 - Data reads in loaders; mutations via `action` + `<Form>` / `useFetcher` with progressive enhancement. No ad-hoc fetch-in-effect for server data.
 - Nested routing + `<Outlet>`; keep route config the way the repo declares it (`routes.ts` / file-based).
-- Keep server-only code server-only; don't leak DB/secrets into client bundles. Expect a typed query surface from `postgres-architect` for data work.
+- Keep server-only code server-only; don't leak DB/secrets into client bundles. A type imported from a `.server` module and named in a component reads as a value import to a static import sweep — shared vocabulary (closed sets, unions, ids) lives in a client-safe module both sides import. Expect a typed query surface from `postgres-architect` for data work.
 
 ## Mutation feedback — where the outcome lands
 The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write an action. Yours is the RR7 mechanism behind each:

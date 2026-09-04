@@ -80,7 +80,7 @@ handleSubmit(onValid, (errors) => { … })
 // errors        → { name: … }   populated
 // formState.errors in the same closure → {}   the render that built the closure had none
 ```
-`criteriaMode` defaults to `'firstError'`, so `errors.x.types` is `undefined` and only one rule per field is reported; `'all'` populates `types` (`{ too_small: …, invalid_format: … }`) while `message` stays the first. A password field listing every unmet rule needs it.
+`criteriaMode` defaults to `'firstError'`, so `errors.x.types` is `undefined` and only one rule per field is reported; `'all'` populates `types` (`{ too_small: …, invalid_format: … }`) while `message` stays the first. A password field listing every unmet rule needs it. `valibotResolver` is stricter about it: it passes `abortPipeEarly: true` unless `criteriaMode` is `'all'`, so only the first failing `v.check`/`v.partialCheck` in a pipe reports — a test asserting two errors off one submit fails until the mode is set, or leaves one field invalid per submission (reproduced on `@hookform/resolvers@3.9.0`).
 
 ## Spread `register` first
 ```jsx
@@ -105,6 +105,6 @@ Pull the one the task needs, not both.
 ## Not this skill's job
 - **The Zod schema itself** — `.default()` vs `.prefault()`, transform output, error customization: the **`zod`** skill. This one starts where the resolver hands the result over.
 - **Route structure and the component seam** — the framework builder seats own actions, routes and server functions; `react-ui-builder` owns the component boundary. This skill marks only where a field's wiring dictates the props.
-- **Other resolvers** — Yup, Valibot, ArkType and the rest ship their own adapters with their own coercion.
+- **Other resolvers** — Yup, ArkType and the rest ship their own adapters with their own coercion. Valibot's has the one row above, because its failure reads as a `criteriaMode` bug.
 - **Other form libraries** — Conform and TanStack Form are different stacks; a repo on one of them has that skill's row instead.
 - **Authorization** — a form that validates says nothing about who may submit it.

@@ -81,7 +81,7 @@ The call is hoisted above every `import`, wherever it sits in the file. Conseque
 ## Recipes
 Pull the one the task needs.
 - `reference/mocks.md` — the module-mocking half: hoisting and `vi.hoisted`, `importOriginal`, `setupFiles` imports that stay real, the automock algorithm and `{ spy: true }`, class mocks and the v5 prototype chain, the clear/reset/restore matrix, `vi.doMock` and `vi.resetModules`.
-- `reference/dom.md` — the DOM half: jsdom vs happy-dom vs Browser Mode (the v5 config shape; `expect.element` retrying to the test timeout rather than the documented 1 s; exact, strict locators; `toHaveTextContent` exactness; why `vi.spyOn` throws in the browser; the cold run that fails files a second run passes), Testing Library wiring under Vitest, the fake-timer recipe for RTL and user-event, and the `setupFiles` stubs jsdom needs.
+- `reference/dom.md` — the DOM half: jsdom vs happy-dom vs Browser Mode (the v5 config shape; `expect.element` retrying to the test timeout rather than the documented 1 s; exact, strict locators; `toHaveTextContent` exactness; why `vi.spyOn` throws in the browser; the cold run that fails files a second run passes; the fixed api port two browser-mode packages collide on; `projects` includes that overlap; `test.env` never reaching `process.env`), Testing Library wiring under Vitest, the fake-timer recipe for RTL and user-event, and the `setupFiles` stubs jsdom needs.
 
 ## Not this skill's job
 - **What makes a test worth keeping and how this repo tests** — discovery, assertions that can fail, one reason to fail, the run→fix loop: the **`testing`** skill. This one is the runner underneath it.
