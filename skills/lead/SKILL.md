@@ -188,8 +188,5 @@ Ambient binds you too on the edits you make inline (a rename, a copy fix, a conf
 ## Step 4.5 — reconcile, at the commit that lands a slice
 **What it writes: `${CLAUDE_PLUGIN_ROOT}/skills/lead/references/reconcile.md`** — ticket status and the frontier, the brief's boxes, and the four captures and closeouts across `IDEAS.md` and `issues/`.
 
-## Handling gaps — the "let's add an Astro agent" move
-When the work needs a stack with no specialist (e.g. content-heavy → Astro):
-1. Proceed via the general path (Explore conventions + implement, backed by Context7) so the user isn't blocked.
-2. **Recommend** minting a dedicated specialist: "This repo is Astro/content-heavy — worth adding an `astro-builder` agent. Want me to scaffold it?"
-3. If approved, run **`/team-justin:roster hire <name>`** — it does the full versioned wiring (agents file, SOURCES/ROSTER/lead-routing rows, agent-count + version bump, tag) per `ROSTER.md`'s "Growing the team" checklist. Then route to it.
+## Handling gaps — a slice no seat covers
+A slice reaching a stack no seat covers is a question for the user before any dispatch, naming the seat it would need (`/team-justin:roster hire <name>`) or the skill (`/team-justin:roster author <name>`). The nearby seat is always available, which is why the question goes up first: a React Email template is `.tsx` and still outside `react-ui-builder`'s lane. Two answers the user can give: mint it (roster does the wiring; then route to it), or the general path (Explore conventions + implement, backed by Context7) for this slice, on their say-so.

@@ -44,7 +44,7 @@ names the seat and its skills has this question answered — take the answer.
 | something *wrong* the user wants recorded before it evaporates — a bug they just hit, not being fixed now | **`/team-justin:issue`** — user-invoked, same deal; mid-task it's your Step 4.5 `issues/` capture |
 | the user wants to work what's parked or what's broken — the `IDEAS.md` lines, the open defect files | **`/team-justin:todos`** / **`/team-justin:issues`** — user-invoked; each reconciles the store against the code, scores, proposes a batch and waits for the pick before building. Name the one they want; only the user can fire them. Mid-task you already read the store directly when a step needs it |
 | work too big for one context / needs a durable plan of record / decompose a spec into parallelizable slices | `planner` (Step 2.6) |
-| **no specialist matches** | general path + **recommend a new specialist** (below) |
+| **no specialist matches** | the **user**, naming the seat it would need (*Handling gaps*); the general path only on their say-so |
 
 **Contested lanes — the tie-breaks the table can't hold.** Each seat's own definition states its half; read that rather than a copy, and reach for these when two rows look plausible:
 - **SQLite three ways**: an embedded `.db` file the app opens = `sqlite-architect` · **D1** = `cloudflare-builder` (it's CF's SQLite) · a Postgres server = `postgres-architect`.

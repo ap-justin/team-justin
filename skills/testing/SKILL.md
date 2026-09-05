@@ -52,6 +52,7 @@ Behavior-over-implementation, public-interface-only assertions, and boundary-onl
 - **One-shot, never watch.** Plenty of repos wire the default `test` script to interactive watch mode — it never exits, and it hangs your run with no result to report. Take the repo's own one-shot/CI script if it has one, otherwise pass the runner's non-watch flag; confirm from the script and the runner's docs, not from habit.
 - On failure, read the actual error and fix the test **or** flag a genuine product bug — say which. Don't paper over a real defect by loosening the assertion.
 - Cap at ~3 fix iterations on the same failure. Still red? Stop and surface what's blocking, with the error.
+- **Red because another seat's artifact doesn't exist yet** (a table the data seat owns, a helper the auth seat exposes) is handed over red — but proved first: pass the test against a throwaway stand-in, delete the stand-in, and say in your return that the red is the missing artifact and nothing else. A red nobody has seen green is a test that might be wrong, not a spec.
 
 Done when the scoped suite is green, or you've named what's blocking and why.
 
