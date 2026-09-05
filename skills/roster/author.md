@@ -17,6 +17,12 @@ On the page that means: sequences whose order matters, defaults with the reason 
 1. Download the source **unmodified** into `skills/<name>/`. Add the provenance HTML comment at the top — source repo + branch + sha + a one-line re-sync instruction (copy the exact shape at the top of `skills/writing-for-agents/SKILL.md`).
 2. Record it in `SOURCES.md` → *Vendored resources* (repo, license, what it backs) and in `ROSTER.md` → *Reused, not owned*. Confirm the license permits vendoring; note it.
 
+## Refresh (`author <existing name>`) — executing an `/update` verdict
+`/team-justin:update` reads upstream and the registries and records a verdict per skill in `skills/update/reviewed.md` (*Vendored skills* · *Libraries*); this branch executes it. Read the skill's row there first — it names the files, the sha, or the claims.
+- **Re-sync a vendored skill**: re-download the files the row names from upstream at the head sha, verbatim, into `skills/<name>/`; re-apply the deviations the provenance comment lists, and only those; move the comment's sha and the `SOURCES.md` row to the head. Diff before and after — the only local hunks left are the listed deviations.
+- **Re-verify a library skill**: install the new version in a scratch dir (one package at a time — 8 GB), reproduce each claim the row names, edit the ones that changed (a fixed trap is deleted), then move the `Reproduced on` line to the version and date of the run. The pin names only versions a claim ran on — a claim you didn't rerun keeps its old pin, split across two lines if it comes to that.
+- **Rewrite**: the entry bar above, on the new version, from a blank page.
+
 ## Both
 Minor version bump — `VERSION` · `ROSTER.md` header · `.claude-plugin/plugin.json`, all equal (the plugin manifest is the one that gets forgotten — it has shipped stale before). Leave commit/tag to the user (git rule).
 

@@ -39,7 +39,7 @@ Read the one file for the requested verb, then execute it against the wiring map
 | `$ARGUMENTS` | Do | File |
 |---|---|---|
 | `hire [role]` | mint a specialist + wire #1–#9 | `hire.md` |
-| `author [name]` | mint or vendor a skill | `author.md` |
+| `author [name]` | mint or vendor a skill; an existing name refreshes it from an `/update` verdict | `author.md` |
 | `learn` | sweep the preference inbox back into the team (gated) | `learn.md` |
 | `retire <name>` | remove a seat + unwire everywhere | `retire.md` |
 | `audit` | report roster drift (read-only) | `audit.md` |

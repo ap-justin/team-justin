@@ -1,62 +1,46 @@
 ---
 name: update
-description: Sweep what shipped to Claude Code since this team last looked, and decide what the team adopts — new agent/skill frontmatter, plugin mechanics, subagent dispatch semantics, reused built-ins, hooks, the version floor. Also settles whether a capability you heard about is real and reachable on this install.
+description: Sweep what moved under the team since it last looked — Claude Code releases, the upstream of vendored skills, the packages first-party skills were reproduced on — and record a verdict per change. Also settles whether a capability you heard about is reachable on this install.
 disable-model-invocation: true
-argument-hint: "[version to sweep back to — omit for the recorded mark]"
+argument-hint: "[claude [version] | vendored [skill] | libs [skill]] — omit for all three"
 ---
 
-Claude Code ships most weekdays. The team is a **plugin**, so a release can change the ground under it — a frontmatter key that makes a seat cheaper, a dispatch semantic the `lead` routes on, a built-in it delegates to. This sweep reads the releases, keeps only what touches those surfaces, and records a verdict so the next sweep starts where this one stopped.
+Three grounds move under this plugin, each on its own schedule:
 
-**Verdicts, not edits.** Adopting is a wiring change, and wiring is `/roster`'s (`skills/roster/SKILL.md` → *Wiring map*). This skill writes one file: `reviewed.md`, beside it.
+| Ground | What moves | Where the team's copy is pinned | Sweep |
+|---|---|---|---|
+| **Claude Code** | a frontmatter key that makes a seat cheaper, a dispatch semantic the `lead` routes on, a built-in it delegates to | `reviewed.md` → *Claude Code* → *Swept through* | `claude.md` |
+| **Vendored skills** | the upstream file a `skills/<name>/` was copied verbatim from | the provenance comment at the top of its `SKILL.md` (repo · ref · sha), else its `SOURCES.md` → *Vendored resources* row | `vendored.md` |
+| **Libraries** | the package a first-party skill's claims were reproduced on — a minor that renames a `future` export, a major that moves the whole premise | the *Reproduced on `pkg@x.y.z`* line beneath the skill's frontmatter, or its *As of `<date>`* dist-tag claim | `libs.md` |
 
-**The installed CLI is the authority, the changelog is the announcement.** A shipped entry can still be unreachable here — gated to early access, or to a plan the user isn't on. Every candidate is confirmed against `claude --version` and the binary before it reaches a verdict.
+Each sweep reads what shipped, keeps only what touches a surface the team stands on, and records a verdict so the next sweep starts where this one stopped.
 
-## Do
+**Verdicts, not edits.** A sweep is reads — the binary, a diff, a registry, release notes — and it writes one file: `reviewed.md`, beside it. Everything it surfaces lands through `/roster`: a Claude Code adoption is a wiring change (`skills/roster/SKILL.md` → *Wiring map*); a vendored re-sync or a library re-verification is `/roster author <name>` → *Refresh*, the session that downloads, installs and reproduces. A `Reproduced on` pin and a provenance sha move only there.
 
-1. **Find the mark.** `reviewed.md` → *Swept through*. `$ARGUMENTS` names a version → sweep back to that one instead.
-2. **Get the releases.**
+**The thing on disk is the authority; the announcement is the lead.** A changelog entry can be gated off this install, an upstream commit can touch only files the copy excludes, a release note can name an API the skill never claims. Every candidate is confirmed against the binary, the diff, or the skill's own lines before it reaches a verdict.
 
-   ```bash
-   curl -sL https://raw.githubusercontent.com/anthropics/claude-code/main/CHANGELOG.md -o <scratchpad>/CHANGELOG.md   # ~6k lines: save it, don't stream it into context
-   claude --version
-   ```
+## Dispatch
 
-   Installed version below the newest entry → say so once: entries above it are announced, not yet running here.
-3. **Cut to the unswept range** — everything above the mark's `## <version>` heading. Nothing above it → report *swept through <version>, nothing new* and stop.
-4. **Keep only what touches the team.** An entry earns a read when it names one of these surfaces:
+Read the file for the requested sweep, then run it.
 
-   | Surface | Where it lands here |
-   |---|---|
-   | agent frontmatter (`model` · `effort` · `tools` · `maxTurns` · `hooks` · `isolation` · `experimental.*`) | `agents/*.md` |
-   | skill / slash-command frontmatter (`disable-model-invocation` · `allowed-tools` · `context` · `background` · `argument-hint`) | `skills/*/SKILL.md` |
-   | plugin + marketplace manifest, install, loading, `${CLAUDE_PLUGIN_ROOT}` | `.claude-plugin/*.json`, README → *Install* |
-   | subagent dispatch — concurrency caps, spawn depth, partial results, worktree isolation, `SendMessage` | `lead` SKILL.md → Steps 3–4 |
-   | the built-ins the team delegates to — `Explore`, `Plan`, `/code-review`, `/tdd`, `/diagnosing-bugs`, `/verify`, `/run` | `lead` SKILL.md, `ROSTER.md` → *Reused, not owned* |
-   | hook events and their payloads | `agents/*.md` frontmatter, target-repo gates |
-   | tool and permission names a seat lists | every `tools:` / `allowed-tools:` line |
-   | MCP config for `chrome-devtools` and `context7` | README → *Requirements*, `SOURCES.md` |
-   | model IDs, effort levels, prompt-cache knobs, pricing | `ROSTER.md` → *Model tiers* |
-   | the `claude plugin` CLI (`details` · `validate` · `eval`) | `skills/roster/audit.md` |
+| `$ARGUMENTS` | Do | File |
+|---|---|---|
+| _(none)_ | all three, in table order, one report | — |
+| `claude [version]` | the Claude Code releases above the mark (or back to `version`) | `claude.md` |
+| `vendored [skill]` | upstream of every vendored skill (or the one named) | `vendored.md` |
+| `libs [skill]` | the packages every first-party library skill is reproduced on (or the one named) | `libs.md` |
 
-   Read the kept entries; the rest of the range is done.
-5. **Confirm each candidate is reachable**, before it earns a verdict:
-   - a **frontmatter key** — the binary carries the zod schema, which is the only place the exact shape and enum are written:
+A bare version number (`2.1.240`) is `claude 2.1.240`.
 
-     ```bash
-     R=$(readlink -f "$(which claude)"); grep -ao '.\{300\}<key>:.\{200\}' "$R" | head -1
-     ```
+## The verdicts
 
-     This is what separates `experimental:\n  cacheTtl: "1h"` from a key that parses and does nothing — `claude plugin validate` passes on any unknown agent key, so it answers a different question.
-   - a **CLI subcommand** — run its `--help`. Early access replies `<feature> is currently in early access` and that is the verdict for this install.
-   - a **built-in's behavior** — check what the team's own text claims about it, and correct the claim.
-6. **Give every kept entry one verdict**, each naming the file it lands in:
-   - **Adopt** — the change it makes here is small, reversible, and the team's existing doctrine already argues for it. Say which line moves.
-   - **Consider** — real value, but it costs something the user decides: money, a machine constraint (`~/.claude/CLAUDE.md` → 8 GB), or a UX change to a skill they type.
-   - **Decline** — with the one-line reason, so the next sweep doesn't re-litigate it.
-7. **Check the floor.** An adopted feature that needs a newer CLI moves README → *Requirements* → the **≥ version** line. Name the version and the feature that forced it.
-8. **Record and report.** Rewrite `reviewed.md`: the mark to the newest version read, and one line per verdict under its bucket. Then report the buckets to the user and stop — they choose what gets wired, and `/roster` wires it.
+Each sweep file names its own **action** verdict (*Adopt* · *Re-sync* · *Re-verify*) and the cases that fall short of it; these three are shared, and every verdict names the file it lands in:
 
-## Don't
+- **Consider** — real value at a cost the user decides: money, a machine constraint (`~/.claude/CLAUDE.md` → 8 GB), a UX change to a skill they type, a reproduction session.
+- **Decline** — with the one-line reason, so the next sweep doesn't re-litigate it.
+- **Current** — nothing moved that the copy carries; the mark advances.
 
-- Don't wire an adoption. Step 8 ends the skill; `/roster hire|author|learn` owns `agents/`, `skills/`, `ROSTER.md`, and the version bump.
-- Don't carry a verdict from the changelog's wording alone. Step 5 is what keeps an announced-but-ungated feature out of the team's prompt text.
+## The ledger — `reviewed.md`
+
+One section per ground, each with its own mark and its standing verdicts. A sweep rewrites its own section and leaves the other two as they are. A standing verdict holds until the surface it judged changes again — a declined key re-earns a read only when a later release changes it, a declined upstream hunk only when a later commit touches the same lines.
+
