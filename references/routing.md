@@ -70,6 +70,7 @@ line. What earns deriving is the **library choice inside a lane**: the seat prom
 | `@conform-to/react` | `conform` |
 | `react-hook-form` | `react-hook-form` |
 | `vitest` | `vitest` — carried by the `testing` skill's discovery step, so every seat that writes a test reaches it |
+| `@testing-library/react` or `@testing-library/svelte` | `testing-library` — carried by the same discovery step |
 | `sveltekit-superforms` | `superforms` |
 | `panda.config.*` or a `styled-system/` directory | `panda-css` |
 | `components.json` | `shadcn` — the repo has settled its primitive library, and `ark-ui`'s reach-for section is where that rule lives |

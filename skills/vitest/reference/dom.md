@@ -12,8 +12,10 @@ The DOM half of `vitest`. Reproduced on the versions pinned in `SKILL.md`; the r
   import { cleanup } from '@testing-library/react'
   afterEach(cleanup)
   ```
-- **`jest-dom` matchers**: `import '@testing-library/jest-dom/vitest'` in the same setup file — the `/vitest` entry registers against Vitest's `expect`.
+- **`jest-dom` matchers**: `import '@testing-library/jest-dom/vitest'` in the same setup file — the `/vitest` entry registers against Vitest's `expect` (the bare entry reaches for a global `expect` and fails the file under `globals: false`). Types come from that import, so the setup file sits in tsconfig's `include` — or `types: ["@testing-library/jest-dom/vitest"]`; the README's `types: ["@testing-library/jest-dom"]` leaves the matchers untyped here.
+- **`globalThis.IS_REACT_ACT_ENVIRONMENT = true`** in the same setup file: RTL sets it in a `beforeAll` that only registers under `globals: true`, and without it React never prints its *not wrapped in act* warning. Then `--reporter=default` to see it (`SKILL.md`, the reporter swap).
 - **`fetch` is Node's**, so a relative URL throws (`SKILL.md`). Mock at the fetch boundary — `vi.spyOn(globalThis, 'fetch')`, or a request-mocking library at the network seam — and leave the component's call alone.
+- What the queries and interactions do once wired — the matcher that reads a different attribute, the key descriptor that lands nowhere — is the **`testing-library`** skill.
 
 ## Fake timers with RTL and user-event
 Both libraries poll with `setTimeout`, so plain `vi.useFakeTimers()` freezes them: reproduced, `await waitFor(…)` and `await user.click(…)` each ran to `Test timed out`. On this stack the `advanceTimers` option user-event documents did **not** unblock `click` — three variants (`vi.advanceTimersByTime`, an arrow wrapping it, the `Async` form) all hung, as did `delay: null`.
