@@ -14,8 +14,8 @@ Every entry here is the behavior the stack has to produce; the API that produces
 ## A failed submit moves focus to the first invalid field
 
 **Trigger:** the failure branch of a submit — client-side or after a server round trip.
-**Pattern:** on failure, move focus to the first control the pass marked invalid.
-**Default it corrects:** re-rendering the form with its errors painted in and leaving focus where it was — on the submit button, or reset to the top of the document by the round trip.
+**Pattern:** on failure, move focus to the first control the pass marked invalid — the control on screen for that decision, so where a tray of shortcuts gave way to a free-entry box, the box.
+**Default it corrects:** re-rendering the form with its errors painted in and leaving focus where it was — on the submit button, or reset to the top of the document by the round trip — or moving it to the hidden control behind the one the operator can see.
 **Why:** the first invalid field is often several screens above the button that was just pressed, so from where the user is standing the page looks unchanged and the submit looks broken. One focus move does three jobs at once: it scrolls the field into view, it announces the error to a screen reader, and it puts the caret in the control that has to be edited. A summary at the top of the form supplements this; it doesn't replace it, because a summary still leaves the user to find the field.
 **Applies when:** every validated form. On a server round trip the error map comes back with the render, and the focus move is the component's to make.
 
@@ -23,21 +23,24 @@ Every entry here is the behavior the stack has to produce; the API that produces
 
 **Trigger:** a submit button, a per-row Save, a toggle that writes — anything the user presses that then succeeds or fails.
 **Pattern:** the control carries its own state in place — `Save` → `Saving…` → `Saved` — and settles back after the moment passes.
-**Default it corrects:** firing a toast for something the user is already looking at, so the confirmation appears in a corner while their eye is on the button they just pressed.
+**Default it corrects:** firing a toast for something the user is already looking at, so the confirmation appears in a corner while their eye is on the button they just pressed — and holding the press back with `disabled`, which drops focus off the button the operator is standing on.
 **Why:** the eye is already on the control; feedback anywhere else is a second thing to find, and a corner toast is the one region reliably tuned out. Reporting at the origin also makes the outcome unambiguous when several rows each have their own Save.
 **Shape:**
 ```html
-<button disabled={pending}>{pending ? 'Saving…' : saved ? 'Saved' : 'Save'}</button>
+<button aria-disabled={pending} aria-busy={pending} onClick={e => { if (pending) e.preventDefault(); }}>
+  {pending ? 'Saving…' : saved ? 'Saved' : 'Save'}
+</button>
 ```
+The held state is `aria-disabled` and the handler ignores the press. `disabled` blurs the button, so focus lands on `<body>` and the label change the button just made is announced to nobody.
 **Applies when:** the outcome lands on the screen the control is on. Cross-screen outcomes are the next entry. A failure that needs explaining still renders as an error at the control's field, not only in the button's label.
 
 ## A toast is for an outcome that lands on a different screen
 
 **Trigger:** a mutation that redirects — create-then-go-to-detail, delete-then-return-to-list.
-**Pattern:** carry the outcome as a **one-shot flash** — set server-side on the redirect, consumed by the first render that reads it — and show it as a toast on arrival.
-**Default it corrects:** a persistent banner on the destination that stays until dismissed, or the message stuffed into a query parameter so the URL carries it.
-**Why:** on the destination there is no originating control left to report at, so a toast is the only thing that ties the message to the action. It has to be one-shot because the message describes a moment: a query param survives a refresh, a bookmark, a share and a back-navigation, and reappears long after the thing it described is gone. A banner has the same problem in a shape that also takes layout space.
-**Shape:** set the flash server-side on the redirect, read and clear it on the next render — a cookie cleared on read, or the framework's session flash.
+**Pattern:** carry the outcome as a **one-shot flash** — set server-side on the redirect, consumed by the first render that reads it — and show it as a toast on arrival, put where assistive tech will meet it: focus moves to the outcome, or the text is written into a live region that was mounted empty.
+**Default it corrects:** a persistent banner on the destination that stays until dismissed, or the message stuffed into a query parameter so the URL carries it — and a `role="status"` region that mounts on the destination already holding the message.
+**Why:** on the destination there is no originating control left to report at, so a toast is the only thing that ties the message to the action. It has to be one-shot because the message describes a moment: a query param survives a refresh, a bookmark, a share and a back-navigation, and reappears long after the thing it described is gone. A banner has the same problem in a shape that also takes layout space. A live region announces what changes inside it after it mounts; one that arrives with the text already in it is announced by nobody, and the scroll reset the navigation performs is not a focus move.
+**Shape:** set the flash server-side on the redirect, read and clear it on the next render — a cookie cleared on read, or the framework's session flash. Render the status region on every screen, empty, and write the flash into it — or move focus to the outcome itself.
 **Applies when:** the outcome genuinely lands elsewhere. Same-screen is the previous entry. Errors that block the operation are neither — they belong at the field or control that produced them, where the user can act on them.
 
 ## A save that returns to the same screen doesn't move the scroll position
@@ -51,8 +54,8 @@ Every entry here is the behavior the stack has to produce; the API that produces
 ## A confirmation step held in the URL keeps the operator where the trigger was
 
 **Trigger:** a destructive action that confirms through URL state — `?confirm=<id>`, a `/confirm` child route — rather than a dialog.
-**Pattern:** the confirm state appears without moving the operator: the page keeps its scroll position and focus stays on the trigger, which is where the confirm control now sits.
-**Default it corrects:** reaching the confirm state through an ordinary navigation, so whatever the stack does on a route change happens — scroll to the top, focus reset to the document — while the control the operator now has to press is back down where they were.
+**Pattern:** the confirm state appears without moving the operator: the page keeps its scroll position and focus stays on the trigger where it survives the change. Where the confirm panel replaces the trigger's element in place, focus moves to the panel as a named group — `role="group"`, `aria-label`, `tabIndex={-1}` — keyed to the state *changing* rather than to the URL, so a pasted link renders the panel without stealing focus; the link in and the link out both opt out of the scroll reset.
+**Default it corrects:** reaching the confirm state through an ordinary navigation, so whatever the stack does on a route change happens — scroll to the top, focus reset to the document — while the control the operator now has to press is back down where they were. Or the panel swapped in over the trigger with nothing done, so focus falls to `<body>` because the element that held it is gone.
 **Why:** the confirm step exists to make the operator look before they act, and it just moved the thing to look at off screen. They pressed a control at the foot of a long list and the page appears to have jumped somewhere unrelated; the confirm becomes something to hunt for, which is the opposite of a deliberate second press.
 **Applies when:** the confirm state renders on the same screen. One that genuinely lands on a different screen is a navigation and resets normally — and where the stack resets nothing on a same-route change, there is nothing to do: the rule is the operator's position, not the opt-out.
 
@@ -129,7 +132,39 @@ Every entry here is the behavior the stack has to produce; the API that produces
 ## A field's error is the predicate its label completes
 
 **Trigger:** the message under an invalid field — required, out of range, malformed, a cross-field bound.
-**Pattern:** the column reads as one sentence — label, box, predicate. The predicate stands alone, as an instruction, in the operator's own figures: `is required`, `must be less than largest gift of $20`.
-**Default it corrects:** `Email is required` / `The email you entered is invalid` / `above the largest gift of $20.00` — the label restated, the value echoed under the box still showing it, a report of what went wrong where an instruction was owed, and `$20.00` from an operator who typed `20`.
+**Pattern:** the column reads as one sentence — label, box, predicate. The predicate stands alone, as an instruction, in the operator's own figures, lowercase with no full stop: `required`, `between $5 and $50,000`, `required, or untick to skip`.
+**Default it corrects:** `Email is required` / `Required.` / `The email you entered is invalid` / `above the largest gift of $20.00` — the label restated, the value echoed under the box still showing it, a report of what went wrong where an instruction was owed, a clause capitalised and stopped as a sentence of its own, and `$20.00` from an operator who typed `20`.
 **Why:** the label and the box are already on screen; a message repeating either is read twice and trusted less. An instruction is the fix; a report leaves the operator to derive it. A figure in a form they never typed is a second value to reconcile. Consequence prose belongs to the confirm dialog, on the one press where it changes a decision.
-**Applies when:** the message sits under its own field. A summary that folds fields into one string has left the box, so it names the field — and that is where a secret gets masked, because the control showing it is out of view.
+**Applies when:** the message sits under its own field. A summary that folds fields into one string has left the box, so it names the field — and that is where a secret gets masked, because the control showing it is out of view. Folded into one live-region line, the predicates join on commas: each is a clause, and the line reads as one.
+
+## A control inside a labelled group is named for what it asks
+
+**Trigger:** a select, radio set or input inside a `<fieldset>` or `role="group"` whose legend already names the subject — a *Program* group holding the program picker.
+**Pattern:** name the control for the question it asks — *Which program*, *Amount* — so legend and control read as a subject and its question.
+**Default it corrects:** giving the control the legend's noun as its label, so a screen reader announces "Program, Program" on entry.
+**Why:** the accessible name is read after the group name; a repeated word costs the listener the second one for nothing and hides which of two controls in the group is which. The legend states the subject; the control states what it wants.
+**Applies when:** a group with a legend holds one or more controls. A control outside any group carries the subject itself.
+
+## A refused group is marked once, on the group
+
+**Trigger:** validation refusing a set of controls that fail together — a date range, an address, a mode and its box.
+**Pattern:** mark the group's outermost box invalid and place the predicate once beneath it; the controls inside stay unmarked.
+**Default it corrects:** painting every control in the group invalid and repeating the message under each.
+**Why:** the refusal is one decision about one thing; several marks say several things went wrong and send the operator fixing each. One mark on the box that bounds the decision matches what the check tested, and one `aria-describedby` on the group carries the predicate once.
+**Applies when:** the check tests the controls together. A control that fails on its own is marked on its own.
+
+## The dirty comparison covers only what the mode submits
+
+**Trigger:** a form with modes — a radio deciding which of two boxes counts, a *custom* option opening a free-entry field — and a Save gated on whether anything changed.
+**Pattern:** on a mode change, clear the box the new mode does not submit, or compare only the fields the current mode submits.
+**Default it corrects:** leaving the value the operator typed before switching modes in its box, so the comparison keeps reporting a change after they switch back and Save stays lit over a form that submits nothing new.
+**Why:** the operator sees the form they loaded and a button insisting it changed; they save to make it go away and produce a no-op write, or hunt for a change that isn't there. A box mounted in a mode that doesn't submit it is state the form carries without showing.
+**Applies when:** any control stays mounted in a mode that does not submit it. A form that unmounts the box on mode change has nothing to clear.
+
+## An optional sub-group opens on a press with no inverse
+
+**Trigger:** an optional pair inside an already-opened disclosure — notify a recipient, add a note, a second address.
+**Pattern:** the pair is absent until a press reveals it (*+ Notify recipient*); once open it stays open, and empty fields mean absent on submit.
+**Default it corrects:** a checkbox or toggle that shows and hides the pair, so the operator keeps two things in agreement — the toggle and the fields — and can submit a filled pair with the toggle off.
+**Why:** a hide control carries state the fields already carry: empty is the *off* the toggle was for. One way means one state to read and nothing to reconcile; the submit reads the fields, never the toggle.
+**Applies when:** the pair is optional and empty is a valid absence. A choice that has to be explicit — consent, an opt-in — is a control with a value of its own, not a disclosure.

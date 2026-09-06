@@ -16,6 +16,7 @@ Reproduced on **`vitest@5.0.0`** with `vite@8.2.2`, `jsdom@30.0.1`, `@testing-li
 | `expect.poll` past its timeout | could still pass late | rejects |
 | `-t <pattern>` | matched space-joined names | matches the `' > '`-joined full name |
 | config lookup | searched parent dirs | current dir only — pass `--config` from a subdir |
+| Browser Mode `getByText(…, { exact: true })` | ignored | enforced — grep `exact: true` on the bump (reported from an engagement, not reproduced here) |
 
 Everything else here holds on both. Full lists: `https://vitest.dev/guide/migration.md` (v5) and `https://v4.vitest.dev/guide/migration` (v4).
 

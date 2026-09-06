@@ -44,3 +44,18 @@
 **Why:** per-section spellings read as variety to the author and as inconsistency to everyone else. The fallback is the expensive half: telling an operator their working setup is unconfigured sends them to fix something that is not broken, and a status word that can lie about a working system is worth less than no status word.
 **Applies when:** several sections report status side by side. A lone status word has no column to be inconsistent with.
 
+## A qualifier on a variable-length label leads it
+
+**Trigger:** a status word attached to a stored name — retired, no longer offered, archived, draft — rendered where the label can be cut: an `<option>`, a cell with `text-overflow: ellipsis`, a chip.
+**Pattern:** the qualifier goes first: `No longer offered: <name>`.
+**Default it corrects:** `<name> (no longer offered)`, the qualifier trailing the name.
+**Why:** truncation cuts the tail, and it cuts the qualifier off exactly the rows where it matters — the long names. A native `<option>` ellipsises at the control's width and the platform decides where; leading, the qualifier survives any cut and the list scans by state.
+**Applies when:** the label's length is not the product's to control. A fixed literal never truncates.
+
+## A heading's box is its own line, never a target's floor
+
+**Trigger:** a control set beside a heading — an edit press next to a section title, a close button on a card's title row.
+**Pattern:** size the heading's box to its own text; the control beside it takes its hit area from its own padding, hanging past the line with a negative margin or an overlay pseudo-element.
+**Default it corrects:** stretching the heading's row to the control's target height, so every heading with a button beside it grows to the target minimum — or trimming the control's target to the line to keep the row tight.
+**Why:** the type scale set the heading's line and a target minimum was never a typographic decision; padding the row breaks the vertical rhythm for a sibling's sake, while trimming the control breaks the target. A target that overhangs the line keeps both. The measured size is `accessibility-reviewer`'s.
+**Applies when:** the control's target is taller than the heading's line box. Equal heights need nothing.

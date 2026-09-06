@@ -49,6 +49,9 @@ Without it, a column's declared type is an *affinity*, not a constraint: `age IN
 ## Schema changes — `ALTER` can't, so rebuild
 `ALTER TABLE` does four things only: add a column, rename a column, rename a table, drop a column. Every other change — a type, a `CHECK`, a `NOT NULL`, a foreign key, column order — is the official 12-step table rebuild, reproduced verbatim in `reference/migrations.md`. Two steps that get skipped and cost data: `PRAGMA foreign_keys=OFF` goes **outside** the transaction (it is a no-op inside one), and `PRAGMA foreign_key_check` runs **before** the commit, not after.
 
+## Case-insensitive uniqueness lives on the index
+A user-visible name that must be unique regardless of case keeps its typed capitals in the row; the index carries the collation — `create unique index t_name on t(name collate nocase)`. Lower-casing the column rewrites what the user typed, and a second lower-cased column stores twice for a rule the index states in two words. `nocase` folds ASCII only; a Unicode fold is an application-side normalised column.
+
 ## Consult current docs (official sources first)
 sqlite.org is the authority for engine semantics — pragma behavior, WAL, transaction locking, `ALTER TABLE`, `VACUUM INTO` — and it is precise where community posts are approximate. Fetch it rather than answering from memory. For the driver or ORM API (`better-sqlite3`, `node:sqlite`, `bun:sqlite`, Drizzle, Kysely), resolve via Context7; for Drizzle prefer its official `llms.txt` index (`https://orm.drizzle.team/llms.txt`) for schema/migration docs and Context7 for exact call signatures.
 

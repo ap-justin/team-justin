@@ -54,7 +54,11 @@ re-run has no way to check it.
 
 **Cost is a field.** A runner that spawns a browser per test file, a suite that takes ten minutes, a
 machine that swaps under a fan-out — none of it is knowable from the plugin, and it decides whether a
-coverage sweep is a scoped run or a stalled one. Where a cost binds, write the bound.
+coverage sweep is a scoped run or a stalled one. Where a cost binds, write the bound. Under vitest
+the per-file figure is already on disk: `node_modules/.vite/vitest/<hash>/results.json` holds
+`{ results: [["<project>:<path>", { duration, failed }]] }` from the last run — test time only, no
+startup, and files deleted since are still listed, so read it as a lower bound per file and an upper
+bound on the file count.
 
 Prefer a **project seat** over a plugin seat wherever the two overlap: a repo that wrote its own skill
 for its own subsystem knows something the plugin does not.

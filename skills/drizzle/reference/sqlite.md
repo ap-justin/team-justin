@@ -57,6 +57,9 @@ Either way the writes going through Drizzle are typed at the TS boundary — the
 | date as text | `text()` holding ISO-8601 | comparisons are lexical, so pad and use UTC consistently |
 | json | `text({ mode: 'json' }).$type<Shape>()` | stores a JSON string; the shape is a TS assertion (`SKILL.md`) |
 
+## Collation is an index expression
+The `sqlite` skill puts case-insensitive uniqueness on the index; the spelling here is `uniqueIndex('t_name_nocase').on(sql`${t.name} collate nocase`)` — there is no column-level collation option, and `generate` emits `("name" collate nocase)` (reproduced on `drizzle-kit@0.31.10`).
+
 ## Migrations for a file you don't control
 An embedded database ships on someone's disk. On top of `reference/migrations.md`:
 

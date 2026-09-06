@@ -13,7 +13,7 @@ The DOM half of `vitest`. Reproduced on the versions pinned in `SKILL.md`; the r
   afterEach(cleanup)
   ```
 - **`jest-dom` matchers**: `import '@testing-library/jest-dom/vitest'` in the same setup file — the `/vitest` entry registers against Vitest's `expect` (the bare entry reaches for a global `expect` and fails the file under `globals: false`). Types come from that import, so the setup file sits in tsconfig's `include` — or `types: ["@testing-library/jest-dom/vitest"]`; the README's `types: ["@testing-library/jest-dom"]` leaves the matchers untyped here.
-- **`globalThis.IS_REACT_ACT_ENVIRONMENT = true`** in the same setup file: RTL sets it in a `beforeAll` that only registers under `globals: true`, and without it React never prints its *not wrapped in act* warning. Then `--reporter=default` to see it (`SKILL.md`, the reporter swap).
+- **`globalThis.IS_REACT_ACT_ENVIRONMENT = true`** in the same setup file: RTL sets it in a `beforeAll` that only registers under `globals: true`, and without it React never prints its *not wrapped in act* warning. Then `--reporter=default` to see it (`SKILL.md`, the reporter swap). A test rendering through `react-dom/client` under `act` from `react`, with no RTL at all, needs the same line — React 19.2.8 prints *The current testing environment is not configured to support act(...)* without it (reproduced).
 - **`fetch` is Node's**, so a relative URL throws (`SKILL.md`). Mock at the fetch boundary — `vi.spyOn(globalThis, 'fetch')`, or a request-mocking library at the network seam — and leave the component's call alone.
 - What the queries and interactions do once wired — the matcher that reads a different attribute, the key descriptor that lands nowhere — is the **`testing-library`** skill.
 
@@ -34,9 +34,13 @@ test('debounced search fires once', async () => {
 `shouldAdvanceTime` lets real time drive fake time (20 ms steps, `advanceTimeDelta`), so the libraries' own timers fire while your explicit advances still jump the timers you meant to fake. Vitest's `vi.waitFor` and `expect.poll` advance fake timers themselves and work under plain `vi.useFakeTimers()`.
 
 ## What jsdom leaves out
-The `undefined` list is in `SKILL.md` (*jsdom is not a browser*). Present: `localStorage`, `structuredClone`, `CSS.supports`, `PointerEvent`, `getComputedStyle` (values, no layout — every rect is zeros). Stub in `setupFiles` with `vi.stubGlobal` or `Object.defineProperty(window, 'matchMedia', …)`; a component whose behaviour *depends* on layout or observers is a Browser Mode test.
+The `undefined` list is in `SKILL.md` (*jsdom is not a browser*). Present: `localStorage`, `structuredClone`, `CSS.supports`, `PointerEvent`, `getComputedStyle` (values, no layout — every rect is zeros). Stub in `setupFiles` with `vi.stubGlobal` or `Object.defineProperty(window, 'matchMedia', …)`; a component whose behaviour *depends* on layout or observers is a Browser Mode test. Three more from one engagement, reported rather than reproduced here: a double-press guard is a Browser Mode test, because jsdom's `.click()` dispatches synchronously and the disabling re-render is never flushed between two clicks, so the guard passes with nothing guarding; a zag / `ark-ui` combobox is one too — `user.type('Canada')` lands as `Caaa` and `fireEvent.change` never runs the filter; and jsdom measured 0.8–2.6× per file against Browser Mode with a slower flow suite, so measure the repo's own files before migrating for speed.
 
 Setting `window.foo = …` or `globalThis.foo = …` in jsdom/happy-dom reaches the underlying window in v5 (v4 wrote a shadow property). `populateGlobal` returns descriptors, restored with `Object.defineProperty`.
+
+**CSS imports resolve to `''`** — `./page.css`, `?inline` and `?raw` alike — until `css: true` (or `css: { include: [/page\.css/] }`) is in the config: a component reading its own stylesheet as a string gets an empty one, and the document has no sheet (reproduced on 5.0.0). The Tailwind 4 half is `testing-library` → *Hidden is what jsdom can see*.
+
+**happy-dom** (reproduced on `happy-dom@20.14.0`): a package with a `browser` export condition resolves its `default` branch until `resolve.conditions: ['browser']` is in the config. A `<script src>` in test markup logs `DOMException [NotSupportedError]: Failed to load script … JavaScript file loading is disabled` on every test that renders it; `environmentOptions: { happyDOM: { settings: { handleDisabledFileLoadingAsSuccess: true } } }` silences it.
 
 ## Browser Mode
 Runs the test file in a real browser through Vite; nothing is simulated, and the trade is startup cost plus a Playwright install. Reproduced with `@vitest/browser-playwright@5.0.0`, `playwright@1.62.1` (Chromium 151), `vitest-browser-react@2.2.0`.

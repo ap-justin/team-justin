@@ -37,8 +37,12 @@ hedge=$(printf '%s' "$prompt" | grep -oiE '\b(may|might|could) mean\b|\bunclear 
 # scan 2 says point at the file instead. the mechanizable half is the verbatim
 # one: a run of SHINGLE words from the brief found unchanged in a canonical
 # text. paraphrase stays a reading check; a shorter run would misfire on
-# ordinary phrasing, so the length is the fail-open margin.
+# ordinary phrasing, so the length is the fail-open margin. the user's own
+# CLAUDE.md is the exception: terse, so a five-word run from it is
+# already a restatement, and its machine budget is the text briefs re-type most.
 SHINGLE=8
+SHINGLE_USER=5
+USER_CANON="$HOME/.claude/CLAUDE.md"
 cwd=$(printf '%s' "$input" | jq -r '.cwd // empty' 2>/dev/null)
 canon=""
 for f in "$cwd/CLAUDE.md" "$cwd/.claude/CLAUDE.md" "$cwd/AGENTS.md" "$cwd"/.claude/rules/*.md \
@@ -57,7 +61,7 @@ if [ -n "$cwd" ]; then
 fi
 if [ -n "$canon" ]; then
   norm() { tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]\n' ' ' | tr -s ' \n' ' '; }
-  hit=$(printf '%s' "$prompt" | norm | awk -v n="$SHINGLE" -v files="$canon" '
+  hit=$(printf '%s' "$prompt" | norm | awk -v n="$SHINGLE" -v ns="$SHINGLE_USER" -v short="$USER_CANON" -v files="$canon" '
     BEGIN {
       split(files, fs, " ")
       for (i in fs) { f = fs[i]; if (f == "") continue
@@ -67,9 +71,10 @@ if [ -n "$canon" ]; then
         gsub(/[^[:alnum:]]+/, " ", text)
         corpus[f] = text }
     }
-    { for (i = 1; i + n - 1 <= NF; i++) {
-        s = $i; for (j = 1; j < n; j++) s = s " " $(i + j)
-        for (f in corpus) if (index(corpus[f], " " s " ")) { print f "\t" s; exit } } }')
+    { for (f in corpus) { m = (f == short) ? ns : n
+        for (i = 1; i + m - 1 <= NF; i++) {
+          s = $i; for (j = 1; j < m; j++) s = s " " $(i + j)
+          if (index(corpus[f], " " s " ")) { print f "\t" s; exit } } } }')
   [ -n "$hit" ] && reasons="${reasons}restates a file verbatim: \"${hit#*	}\" is in ${hit%%	*} — point at the file instead (scan 2). "
 fi
 
