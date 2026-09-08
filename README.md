@@ -1,6 +1,6 @@
 # team-justin
 
-An engineering team for Claude Code, as a plugin. Run `/team-justin:setup` once in a repo, then ask for the work; the lead routes it to the right specialist and drives it to done.
+An engineering team for Claude Code, as a plugin.
 
 ## Install
 ```
