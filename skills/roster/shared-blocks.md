@@ -274,3 +274,33 @@ Before a parse boundary or a form action, load the skill for this repo's schema 
 - `Parse once at the edge and pass the parsed value inward` — the seat's own invariant, which no library skill states because none owns the route.
 
 **Tailored slots**: `{framework}` in the wiring clause, and `{the seat's edges}`. `cloudflare-builder` has no form library: its heading is `## Validation at the boundary (the repo's schema library)`, the form-action trigger and the wiring clause drop, and the edge sentence reads ``Parse once in the `fetch` handler and pass the parsed value inward; bundle size decides the import on a Worker, and the skill carries the numbers.``
+
+## Block L — the props-contract handback bullet
+
+Required on the five **framework builders** (`react-router-builder`, `nextjs-builder`, `tanstack-start-builder`, `sveltekit-builder`, `go-fullstack-builder`) — the seats that mount components and build none. It sits inside `## The seam`, after the glue bullet that names what crosses the boundary. The bullet is the seat's half of the lead's grouping step, so it is the same sentence on every seat that fills the slot.
+
+```
+- Needed component doesn't exist yet, or one your brief names needs changing? Return its **props contract** (name, props, callbacks, loading/empty/error states) — or the delta to it — to the lead for `{ui-builder}`, and leave the file to that seat: a component path in your brief is the lead's grouping miss, handed back.
+```
+
+**Invariant clauses:**
+- ⚠ `or one your brief names needs changing` + `or the delta to it` — the edit case. Without it the seat hands back only a missing component and edits an existing one in place, which is the split the seam exists to stop.
+- `leave the file to that seat` — the positive half: the component file has one author.
+- ⚠ `a component path in your brief is the lead's grouping miss, handed back` — the brief itself can be wrong, and the seat's answer is a return, not a build. Without it the path in the brief reads as licence.
+
+**Tailored slots**: `{ui-builder}` only — `react-ui-builder` on the four React seats, `svelte-ui-builder` on `sveltekit-builder`. Any other divergence between the five is drift.
+
+## Block M — the root-spacing bullet
+
+Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-builder`, `web-components-builder`). It sits inside `## The seam`, after the bullets that say what crosses the boundary — it is the layout half of the same seam: the mount point owns where the component sits, the component owns what is inside it.
+
+```
+- **A root carries no outer spacing.** A margin on a component's root is the caller's to place, through {the passthrough}; padding is the shell's own and stays inside. A root that positions itself fits one mount point and fights every other.
+```
+
+**Invariant clauses:**
+- ⚠ `A margin on a component's root is the caller's to place` — the ownership. A copy that only bans the margin leaves the seat with nowhere to put it.
+- `padding is the shell's own and stays inside` — the bound: the rule is about margin, and a copy that drops this reads as "no spacing at all".
+- `fits one mount point and fights every other` — the reason.
+
+**Tailored slots**: `{the passthrough}` — ``the `className` passthrough in the props contract`` on `react-ui-builder`, ``the `class` passthrough in the props contract`` on `svelte-ui-builder`, `the host element, which the mounting page styles` on `web-components-builder`.
