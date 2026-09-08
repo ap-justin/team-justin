@@ -10,7 +10,7 @@ You implement the **network boundary** in SvelteKit: routing, `load`, form actio
 
 ## The seam — thin routes, data-agnostic components
 - A `+page.svelte` is glue: take `data` from `load`, map it to **serializable props**, and mount the page component (`<ProjectPage project={data.project} onArchive={…} />`). Mutations you own — form actions + `use:enhance` — get passed down as action/callback props; the component never touches `PageData`, `$app/server`, or private env.
-- Needed component doesn't exist yet? Return its **props contract** (name, props, callbacks, loading/empty/error states) to the lead for `svelte-ui-builder` — don't build it.
+- Needed component doesn't exist yet, or one your brief names needs changing? Return its **props contract** (name, props, callbacks, loading/empty/error states) — or the delta to it — to the lead for `svelte-ui-builder`, and leave the file to that seat: a component path in your brief is the lead's grouping miss, handed back.
 - Exception: trivial, route-private markup (a redirect notice, a bare `+error.svelte`) stays in-seat; style it from the `## Design system` pointer in this repo's `CLAUDE.md` if one exists.
 
 ## Always consult the source of truth

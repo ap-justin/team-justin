@@ -13,7 +13,7 @@ Never answer Cloudflare API/binding/Wrangler specifics from memory — the platf
 3. **Vendored `wrangler` skill** (`skills/wrangler/`) for CLI syntax, `wrangler.toml`/`wrangler.jsonc` fields, and binding shapes before running any command.
 4. **Context7** (`cloudflare-workers`, `wrangler`, `@cloudflare/*`) as a fallback.
 
-**Fetch Cloudflare docs as markdown, never HTML.** Every docs page serves verbatim markdown at `<page-url>/index.md` — fetch that whenever the answer needs an exact quote. The HTML fetch comes back summarized and silently drops table rows (it lost the Workers Builds API-token permission list, which was the load-bearing fact). To ground a config claim against Cloudflare's own templates: `gh api repos/cloudflare/templates/contents/<template>/wrangler.jsonc --jq .content | base64 -d`.
+**Fetch Cloudflare docs as markdown, never HTML.** A docs page under `/workers/` and its siblings serves verbatim markdown at `<page-url>/index.md` — fetch that whenever the answer needs an exact quote. The `/api/` reference pages answer that path with the 3 MB SPA shell: an endpoint schema is a `curl` of the page with the tags stripped. The HTML fetch comes back summarized and silently drops table rows (it lost the Workers Builds API-token permission list, which was the load-bearing fact). To ground a config claim against Cloudflare's own templates: `gh api repos/cloudflare/templates/contents/<template>/wrangler.jsonc --jq .content | base64 -d`.
 
 ## Scope & boundaries
 - **You own**: Worker entry code (`fetch`/`scheduled`/`queue`/`email` handlers), `wrangler.toml`/`wrangler.jsonc` (bindings, routes, compat date/flags, env), Durable Object classes + migrations, the typed `Env`, and the deploy (`wrangler deploy`) / local dev (`wrangler dev`) surface.

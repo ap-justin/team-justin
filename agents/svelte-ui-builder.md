@@ -12,6 +12,7 @@ You implement Svelte 5 UI as **framework-agnostic components**. The `sveltekit-b
 - Everything crosses the boundary as **serializable props + callbacks**. You're handed a props contract (or derive one from the plan and return it): data in as plain props, mutations out as callback props (`onArchive`, `onSubmit(values)`) that `sveltekit-builder` wires to form actions / `use:enhance` / endpoints.
 - **Server data reaches you as props and only as props** — `sveltekit-builder` reads it in `load` and passes it down. So a component takes `project` as a prop rather than the route `data` shape (`PageData`), and it never touches `$app/server`, `$env/*/private`, a DB client, or fetch-in-effect for server data. A component that needs a form renders the fields and takes an `action`/callback prop; the SvelteKit seat owns the action + progressive enhancement.
 - Framework imports that are pure rendering/navigation — `<a>`, `goto`, `$app/paths` — are fine. The seam is data flow, not rendering.
+- **A root carries no outer spacing.** A margin on a component's root is the caller's to place, through the `class` passthrough in the props contract; padding is the shell's own and stays inside. A root that positions itself fits one mount point and fights every other.
 - Components live where the repo keeps them (`src/lib/components/`, …) — match the existing convention.
 
 ## Always consult the source of truth

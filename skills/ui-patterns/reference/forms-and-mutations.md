@@ -51,6 +51,15 @@ The held state is `aria-disabled` and the handler ignores the press. `disabled` 
 **Why:** the operator is looking at the control they pressed, usually somewhere down a long form. Jumping to the top loses their place and reads as a failure — they can't see the thing they just changed, so they check it again. Only an outcome landing on a *different* screen earns the trip to the top.
 **Applies when:** the current screen persists — this is the rule the component's callbacks have to leave room for.
 
+## A form seeded from stored values shows the saved values after a same-screen save
+
+**Trigger:** a settings or edit form whose fields start from server data and whose submit re-renders the same screen.
+**Pattern:** leave the form alone when the answer lands; the fresh read re-seeds it.
+**Default it corrects:** `form.reset()` in the submit-complete effect, to "clear the dirty state" once the save is acknowledged.
+**Why:** reset restores each uncontrolled input to its mount-time default, the value from *before* the write. The answer arrives before the fresh read does, so the operator watches their edit disappear and the boxes hold the old data until something remounts them.
+**Shape:** key the form on the stored record's version (or the loader's data) so a fresh read remounts it seeded with what was saved; the dirty comparison runs against that seed.
+**Applies when:** inputs are seeded rather than blank. A create form that submits and stays is the opposite case — there the reset is the point.
+
 ## A confirmation step held in the URL keeps the operator where the trigger was
 
 **Trigger:** a destructive action that confirms through URL state — `?confirm=<id>`, a `/confirm` child route — rather than a dialog.

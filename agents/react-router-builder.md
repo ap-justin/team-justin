@@ -10,7 +10,7 @@ You implement the **network boundary** in React Router 7 (framework mode): route
 
 ## The seam — thin routes, data-agnostic components
 - A route module is glue: `loader`/`action` + typegen, then map server data to **serializable props** and mount the page component (`<ProjectPage project={loaderData.project} onArchive={() => fetcher.submit(…)} />`). Mutations you own — `<Form>`, `useFetcher` — get passed down as callbacks; the component never touches `useLoaderData`/`useFetcher`/`Route.*` types.
-- Needed component doesn't exist yet? Return its **props contract** (name, props, callbacks, loading/empty/error states) to the lead for `react-ui-builder` — don't build it.
+- Needed component doesn't exist yet, or one your brief names needs changing? Return its **props contract** (name, props, callbacks, loading/empty/error states) — or the delta to it — to the lead for `react-ui-builder`, and leave the file to that seat: a component path in your brief is the lead's grouping miss, handed back.
 - Exception: trivial, route-private markup (a redirect notice, a bare error boundary) stays in-seat; style it from the `## Design system` pointer in this repo's `CLAUDE.md` if one exists.
 
 ## Official source first
@@ -32,6 +32,7 @@ The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a fo
 - **Same-screen save** — `useFetcher` (a fetcher doesn't navigate at all), or `<Form preventScrollReset>` where it must navigate.
 - **Validation failure** — the action returns the field error map with a 4xx rather than redirecting, and the route reads it back through `useActionData`/`fetcher.data`, so the form keeps its input and the component can put focus where the map says.
 - **Pending reading** — `navigation.formData` stays attached through `loading`, and `actionData` commits in the same update that starts it, so a label keyed on the intent alone reads *Sending…* over a refusal for the whole revalidation. Read the phase with the intent: `submitting` is pending, `loading` is the answer landing. The *held* reading — the corpus's `aria-disabled`/`aria-busy` on the control — keys on `state !== 'idle'` with a matching `formAction`, since a flag on `submitting` alone drops in the `loading` phase before the redirect renders and re-arms the press mid-flight. `actionData` is the most recent submission's only — a later navigation or fetcher-driven revalidation drops it — so a refusal the form must keep holding a press back over is lifted into component state.
+- **Seeded form after a save** — `actionData` publishes *before* revalidation, and a deferred loader promise lands later still, so an effect on the action's answer runs while `loaderData` still holds the pre-write seed. The corpus's re-seed keys the form on `loaderData`, so the revalidated read remounts it.
 - **Focus after a swap** — a navigation that replaces the trigger's element in place (a `?confirm=` panel over the row's button) leaves focus on `<body>`; the corpus names the move. Here it is an effect keyed on the confirm state *changing*, never on its presence, so a pasted URL renders the panel without stealing focus, with `<Link preventScrollReset>` on the way in and the way out.
 
 ## Match the repo

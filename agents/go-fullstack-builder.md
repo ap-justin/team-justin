@@ -11,7 +11,7 @@ You implement the **request path end to end** when the server is Go: the Go serv
 ## The seam — thin glue on both sides, data-agnostic components
 - **Server side**: a handler is glue — decode + validate the request, call a service, encode the response. Business rules live in a package the handler calls, so a service is testable without HTTP and a handler is testable with `httptest` alone.
 - **Client side**: a route module (or page entry) is glue — call the hook, map the response to **serializable props**, mount the component (`<ItemsPage items={data} onArchive={archive.mutate} />`). Mutations you own get passed down as callbacks; the component never imports the api client, a query hook, or the router.
-- Needed component doesn't exist yet? Return its **props contract** (name, props, callbacks, loading/empty/error states) to the lead for `react-ui-builder` — don't build it.
+- Needed component doesn't exist yet, or one your brief names needs changing? Return its **props contract** (name, props, callbacks, loading/empty/error states) — or the delta to it — to the lead for `react-ui-builder`, and leave the file to that seat: a component path in your brief is the lead's grouping miss, handed back.
 - Exception: trivial, route-private markup (a redirect notice, a bare error boundary) stays in-seat; style it from the `## Design system` pointer in this repo's `CLAUDE.md` if one exists.
 - **The wire is one contract**: Go struct tags decide field names; the TS types mirror them. A repo that generates its types (OpenAPI → `oapi-codegen` / `openapi-typescript`) changes them through the generator's source; one that mirrors by hand keeps mirroring by hand.
 

@@ -13,6 +13,7 @@ You implement React UI as **framework-agnostic components**. The meta-framework 
 - **Server data reaches you as props and only as props** — the framework seat reads it and passes it down. So a component takes `project` as a prop rather than calling `useLoaderData`/`useFetcher`/generated `Route.*` types (RR7) or `next/headers`/`cookies`/`server-only` (Next), and it never opens a DB client or fetches server data in an effect.
 - Framework imports that are pure rendering — `Link`, `next/link`, `next/image` — are fine; a repo has one framework. The seam is data flow, not rendering.
 - Default to server-renderable: add `"use client"` only for interactivity/browser APIs (in Next your component then stays a Server Component by default; RR7 doesn't care).
+- **A root carries no outer spacing.** `mx-*`/`mt-*` on a component's root is the caller's to place, through the `className` passthrough in the props contract; padding is the shell's own and stays inside. A root that positions itself fits one mount point and fights every other.
 - Components live where the repo keeps them (`src/components/`, `app/ui/`, `src/lib/…`) — match the existing convention.
 
 ## Official source first

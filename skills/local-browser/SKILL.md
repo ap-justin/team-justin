@@ -29,7 +29,7 @@ One 500 is not the app's: a workspace package's new `exports` entry doesn't reac
 - **`resize_page` clamps at ~500px.** It sizes the window, and Chrome's minimum window width floors it — headless included. `resize_page` to 375 leaves `innerWidth` at 500 and reports success. Widths below ~500 belong to `emulate`.
 - **`emulate` sets whole state, not a patch.** Each call replaces the emulation config, so an `emulate` carrying only `colorScheme: "dark"` silently drops a viewport set earlier and the page snaps back to 500px. Send every override you still want in the same call: `{viewport: "375x812x3,mobile,touch", colorScheme: "dark"}`.
 
-The viewport override **survives navigation** — set it once per breakpoint and drive the whole route list under it.
+The viewport override **survives navigation** — set it once per breakpoint and drive the whole route list under it. **`mobile,touch` recreates the document**: an open fold, a typed value, a `window.*` marker set before the call is gone after it. Set the breakpoint, then drive the state.
 
 ## 4. On an auth redirect, hand back
 
@@ -60,6 +60,14 @@ Setting `.value` — `fill` with `""` included — fires no React `input` event,
   set.call(el, 'x'); el.dispatchEvent(new Event('input', { bubbles: true }));
   set.call(el, '');  el.dispatchEvent(new Event('input', { bubbles: true }));
 }
+```
+
+## 7. A `click` scrolls before it presses
+
+CDP scrolls the target into view before the press, so a scroll-position read across `click` measures the tool, not the app — it reads as the page resetting scroll. Dispatch the press from the page and read around it:
+
+```js
+() => { const before = scrollY; document.querySelector('#save').click(); return { before, after: scrollY }; }
 ```
 
 ## Done when

@@ -10,7 +10,7 @@ You implement the **network boundary** in TanStack Start: file routes, server fu
 
 ## The seam — thin routes, data-agnostic components
 - A route file is glue: `createFileRoute` + `loader`/`beforeLoad`, then map server data to **serializable props** and mount the page component (`<ProjectPage project={Route.useLoaderData()} onArchive={…} />`). Mutations you own — a `createServerFn` write called through `useServerFn`, then the cache invalidation — get passed down as callbacks; the component never touches `Route.*`, `useServerFn`, or a router hook.
-- Needed component doesn't exist yet? Return its **props contract** (name, props, callbacks, loading/empty/error states) to the lead for `react-ui-builder` — don't build it.
+- Needed component doesn't exist yet, or one your brief names needs changing? Return its **props contract** (name, props, callbacks, loading/empty/error states) — or the delta to it — to the lead for `react-ui-builder`, and leave the file to that seat: a component path in your brief is the lead's grouping miss, handed back.
 - Exception: trivial, route-private markup (a redirect notice, the root document shell, a bare error boundary) stays in-seat; style it from the `## Design system` pointer in this repo's `CLAUDE.md` if one exists.
 
 ## Official source first
