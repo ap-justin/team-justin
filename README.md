@@ -1,40 +1,13 @@
 # team-justin
 
-A versioned engineering team for Claude Code. A main-thread lead (the `lead` skill, `/team-justin:lead`) scopes work, detects the stack, routes to the right specialist subagent, and drives it to done, either building a project from scratch or contributing to an existing codebase.
+An engineering team for Claude Code, as a plugin. Run `/team-justin:setup` once in a repo, then ask for the work; the lead routes it to the right specialist and drives it to done.
 
-## Requirements
-- **Claude Code ≥ 2.1.248.** The floor is the newest frontmatter key the seats use (`experimental.cacheTtl`, 2.1.248). `plugin.json` has no engine/min-version field to enforce it, and older CLIs silently ignore a newer frontmatter field rather than erroring, so a seat below the floor runs, just without the setting.
-- **The `chrome-devtools` MCP server**, for the two rendered passes only (`/visual-review`, `/accessibility-review`); everything else runs without it:
-  ```
-  claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
-  ```
-  Headless keeps the sweep off your screen, and the flags cap what a screenshot costs in context. It drives its own Chrome on its own profile (`~/.cache/chrome-devtools-mcp/chrome-profile`), not the browser you are working in. Without it those two seats fall back to auditing statically from source and say so.
-- **`jq`**, for the dispatch-audit hooks (`hooks/`) only; macOS ships it since Sequoia. The hooks fail open without it: sessions run normally, the team just stops journaling its own dispatches for `dispatch-auditor`. Set `TEAM_JUSTIN_NO_AUDIT=1` to switch the audit loop off entirely.
-- **Model access to `claude-opus-5` and `claude-sonnet-5`.** Every agent pins an explicit model ID rather than the floating `opus`/`sonnet` aliases, so behavior is reproducible across installs. If your plan or provider (Bedrock/Vertex/Foundry) doesn't expose those IDs, swap the `model:` line in `agents/*.md` back to the alias.
-
-## Layout
-- `skills/lead/SKILL.md`: the lead / orchestrator; invokes as `/team-justin:lead`. **You are the PM**: the team formalizes and executes the subject you bring.
-- `agents/*.md`: specialist subagents.
-- `hooks/`: the handoff gate and the dispatch-audit loop. `check-handoff.sh` refuses a team-seat dispatch whose brief carries a `file:line` coordinate, a verbatim run from an always-loaded rule file, or no learnings channel, and a `planner` brief naming no `brief.md` (`TEAM_JUSTIN_NO_GATE=1` switches it off). `log-dispatch.sh` journals every team-seat dispatch to a session ledger, `nudge-audit.sh` blocks a stop once while one stands so `dispatch-auditor` runs; findings land in the preference inbox for `/roster learn`.
-- `TRACKER.md`: the user-level plan store. Holds the change's `brief.md` (incl. commit/PR cadence), `planner`'s tickets, captured `IDEAS.md` lines, one file per known defect under `issues/`, and freeform brainstorming under `notes/`. Nothing of it is written into the working repo.
-- `SOURCES.md`: official MCP/skill/plugin each stack must use (official sources first).
-- `ROSTER.md`: current + planned agents, and how to grow the team.
-- `VERSION`: current release. History is git: `git log` / `git tag`.
-
-## Install (as a Claude Code plugin)
-This repo is a self-contained Claude Code **plugin** (`team-justin`, `.claude-plugin/plugin.json`) served by its own single-plugin **marketplace** (`.claude-plugin/marketplace.json`, name `team-justin`). Installing as a plugin, rather than symlinking into `~/.claude`, is what makes it work identically **locally and in Claude Code on the web**: plugin content resolves `${CLAUDE_PLUGIN_ROOT}` (the install dir) in both, whereas the web VM never sees your machine's `~/.claude`.
-
-**Most users** install from the marketplace:
+## Install
 ```
 /plugin marketplace add ap-justin/team-justin
 /plugin install team-justin@team-justin
 ```
-**Contributors** (editing the plugin itself; no install, picks up edits live): clone the repo and point Claude at your clone:
-```
-git clone https://github.com/ap-justin/team-justin
-claude --plugin-dir ./team-justin     # /reload-plugins after edits
-```
-**Claude Code on the web**: commit this to the `.claude/settings.json` of *each* repo you want the team in; the web session prompts once to install:
+Claude Code on the web: commit this to the repo's `.claude/settings.json`; the web session prompts once to install:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -43,30 +16,53 @@ claude --plugin-dir ./team-justin     # /reload-plugins after edits
   "enabledPlugins": { "team-justin@team-justin": true }
 }
 ```
-Skills/agents load namespaced as `team-justin:*` (e.g. the lead is `/team-justin:lead`). Edit here, version in git.
 
-## Use
-- From scratch: "build a landing page for X" / "new SvelteKit app that…"
-- Contribute: from inside a repo, "add feature Y" / "fix Z"; the lead maps the codebase and routes to the matching specialist.
-- Or invoke explicitly: `/team-justin:lead <task>`.
-- Mint the repo's own lead: `/team-justin:setup`. Run it once per repo, and again whenever the repo or the plugin moves. It derives that repo's standing answers (which seat owns which stack, and what the repo's own docs leave unwritten, such as the gate that closes its token file and **what a test run costs**) and writes them into its `.claude/CLAUDE.md` in that file's own voice: a pointer at `team-justin:lead` plus that sheet. *How the team works* stays in the plugin and loads on demand; *who is on the team here* is the only part that goes ambient. It also tunes the file it lands in to the `writing-for-agents` standard, proposing each cut with the file that already answers it. **`/team-justin:setup prose`** runs that tuning on its own, with no derivation and no team section. Every line cites what it came from, and one comment stamps the plugin version the answers came from, so re-running is both the "the repo changed" fix and the "the plugin changed" one.
-- Plan it first: `/team-justin:brief <subject>`. It grills you, then writes a change-shaped brief to the plan store: what lands, blast radius, **cadence**, decisions, non-goals, done-when. Cadence is the one to get right: commits are the steps, and a PR split means an environment boundary or a partial ship. A bare `lead <task>` still grills when the work warrants it; only `/team-justin:brief` persists the record.
-- Want it, but not now: `/team-justin:todo <the thing>` logs it to the plan store's `IDEAS.md` with a `value` and an `effort` (`1`-`5`, or `?`). Run mid-session it expands the line from context already loaded (the `file:line` you were just in, why it's deferred) and can size it; run cold it logs your sentence and two `?`s. The numbers exist so the list can be ranked, and the next `brief` grill reads it back for you to decide whether it's in scope.
-- Record a bug: `/team-justin:issue <what's wrong>` opens a defect file in the plan store's `issues/` from what you just said. The fields it didn't look into say `_not investigated_`, so the stub can't pass for a finished write-up.
-- Work them: `/team-justin:todos [n | substring]` and `/team-justin:issues [slug | substring]`; the singular writes one, the plural works them. Each reconciles the store against the code, scores what's unsized (`~n` until you confirm), proposes a batch of small independent entries off the ranking, and waits for you to confirm before anything is written or built. Each entry it lands is **deleted** so the store shrinks; one that turns out bigger than its number is rescored in place and left, not half-built.
-- The five are their own skills, so you type them directly and the lead never loads. All user-invoked by design: the agent can't fire them, which is what keeps a deferred want from becoming work you didn't ask for.
-- Land it: `/team-justin:landed`. The PR merged, so sync the session back onto the base branch and retire the spent one. It verifies the merge on GitHub rather than in git, because a squash merge makes `git branch -d` refuse a branch that has landed; it stops on uncommitted changes, on commits the PR never had, and on a base that diverged locally.
-- Fix the comments: `/team-justin:comment-fix [<path> | <branch> | <pr number>]` audits the target's comments against the house standard (lowercase, written for the next reader of the code) and fixes them in place. Every hunk it produces is a comment line.
-- Fix the copy: `/team-justin:prose-fix [<path> | <branch> | <pr number>]` audits the strings the target renders to the user against the `ui-patterns` and `ux-copy` standard and fixes them in place, carrying each edit to the test literal that pins the old string. Every hunk it produces is a rendered string; a control the cut copy was compensating for is named in the report, not touched.
-- Keep up: `/team-justin:update` sweeps what moved under the team since the last sweep (the Claude Code releases, the upstream of every vendored skill, and the packages the first-party library skills were reproduced on) and reports what to adopt, re-sync or re-verify, what to consider, and what it has already declined, each with the file it lands in. Verdicts only; `/team-justin:roster` wires and refreshes. Its ledger is `skills/update/reviewed.md`.
+## Requirements
+- **Claude Code 2.1.248 or newer.** An older CLI runs the seats but silently drops the newer settings they carry.
+- **The `chrome-devtools` MCP server**, for `/visual-review` and `/accessibility-review` only; without it they audit from source and say so.
+  ```
+  claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
+  ```
+- **`jq`**, for the hooks; they fail open without it.
+- **Model access to `claude-opus-5` and `claude-sonnet-5`.**
 
-## Principles
-- **Official sources first.** Framework/API specifics resolve via the official MCP/skill/plugin in `SOURCES.md`, never from training data.
-- **Single-responsibility agents.** Each does one job well.
-- **Reuse built-ins:** `Explore`, `Plan`, `/code-review`, `/tdd`, `/verify` instead of reinventing them.
-- **Minimal diff in brownfield:** match the target repo's conventions, never impose the team's defaults.
-- **The design is made in Claude Design; the repo owns the system.** The chain: `ux-designer`'s user flow and **conventions corpus** (the constraints the design agent works inside, not palette, type, layout or the signature) → **the foundation** (`/design-system create`, the seven foundations' shape with no values in it, emitted as a token file where every value is `var(--unset)`, so Phase 0 fills an architecture in rather than inventing one per component) → **the look is settled on a canvas in front of the user** (`/design` in session, or the user's own claude.ai/design session) → the UI builder's **Phase 0**, the real token file in the app's own style layer and the conformance gate that closes it → the first components, and from there screens are designed out of the real parts. A canvas is a **picture** of the system (literals, no token layer, outside the gate), so what it returns is transcribed once, by a builder, exactly like anything else that comes back. **The repo is upstream, in every direction**: it is where the system is authored, and every design project is rebuilt from it rather than merged into it. Once a system exists, the conventions file **turns over**, from pre-look constraints to the briefing on the shipped system. A React repo where non-engineers design against the system can add the **sync lane** on top: `/design-sync` publishes a bundle of the repo's real components to a claude.ai/design project, at the cost of a build product with its own maintenance. The whole practice: `${CLAUDE_PLUGIN_ROOT}/references/ui-practice.md` (the lane: `${CLAUDE_PLUGIN_ROOT}/references/design-sync.md` beside it).
-- **The design is authoritative.** A value that came back ships as authored, contrast included. No seat re-derives one, overrides one, or checks one against a preference. A pair the design authored together stays together, though: a fill token spent as a text colour is a **conformance** finding, and recording which pairs read as text (ratios included) is the system's ledger doing its job, not a seat computing a verdict. **This practice is React**, because the sync converter takes React; other stacks get the token file and its gate and stop there.
-- **Brownfield has no design hop.** A feature in an existing repo routes `ux-designer` (flow, states, copy) → the builder, which follows the repo's `## Design system` pointer, or finds the token file and adds the missing pointer when the repo never wrote one. A builder's **named gap** goes to the user with the token name it would need; no seat on this team extends the system.
-- **One token vocabulary, everywhere:** shadcn's semantic set (`--background`/`--foreground`, `--primary`, `--muted`, `--accent`, `--destructive`, `--border`, `--ring`, `--radius`, …) as plain custom properties, the naming convention only, no shadcn or Tailwind dependency. Restrictive on purpose: a closed vocabulary is what makes *"is this value in the system"* a grep, which is what the repo's own conformance gate runs at every commit. **The vocabulary is fixed; the values and the technique behind them are not.** Whether a hover step is a named solid, an alpha step, or a `color-mix()` is the design system's call, and the team conforms to it rather than holding an opinion about the CSS. A repo *actually* on shadcn is the same story from the other end: the installed theme **is** the system, and the vendored `shadcn` skill is the playbook.
-- **Conformance is prevented, then tested, never reviewed.** Whether a build honors its design is a judgment a person makes in a glance and an agent can't make at all, so nothing tries to. The token file is a **closed set**: builders write no value that isn't in it and return a **named gap** instead of inventing one, and the handoff names what's available. What catches the rest is not a review pass but **the repo's own gate**, set up by the builder in Phase 0. Structural first, where the build itself makes an off-system value have no rule at all (a theme that zeroes the default palette leaves `gray-500` matching nothing), then a test in the suite for the rest: values (every length, colour, duration resolves to the token file) and names (every class a component writes is one the sheets actually draw, the one nothing else catches, since not existing *is* the failure mode). A gate runs in no context window and can't be skipped because the batch was busy. What's left for the two screen seats is what a test can't see. `accessibility-reviewer` supplies structural WCAG criteria and every measured target size; **contrast is the design's, per the principle above**. `visual-reviewer` supplies **coverage and cause**: the states and widths nobody renders (empty, error, loading, disabled, focus-visible, 375, the content extremes), and the `file:line` behind a defect you spotted in a second. Both are lead-dispatchable seats **and** user-invocable slash passes off one shared body, but neither returns a verdict on intent. The verdict stays the user's.
+## Commands
+Everything is namespaced `team-justin:`. These are the skills only you can invoke; the seats load their own.
+
+**Start**
+- `/team-justin:setup`: set the team up in this repo. Once per repo, again when the repo or the plugin moves. On a blank repo it grills the subject and stack with you first.
+- Then ask: "add feature Y", "fix Z", "build a landing page for X". Or `/team-justin:lead <task>`.
+
+**Plan**
+- `/team-justin:brief <subject>`: grill a change and keep the record before building.
+- `/team-justin:to-spec`, `/team-justin:to-tickets`, `/team-justin:wayfinder`: turn a conversation into a spec, tracer-bullet tickets, or a map for work bigger than one session.
+
+**Backlog**
+- `/team-justin:todo <the thing>`, `/team-justin:issue <what's wrong>`: log a want or a defect for later.
+- `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
+- `/team-justin:remember <preference>`: teach the team something for every future project.
+
+**Review on demand**
+- `/team-justin:visual-review`, `/team-justin:accessibility-review`: the rendered UI in a live browser.
+- `/team-justin:seo-review`, `/team-justin:review-animations`, `/team-justin:improve-animations`, `/team-justin:design-gallery`.
+
+**Change hygiene**
+- `/team-justin:landed`: after the PR merges, sync back onto the base branch.
+- `/team-justin:comment-fix`, `/team-justin:prose-fix`, `/team-justin:doc-fix` `[<path> | <branch> | <pr>]`: fix comments, rendered copy, or doc prose in place.
+
+## Roster
+The lead routes to these; you can also spawn one directly by name.
+
+**Build**: `sveltekit-builder`, `react-router-builder`, `nextjs-builder`, `tanstack-start-builder` (the network boundary of each framework); `go-fullstack-builder` (Go-served React app); `python-developer`; `react-ui-builder`, `svelte-ui-builder`, `web-components-builder` (components); `cloudflare-builder` (Workers, D1); `sanity-builder` (CMS).
+
+**Data, auth, money**: `postgres-architect`, `sqlite-architect`, `better-auth-specialist`, `stripe-specialist`.
+
+**Platform**: `vercel-platform-engineer`, `vercel-perf-optimizer`, `fly-platform-engineer`, `toolchain-engineer` (pnpm, Turborepo, Biome).
+
+**Design**: `ux-designer` (flows, IA, copy), `ui-designer` (the design canvas and the coverage ledger), `graphic-designer` (images, video, generative art).
+
+**Review**: `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`, `test-writer`.
+
+**Process**: `planner` (the plan of record past one session), `dispatch-auditor` (audits the lead's own dispatches; hook-fired).
+
+Roles in full: `ROSTER.md`.
