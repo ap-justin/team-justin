@@ -69,6 +69,8 @@ line. What earns deriving is the **library choice inside a lane**: the seat prom
 | `valibot` | `valibot` |
 | `@conform-to/react` | `conform` |
 | `react-hook-form` | `react-hook-form` |
+| `xstate` | `xstate` |
+| `@xstate/react` | `xstate-react` |
 | `vitest` | `vitest` — carried by the `testing` skill's discovery step, so every seat that writes a test reaches it |
 | `@testing-library/react` or `@testing-library/svelte` | `testing-library` — carried by the same discovery step |
 | `sveltekit-superforms` | `superforms` |
