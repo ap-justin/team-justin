@@ -47,6 +47,7 @@ Claude Code on the web: commit this to the repo's `.claude/settings.json`:
 - **Framework**: React Router 7, Next.js App Router, TanStack Start, SvelteKit, Go-served React, Python.
 - **Data**: Postgres, SQLite, Sanity.
 - **Auth and payments**: Better Auth, Stripe.
-- **Platform**: Vercel, Cloudflare Workers, Fly.io; pnpm, Turborepo, Biome.
+- **Platform**: Vercel, Cloudflare Workers, Fly.io.
+- **Tooling**: pnpm, Turborepo, Biome.
 
 Design runs upstream of every build (flows, the canvas, assets) and review after it (correctness, structure, rendered UI, accessibility, UX). The seats behind each layer, and how to spawn one directly: `ROSTER.md`.
