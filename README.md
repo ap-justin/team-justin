@@ -7,7 +7,7 @@ An engineering team for Claude Code, as a plugin. Run `/team-justin:setup` once 
 /plugin marketplace add ap-justin/team-justin
 /plugin install team-justin@team-justin
 ```
-Claude Code on the web: commit this to the repo's `.claude/settings.json`; the web session prompts once to install:
+Claude Code on the web: commit this to the repo's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
@@ -19,7 +19,7 @@ Claude Code on the web: commit this to the repo's `.claude/settings.json`; the w
 
 ## Requirements
 - **Claude Code 2.1.248 or newer.** An older CLI runs the seats but silently drops the newer settings they carry.
-- **The `chrome-devtools` MCP server**, for `/visual-review` and `/accessibility-review` only; without it they audit from source and say so.
+- **The `chrome-devtools` MCP server**, for the visual and accessibility reviewers only; without it they audit from source.
   ```
   claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
   ```
@@ -27,41 +27,26 @@ Claude Code on the web: commit this to the repo's `.claude/settings.json`; the w
 - **Model access to `claude-opus-5` and `claude-sonnet-5`.**
 
 ## Commands
-Everything is namespaced `team-justin:`. These are the skills only you can invoke; the seats load their own.
-
-**Start**
-- `/team-justin:setup`: set the team up in this repo. Once per repo, again when the repo or the plugin moves. On a blank repo it grills the subject and stack with you first.
+**Getting started**
+- `/team-justin:setup`: set the team up in this repo. Once per repo, again when the repo or the plugin moves.
 - Then ask: "add feature Y", "fix Z", "build a landing page for X". Or `/team-justin:lead <task>`.
 
-**Plan**
+**Coding sessions**
 - `/team-justin:brief <subject>`: grill a change and keep the record before building.
-- `/team-justin:to-spec`, `/team-justin:to-tickets`, `/team-justin:wayfinder`: turn a conversation into a spec, tracer-bullet tickets, or a map for work bigger than one session.
-
-**Backlog**
-- `/team-justin:todo <the thing>`, `/team-justin:issue <what's wrong>`: log a want or a defect for later.
-- `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
-
-**Review on demand**
-- `/team-justin:visual-review`, `/team-justin:accessibility-review`: the rendered UI in a live browser.
-- `/team-justin:seo-review`, `/team-justin:review-animations`, `/team-justin:improve-animations`, `/team-justin:design-gallery`.
-
-**Change hygiene**
+- `/team-justin:todo <the thing>`, `/team-justin:issue <what's wrong>`: park a want or a defect without breaking the session.
 - `/team-justin:landed`: after the PR merges, sync back onto the base branch.
 - `/team-justin:comment-fix`, `/team-justin:prose-fix`, `/team-justin:doc-fix` `[<path> | <branch> | <pr>]`: fix comments, rendered copy, or doc prose in place.
 
-## Roster
-The lead routes to these; you can also spawn one directly by name.
+**Backlog and tech debt**
+- `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
+- `/team-justin:design-system audit`: audit the design system.
+- `/team-justin:seo-review`, `/team-justin:review-animations`, `/team-justin:improve-animations`, `/team-justin:design-gallery`: audits on shipped pages.
 
-**Build**: `sveltekit-builder`, `react-router-builder`, `nextjs-builder`, `tanstack-start-builder` (the network boundary of each framework); `go-fullstack-builder` (Go-served React app); `python-developer`; `react-ui-builder`, `svelte-ui-builder`, `web-components-builder` (components); `cloudflare-builder` (Workers, D1); `sanity-builder` (CMS).
+## Stack
+- **UI**: React, Svelte 5, Web Components.
+- **Framework**: React Router 7, Next.js App Router, TanStack Start, SvelteKit, Go-served React, Python.
+- **Data**: Postgres, SQLite, Sanity.
+- **Auth and payments**: Better Auth, Stripe.
+- **Platform**: Vercel, Cloudflare Workers, Fly.io; pnpm, Turborepo, Biome.
 
-**Data, auth, money**: `postgres-architect`, `sqlite-architect`, `better-auth-specialist`, `stripe-specialist`.
-
-**Platform**: `vercel-platform-engineer`, `vercel-perf-optimizer`, `fly-platform-engineer`, `toolchain-engineer` (pnpm, Turborepo, Biome).
-
-**Design**: `ux-designer` (flows, IA, copy), `ui-designer` (the design canvas and the coverage ledger), `graphic-designer` (images, video, generative art).
-
-**Review**: `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`, `test-writer`.
-
-**Process**: `planner` (the plan of record past one session).
-
-Roles in full: `ROSTER.md`.
+Design runs upstream of every build (flows, the canvas, assets) and review after it (correctness, structure, rendered UI, accessibility, UX). The seats behind each layer, and how to spawn one directly: `ROSTER.md`.
