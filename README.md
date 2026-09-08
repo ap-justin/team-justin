@@ -40,7 +40,6 @@ Everything is namespaced `team-justin:`. These are the skills only you can invok
 **Backlog**
 - `/team-justin:todo <the thing>`, `/team-justin:issue <what's wrong>`: log a want or a defect for later.
 - `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
-- `/team-justin:remember <preference>`: teach the team something for every future project.
 
 **Review on demand**
 - `/team-justin:visual-review`, `/team-justin:accessibility-review`: the rendered UI in a live browser.
@@ -63,6 +62,6 @@ The lead routes to these; you can also spawn one directly by name.
 
 **Review**: `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`, `test-writer`.
 
-**Process**: `planner` (the plan of record past one session), `dispatch-auditor` (audits the lead's own dispatches; hook-fired).
+**Process**: `planner` (the plan of record past one session).
 
 Roles in full: `ROSTER.md`.
