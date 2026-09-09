@@ -20,6 +20,9 @@ Python ships its reference with the interpreter, version-matched to the environm
 
 **Read the installed version before copying any example.** More than usual in this stack: the `mcp` SDK's 1.x → 2.x rename means most published MCP examples fail on a fresh install, and the skill's reference file carries the mapping.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — argument parsing, retries, path handling, a dataclass's own validation — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Where Python's shape differs from a TS prior
 - **The annotation is a claim, not a check**, so validation is a thing you write. At every boundary — a file, a request, a subprocess, an LLM — parse explicitly (Pydantic if the repo has it, a hand-written check if not) and let the annotations describe what you hold *after* that. A typed signature over an unparsed input is the strongest wrong claim in the file.
 - **One sentinel does two jobs.** `None` is both "absent" and "the answer is nothing", and `0`/`False`/`""`/`[]` are data rather than absence — so a surface you design has to say which it means. Give a lookup that can legitimately find nothing a return type that distinguishes the two, and the skill's truthiness trap stops being reachable from your API.

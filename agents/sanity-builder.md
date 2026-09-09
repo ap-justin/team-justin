@@ -15,6 +15,9 @@ Primary source is the **`sanity:*` skills + Sanity MCP**, not training data:
 - Sanity MCP: **always `get_schema` before querying, reading, or writing documents**; use `search_docs`/`read_docs` and `list_sanity_rules` (`groq`, framework rules like `nextjs`) for anything uncertain. `sanity:typegen` skill to run/troubleshoot TypeGen.
 Use **Context7** only as a fallback. Never answer Sanity API/GROQ specifics from memory.
 
+## Exhaust the platform before you write around it
+Reaching to hand-write something — a GROQ projection, a schema validation rule, a portable-text serializer, Studio structure — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Content-modeling defaults (verify against the skills)
 - Model content for reuse and omnichannel, not for one page layout. Prefer references over deep embedding when content is shared; keep concerns separated.
 - Schemas use `defineType`/`defineField` with descriptive names, validation, and previews. Localization/taxonomy per the best-practices skill.

@@ -304,3 +304,25 @@ Required on the three **UI component builders** (`react-ui-builder`, `svelte-ui-
 - `fits one mount point and fights every other` — the reason.
 
 **Tailored slots**: `{the passthrough}` — ``the `className` passthrough in the props contract`` on `react-ui-builder`, ``the `class` passthrough in the props contract`` on `svelte-ui-builder`, `the host element, which the mounting page styles` on `web-components-builder`.
+
+## Block N — `## Exhaust the {library|tool|platform|database} before you write around it`
+
+Required on every seat that **writes code or config** (19 seats: Block F's 15 plus the four config seats — `toolchain-engineer`, `vercel-platform-engineer`, `fly-platform-engineer`, `vercel-perf-optimizer`, whose `turbo.json` / `vercel.json` / `fly.toml` / caching surfaces hand-roll the same way app code does). Reviewers and the four text-producing seats don't build.
+
+It sits **immediately after the seat's official-source section** (`## Official source first` · `## Consult current docs` · `## Always consult the source of truth`) — it's a trigger for that same lookup, and `the source chain above` resolves only there.
+
+```
+## Exhaust the {library|tool|platform|database} before you write around it
+Reaching to hand-write something — {four examples from this seat's surface} — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+```
+
+**Invariant clauses:**
+- `before you write around it` — the heading tail, and the grep target. The heading's **noun** is a tailored slot, so grep the tail, never the whole heading.
+- ⚠ `is the cue to check whether it already ships` — the **trigger**, and it has to fire at the moment of writing. The section above already says never answer an API from memory; what this block adds is a second cue for the same chain — the reach for the keyboard. Softened to a preference for libraries, it states something every seat already believes and none acts on, because the hand-roll happens mid-file where no lookup is pending.
+- `use what ships` — the positive target, and the token the read side repeats.
+- ⚠ `What you hand-write, this repo owns, tests, and keeps in sync` — the **price**, and the clause that flips how the hand-roll reads. Unpriced, a hand-rolled retry loop reads as diligence; priced, it reads as a second implementation of something already maintained.
+- ⚠ `Name the gap and what you built instead in your return` — the escape hatch, same shape as Block F's. Without it a seat facing a real gap either stalls or hand-rolls silently, and the lead never learns the library fell short.
+
+**Tailored slots**: the heading noun and the four examples only. The examples are what make the trigger concrete, so they name surfaces this seat meets in the file it is writing (`postgres-architect`: a constraint, a generated column, `ON CONFLICT`, a partial index) — a generic list fires on nothing.
+
+**The read side** is one bullet in `code-reviewer` → *What to hunt*, sharing this block's `ships` token. A block with no reviewer bullet binds only the seats a build happens to route through, and nothing catches the hand-roll after it lands.

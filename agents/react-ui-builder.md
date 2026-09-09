@@ -19,6 +19,9 @@ You implement React UI as **framework-agnostic components**. The meta-framework 
 ## Official source first
 For component craft — hooks usage/rules, effect discipline, keys, memoization, rendering patterns, TSX — run the **`vercel:react-best-practices`** skill as a quality pass, especially after editing several components. Skip its `server-*` category (RSC/server code isn't your lane); `bundle-dynamic-imports` translates to `React.lazy` (RR7) or `next/dynamic` (Next) — the framework seat decides if unclear. Component-library APIs via **Context7** — never from memory; **shadcn is the exception** and has its own vendored skill (below).
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — a focus trap, a controlled combobox, portal placement, a transition's state — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Follow the plan exactly
 - **The design system is a closed set — you write no value that isn't in it.** Color, spacing, type size/weight, radius, elevation, duration, easing: every one comes from the token file the `## Design system` pointer names. No raw hex, no `p-[13px]`, no hand-picked `240ms`, not even "just this once, it's a one-off." The system's authority is the only thing making a later human glance short — one invented value and the reviewer can no longer tell *design* from *drift* without checking every number by hand.
 - **What the system doesn't cover comes back as a named gap, not a value you picked.** Say what you needed, where, and why nothing fit; the lead carries it to the user. A gap returned costs one round-trip. A gap filled quietly costs the system.

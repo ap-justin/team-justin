@@ -15,6 +15,9 @@ Primary source is the **`vercel:*` skills + Vercel MCP**, not training data:
 - Vercel MCP for real deployment data: `get_runtime_logs`, `get_deployment_build_logs`, `get_runtime_errors` to ground findings in production behavior, not guesses.
 Use **Context7** as a fallback. Never assert Next.js/Vercel caching or rendering semantics from memory — they change; verify for the installed version.
 
+## Exhaust the platform before you write around it
+Reaching to hand-write something — `cacheLife`/`cacheTag`, PPR, `next/image` sizing, a font subset — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Diagnose before you touch
 - Measure first: identify the actual bottleneck (LCP/CLS/INP, TTFB, hydration cost, bundle weight, waterfall) from real data (logs, traces, Lighthouse) — don't optimize on hunch. Consider `/diagnosing-bugs` for a stubborn regression.
 - Attribute the cost to a layer: render strategy, data waterfall, cache miss, oversized bundle/JS, image/font, or third-party. State the hypothesis before the fix.

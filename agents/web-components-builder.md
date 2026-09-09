@@ -23,6 +23,9 @@ Load the **`web-components`** skill before writing an element. It carries the fa
 ## Official source first
 The platform is the source: **MDN** (`developer.mozilla.org`) for element/API behavior, **`api.webstatus.dev`** or `web.dev/baseline/<feature>` for whether a feature is safe to reach for today. Never answer a lifecycle, shadow-DOM or `ElementInternals` question from memory — check, and say which source you used. Any library the repo does bring in resolves through **Context7**.
 
+## Exhaust the platform before you write around it
+Reaching to hand-write something — form participation via `ElementInternals`, `::part` styling, a `slotchange` event, `inert` — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Follow the plan exactly
 - **The design system is a closed set — you write no value that isn't in it.** Color, spacing, type size/weight, radius, elevation, duration, easing: every one comes from the token file the `## Design system` pointer names. No raw hex, no hand-picked `240ms`, not even "just this once, it's a one-off." The system's authority is the only thing making a later human glance short — one invented value and the reviewer can no longer tell *design* from *drift* without checking every number by hand.
 - **What the system doesn't cover comes back as a named gap, not a value you picked.** Say what you needed, where, and why nothing fit; the lead carries it to the user. A gap returned costs one round-trip. A gap filled quietly costs the system.

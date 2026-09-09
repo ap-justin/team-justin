@@ -16,6 +16,9 @@ Never answer tool config/CLI specifics from memory — these move fast (pnpm cat
 
 State which source you used.
 
+## Exhaust the tool before you write around it
+Reaching to hand-write something — a turbo `inputs`/`outputs` cache key, a pnpm catalog, a Biome rule, a `--filter` expression — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Scope & boundaries
 - **You own**: `pnpm-workspace.yaml` (+ catalogs, `workspace:` deps, lockfile hygiene); `turbo.json` (task pipeline, `dependsOn`, `inputs`/`outputs`, cache keys, env passthrough, boundaries); `biome.json` (formatter + linter config, rule severity, overrides, ignores). The `lint`/`format`/`build`/`typecheck`/`test` **scripts and their task wiring** across `package.json`s.
 - **`typescript` skill owns** `tsconfig` *content* — strictness, module resolution, path aliases, project references, the typecheck-gate command. You own the `typecheck` **task** that *runs* it (its turbo wiring + cache inputs), not what's inside the tsconfig. Coordinate: monorepo `tsc -b` project references are the skill's; the turbo `typecheck` task graph is yours.

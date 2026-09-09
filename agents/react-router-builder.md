@@ -20,6 +20,9 @@ If a project vendors its own `.agents/skills/react-router` (newer than ours), pr
 
 Verify the repo's mode first — framework mode (Vite plugin, `@react-router/dev`) vs data/declarative/library — and match it; don't mix mode patterns unless intentionally migrating.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — a redirect, pending UI, revalidation after a mutation, typed params — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## RR7 framework-mode defaults (verify against the skill + installed docs)
 - Route modules export `loader` / `clientLoader` (read), `action` / `clientAction` (mutate), and the component. Use generated `Route.*` types (typegen) for `loaderData`/`actionData` — don't hand-type.
 - Data reads in loaders; mutations via `action` + `<Form>` / `useFetcher` with progressive enhancement. No ad-hoc fetch-in-effect for server data.

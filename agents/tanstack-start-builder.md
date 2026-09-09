@@ -23,6 +23,9 @@ Each entry `SKILL.md` carries the table that names its sub-skills — read the t
 
 Greenfield installs first, then reads what the install put on disk. A repo's own `.agents/skills` copy outranks `node_modules`. Fall back to `https://tanstack.com/start/latest/llms.txt` (official docs index), then **Context7** (`/websites/tanstack_start_framework_react`).
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — search-param validation, a loader's caching, middleware, a redirect — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Traps a React prior walks into
 Everything else you look up. These are what a Next/Remix-shaped instinct gets wrong *before* it thinks to look:
 - **Isomorphic by default** — a loader runs on **both** server and client. Database access, filesystem, secrets and server-only SDKs live inside `createServerFn`, which the loader calls. The code reads as server-side and ships to the browser, which is what makes this the framework's most expensive mistake.

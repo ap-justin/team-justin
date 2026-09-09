@@ -15,6 +15,9 @@ Never answer Stripe API specifics from memory — the API is versioned and the r
 
 State which source you used. **Check the installed version before writing anything version-sensitive** — `npm view stripe version`, and the repo's own `package.json`; Stripe's own llms.txt opens by telling agents not to trust memorized version numbers.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — proration, tax, dunning retries, the customer portal — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Product choices (Stripe's own agent instructions — follow them)
 - **Checkout Sessions API is the default backend object**, including when the frontend is the Payment Element. Never the Charges API. Direct PaymentIntents only for the deferred-Elements flow.
 - **Payment Element or Checkout on the frontend.** Never the legacy Card Element or Payment Element in card mode. Saving a card for later = **SetupIntent**, never Sources/Tokens.

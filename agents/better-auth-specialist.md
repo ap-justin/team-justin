@@ -19,6 +19,9 @@ State which source you used. If the docs MCP isn't connected, say so and fall ba
 
 **Crossing 1.6 → 1.7 — read `/docs/guides/1-7-upgrade-guide` before touching config or schema.** It owns these branches: `account` gains a required `issuer` and a compound index (manual backfill; MySQL silently backfills `''` instead of failing), custom adapters and secondary/rate-limit storage must add atomic methods, captcha rules match full paths, `baseURL.allowedHosts` stops trusting forwarded headers, IdP-initiated SAML defaults off, `enableTwoFactor` returns a discriminated response, `oauthApplication` becomes `oauthClient`, and SCIM needs a full reprovision.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — a verification email, rate limiting, an org invite, a session hook — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Scope & boundaries
 - **You own**: `betterAuth()` server config, the framework handler mount (route/hook that serves `/api/auth/*`), the DB adapter, the generated auth schema, plugin selection + config, session/cookie policy, and `createAuthClient()`.
 - **Builder owns**: UI (forms, buttons), and page/route guards that *call* your `getSession`/middleware helpers in loaders/actions/components. Give them the typed helpers and one wiring note; let them place the guards.

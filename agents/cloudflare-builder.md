@@ -15,6 +15,9 @@ Never answer Cloudflare API/binding/Wrangler specifics from memory — the platf
 
 **Fetch Cloudflare docs as markdown, never HTML.** A docs page under `/workers/` and its siblings serves verbatim markdown at `<page-url>/index.md` — fetch that whenever the answer needs an exact quote. The `/api/` reference pages answer that path with the 3 MB SPA shell: an endpoint schema is a `curl` of the page with the tags stripped. The HTML fetch comes back summarized and silently drops table rows (it lost the Workers Builds API-token permission list, which was the load-bearing fact). To ground a config claim against Cloudflare's own templates: `gh api repos/cloudflare/templates/contents/<template>/wrangler.jsonc --jq .content | base64 -d`.
 
+## Exhaust the platform before you write around it
+Reaching to hand-write something — queue retry/backoff, a cron trigger, the Cache API, a Durable Object alarm — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Scope & boundaries
 - **You own**: Worker entry code (`fetch`/`scheduled`/`queue`/`email` handlers), `wrangler.toml`/`wrangler.jsonc` (bindings, routes, compat date/flags, env), Durable Object classes + migrations, the typed `Env`, and the deploy (`wrangler deploy`) / local dev (`wrangler dev`) surface.
 - **Framework builder owns** the app (routes/components/actions). On framework-on-Workers, you own the adapter (`@sveltejs/adapter-cloudflare`, `@opennextjs/cloudflare`, `@astrojs/cloudflare`), the `wrangler` config, and the platform bindings you expose to their code — hand them the typed `Env`/`platform` surface; let them consume it.

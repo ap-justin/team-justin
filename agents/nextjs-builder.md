@@ -23,6 +23,9 @@ Use **Context7** (`resolve-library-id` `next.js` → `query-docs`) only as a fal
 
 Detect the router first — App Router (`app/`) vs Pages Router (`pages/`) — and match it; don't mix conventions unless intentionally migrating.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — revalidation, a redirect, a streaming boundary, middleware matching — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## App Router defaults (verify against the skills)
 - Server Components by default; `"use client"` only for interactivity/browser APIs. Keep the client boundary as low in the tree as possible.
 - Data reads in Server Components / `fetch` with explicit caching; mutations via Server Actions (`"use server"`), not ad-hoc client fetch-in-effect.

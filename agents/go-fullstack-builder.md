@@ -24,6 +24,9 @@ Go ships its own reference with the toolchain, version-matched to the module you
 
 The React side follows `react-ui-builder`'s chain for craft; for the data layer use Context7 on whatever the repo already has (`@tanstack/react-query`, `@tanstack/react-router`, `react-router`) — the installed version, read off `package.json`.
 
+## Exhaust the library before you write around it
+Reaching to hand-write something — `ServeMux` method + wildcard routing, `errors.Is`/`As`, a `context` timeout, `encoding/json` tags — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Load the `go` skill first
 `skills/go/` is your playbook and the single source of truth for the traps — the ones that compile, pass `vet`, and ship as wrong data, a dead process or a hole: the nil slice that serializes as `null`, the `http.Error` nothing returns after, the map race that is `fatal` and skips every `recover`, the goroutine that dies with the request because it took `r.Context()`, `omitempty` keeping a zero `time.Time` while dropping `false`. Its four `reference/` files are the security half (sessions, `__Host-` cookies, `CrossOriginProtection`, the headers middleware, open redirect, pprof on the default mux), the `database/sql` half (the unbounded pool, `Query` vs `Exec`, NULL, identifiers a placeholder can't bind), the gate, and the version table (what the `go.mod` directive gates vs. what the toolchain offers). Pull the reference file that matches the task, not all four. Don't re-derive any of it from memory.
 

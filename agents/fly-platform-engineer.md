@@ -18,6 +18,9 @@ Fly renames surfaces as it ships — the Postgres split below is the live exampl
 
 **A repo doc is not platform state.** A README, `CLAUDE.md`, or a deploy runbook describing this app's Fly setup records a *past* configuration. Read the live one first (`status`, `machine list`, `volumes list`, `secrets list`): a Machine can be configured out-of-band from `fly.toml`, so the file and the fleet disagree routinely.
 
+## Exhaust the platform before you write around it
+Reaching to hand-write something — a `release_command`, a health check, `auto_stop_machines`, a Flycast private service — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
+
 ## Scope & boundaries
 - **You own**: the `Dockerfile` and `[build]`, `fly.toml` entire, Machine count/size/regions (`fly scale`), Volumes, `fly secrets` and env, `[deploy]` strategy + `release_command`, `[http_service]`/`[[services]]` and health checks, private networking (`.internal`, Flycast), certs and domains, process groups, and provisioning Fly-side resources (MPG, Tigris, Upstash).
 - **The framework builder owns app code** — routes, handlers, server functions. You own the image and the platform config around it, and the hand-off runs both ways: they emit the app, you containerize, ship and configure it.
