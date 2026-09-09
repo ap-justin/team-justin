@@ -15,13 +15,11 @@ active=$(printf '%s' "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
 ledger="$HOME/.claude/team-justin/audit/$sid.jsonl"
-# the mark says which dispatches were already nudged for. only the auditor
-# deletes the ledger, so an audit that never runs — declined, interrupted, a
-# session that ends somewhere else — left this hook blocking every stop for the
-# rest of the session, one nag per turn for the same dispatch. the ledger only
-# grows, so a count is the whole state: nudge again when new dispatches land,
-# stay quiet otherwise. it clears once the ledger is gone, which is what makes
-# the next session's first dispatch nag again.
+# the mark holds the dispatch count already nudged for. an audit that never
+# runs — declined, interrupted, a session that ends somewhere else — leaves the
+# ledger behind for the rest of the session, and the ledger only grows, so that
+# count is the whole state. it clears when the ledger goes, so a dispatch after
+# an audit nags again.
 mark="$ledger.nudged"
 if [ ! -s "$ledger" ]; then
   rm -f "$mark" 2>/dev/null
