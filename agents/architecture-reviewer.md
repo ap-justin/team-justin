@@ -15,7 +15,7 @@ Invoke and read the `codebase-design` skill first, then reason in its terms (dee
 
 ### Design mode (before a builder writes code)
 Given a plan or a proposed component/module, produce the interface, not the implementation:
-- **The seam**: where the boundary sits and why; what each side may and may not know.
+- **The seam**: where the boundary sits and why; what each side may and may not know — including where it lands in the tree (`codebase-design` → `NAVIGATION.md`).
 - **The interface**: the smallest surface that does the job — signature, props/params, return shape. Prefer one deep module over an enum-flag façade hiding N modules; call it out when a `variant`/`mode` flag is smuggling separate concerns behind one door.
 - **Information hiding**: what complexity this module absorbs so callers don't (loading/async/SSR flash, retries, format, ordering). Leaked complexity is a finding.
 - **Coupling**: dependency direction, temporal coupling, what change would ripple. Flag pass-through/shallow modules that add a layer without hiding anything.
@@ -27,7 +27,7 @@ Review the diff/files for boundary erosion (cite file:line, assign severity):
 - **Leaked implementation**: callers forced to know internals; config/format/order knowledge duplicated across the boundary.
 - **Coupling drift**: new cross-layer imports, wrong dependency direction, cycles, temporal coupling (must-call-A-before-B with nothing enforcing it).
 - **Overloaded interface**: one module/prop doing several unrelated jobs (the mega-component / god-object smell).
-- **Testability & AI-navigability**: can this unit be tested in isolation? Can a reader/agent find responsibility from the interface alone, or must they read the body?
+- **Testability & AI-navigability**: can this unit be tested in isolation? Can a reader/agent find responsibility from the interface alone, or must they read the body? Can it be *found* at all — the name a caller would search for, and the closure the change spans (`NAVIGATION.md`).
 - **Convention fit**: does the boundary match how THIS codebase already draws seams? Divergence is a finding.
 
 ## Context hygiene (stay lean)

@@ -3,7 +3,7 @@ name: codebase-design
 description: Shared vocabulary for designing deep modules. Use when the user wants to design or improve a module's interface, find deepening opportunities, decide where a seam goes, make code more testable or AI-navigable, or when another skill needs the deep-module vocabulary.
 ---
 
-<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/codebase-design`. Deep-module design vocabulary backing the `architecture-reviewer` seat. Kept verbatim minus the Codex `agents/openai.yaml` metadata (unused here); re-sync: re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/engineering/codebase-design/. -->
+<!-- vendored from `mattpocock/skills` (v1.2.0, sha 2ffb184) → `skills/codebase-design`. Deep-module design vocabulary backing the `architecture-reviewer` seat. Kept verbatim minus the Codex `agents/openai.yaml` metadata (unused here), plus one deviation to re-apply after any re-sync: the pointer to `NAVIGATION.md` under *Going deeper* — the repo-owned retrieval branch (read amplification, naming for search, directory topology) upstream has no section for, disclosed behind one line so a re-sync costs only that line; `NAVIGATION.md` itself survives one untouched. Re-sync: re-download from https://raw.githubusercontent.com/mattpocock/skills/main/skills/engineering/codebase-design/. -->
 
 # Codebase Design
 
@@ -114,3 +114,4 @@ Good interfaces make testing natural:
 
 - **Deepening a cluster given its dependencies** — see [DEEPENING.md](DEEPENING.md): dependency categories, seam discipline, and replace-don't-layer testing.
 - **Exploring alternative interfaces** — see [DESIGN-IT-TWICE.md](DESIGN-IT-TWICE.md): spin up parallel sub-agents to design the interface several radically different ways, then compare on depth, locality, and seam placement.
+- **Reaching the interface at all** — see [NAVIGATION.md](NAVIGATION.md): read amplification, naming so a search lands, and the directory topology that sets a change's closure.
