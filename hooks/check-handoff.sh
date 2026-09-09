@@ -33,6 +33,13 @@ printf '%s' "$prompt" | grep -q 'inbox.md' || reasons="${reasons}no learnings ch
 # accident — scan 3's hedge half. the imperative half stays a reading check.
 hedge=$(printf '%s' "$prompt" | grep -oiE '\b(may|might|could) mean\b|\bunclear (whether|if)\b|\bnot sure (whether|if)\b' | head -1)
 [ -n "$hedge" ] && reasons="${reasons}hedged term: \"${hedge}\" — settle what it means, or take the question to the user before dispatch (item 3, scan 3). "
+# scan 3's imperative half stays a reading check — "decide" appears in briefs
+# that resolve a decision too. its one mechanizable tell is the report-back:
+# a brief asking which way the builder went is a brief admitting it delegated
+# the call. one bounded span, no \b — the hook runs under whatever grep is on
+# PATH, and two spans exceed ugrep's complexity limit.
+opencall=$(printf '%s' "$prompt" | grep -oiE '(say|tell|report|note)[^.]{0,30}(which (way|one)|what) you (went|chose|took|picked|decided|used)' | head -1)
+[ -n "$opencall" ] && reasons="${reasons}open design call: \"${opencall}\" — resolve the decision, or make it an investigation naming what each answer resolves to (item 3, scan 3). "
 
 # the two texts briefs re-type as paraphrase, which no shingle sees — lead scan 2
 # names these greps.

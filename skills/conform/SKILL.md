@@ -67,6 +67,9 @@ Those requests are real traffic: every `form.insert/remove/reorder/reset/update`
 
 **A hostile `__intent__` throws out of `parseWithZod`.** `__intent__=x` (or `__state__=x`) is `JSON.parse`d unguarded: a raw `SyntaxError`, a 500, no validation error. Both names are conform's; a field of yours gets another.
 
+## A message keyed to no control has nowhere to report
+Conform focuses the first invalid **input element** when a submit fails — it resolves errors through the form's own named controls. A form-level or array-level key (`fields.recipients.errors` on the array itself, the schema's root error) matches no `name` in the form, so the walk passes over it: the press refuses, focuses nothing, scrolls nothing, and reads as a button that did nothing. Where such a message goes instead: `ui-patterns` → `forms-and-mutations`. Where a real control exists but conform can't reach it — a custom select wrapping its own input — that's focus delegation instead: `useInputControl`'s docs carry the hidden-input shape.
+
 ## Client validation is opt-in, and so is the native layer
 - **No `onValidate` → conform never validates on the client.** It hands the submit straight through, so every message costs a round trip. Wire it: `onValidate({ formData }) { return parseWithZod(formData, { schema }) }`.
 - `shouldValidate` defaults to **`'onSubmit'`**, and `shouldRevalidate` mirrors whatever it is. `{ shouldValidate: 'onBlur', shouldRevalidate: 'onInput' }` is the pairing that reports late and clears early.

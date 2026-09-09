@@ -144,7 +144,7 @@ The held state is `aria-disabled` and the handler ignores the press. `disabled` 
 **Pattern:** the column reads as one sentence — label, box, predicate. The predicate stands alone, as an instruction, in the operator's own figures, lowercase with no full stop: `required`, `between $5 and $50,000`, `required, or untick to skip`.
 **Default it corrects:** `Email is required` / `Required.` / `The email you entered is invalid` / `above the largest gift of $20.00` — the label restated, the value echoed under the box still showing it, a report of what went wrong where an instruction was owed, a clause capitalised and stopped as a sentence of its own, and `$20.00` from an operator who typed `20`.
 **Why:** the label and the box are already on screen; a message repeating either is read twice and trusted less. An instruction is the fix; a report leaves the operator to derive it. A figure in a form they never typed is a second value to reconcile. Consequence prose belongs to the confirm dialog, on the one press where it changes a decision.
-**Applies when:** the message sits under its own field. A summary that folds fields into one string has left the box, so it names the field — and that is where a secret gets masked, because the control showing it is out of view. Folded into one live-region line, the predicates join on commas: each is a clause, and the line reads as one.
+**Applies when:** the message sits under its own field. A summary that folds fields into one string has left the box, so it names the field — and that is where a secret gets masked, because the control showing it is out of view. Folded into one live-region line, the predicates join on commas: each is a clause, and the line reads as one. Repair before you refuse: what the parse can normalise — surrounding whitespace, a missing scheme — it accepts, and only what survives that earns a predicate. A refusal the system could have repaired itself sends the operator back to retype a value it already understood.
 
 ## A control inside a labelled group is named for what it asks
 
@@ -177,3 +177,27 @@ The held state is `aria-disabled` and the handler ignores the press. `disabled` 
 **Default it corrects:** a checkbox or toggle that shows and hides the pair, so the operator keeps two things in agreement — the toggle and the fields — and can submit a filled pair with the toggle off.
 **Why:** a hide control carries state the fields already carry: empty is the *off* the toggle was for. One way means one state to read and nothing to reconcile; the submit reads the fields, never the toggle.
 **Applies when:** the pair is optional and empty is a valid absence. A choice that has to be explicit — consent, an opt-in — is a control with a value of its own, not a disclosure.
+
+## A long-running job reports the step it is on, never a fraction it invented
+
+**Trigger:** a job that outlasts a moment — an import, an upload, a batch, a migration — with any progress indicator.
+**Pattern:** surface the detail the engine already emits (bytes of total, the file's name, batch N of M); split a silent stretch longer than a few seconds into its own reported step; where a stage has nothing to count, show elapsed time.
+**Default it corrects:** a percentage interpolated on a timer, or a bar eased to 90% while one step runs — the number moving because time passed, not because work did.
+**Why:** an invented fraction is checkable, and the operator checks it: it reaches 100% with the job still running, or sits still through the step that was actually fastest. One bar that lied is enough — every later bar is read as decoration, and the operator goes looking for the real state in the logs. Elapsed time claims nothing and so can never be wrong.
+**Applies when:** the engine reports anything at all. A stage that genuinely emits nothing still gets its name and its elapsed clock, which beats a fabricated fraction.
+
+## An imperatively mounted prompt is cancelled by whoever raised it
+
+**Trigger:** an imperative `ask()` / `confirm()` — call a function, it mounts a dialog and resolves with the answer — served by a host mounted at the root.
+**Pattern:** scope each request to its caller. The caller gets back a disposer (or hands in an `AbortSignal`) that settles the promise and unmounts the dialog, and it runs on unmount — the same shape the repo already uses for its timers and subscriptions.
+**Default it corrects:** returning the bare promise, with dismissal left to the dialog's own buttons.
+**Why:** the promise and its dialog live in the host, not in the caller's tree, so an owner that goes away mid-prompt — a route change, a closed drawer — leaves a dialog nothing can close over a promise nothing will settle. The operator is left holding a prompt whose subject no longer exists.
+**Applies when:** the host outlives its callers, which is the point of an imperative API. A dialog rendered inside the component that owns it unmounts with it and needs no disposer.
+
+## An error no control carries is drawn at the control that was pressed
+
+**Trigger:** a form-level or array-level refusal — *add at least one recipient*, *these dates overlap* — keyed to a name no input on the form has.
+**Pattern:** render it at the button that submitted, and point that button at it with `aria-describedby`.
+**Default it corrects:** rendering it in the field-message slot for its key, where the framework's error map files it — a message that mounts against nothing, or mounts somewhere no focus move will ever reach.
+**Why:** submit-time focus walks the form's own controls to find the first refused one, so a key matching no control is skipped: the press validates, refuses, moves nothing and scrolls nothing, and reads as a button that did nothing. The pressed control is the one element the operator is certainly standing on.
+**Applies when:** the key names no control. A key that does name one is marked at that field — or once on its group, above.

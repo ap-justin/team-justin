@@ -12,6 +12,14 @@
 ```
 **Applies when:** the text can wrap. A single-line label that cannot wrap centers fine either way — reach for this when the string is user-supplied or the container is narrow. `lh` units carry a Baseline status; `modern-css` owns whether this stack needs a fallback. **Where the mark is also a tap target**, the one-line box is the *layout* box and the target grows around it — padding, or an overlay pseudo-element — so the alignment above still holds. A 44px layout box measures more than one line, and `align-self: start` only moves whichever box is shorter than the row: inert while the label is single-line, and moving the *label* instead once it wraps past 44px. Measure both boxes before accepting a one-line alignment fix.
 
+## An icon-only control leaves the row's baseline group
+
+**Trigger:** an icon-only button — copy, edit, remove, a disclosure caret — in a row aligned on `align-items: baseline` beside text.
+**Pattern:** take the control out of the baseline group and centre it on the row's first line, where the mark beside wrappable text already sits (entry above).
+**Default it corrects:** leaving it in the group as one more baseline-aligned item, which looks right until the control's box is taller than the text's.
+**Why:** a control with no text in it has no real baseline, so it synthesises one at its own bottom margin edge. The row then aligns the *label's* baseline to the bottom of the button and drags the text down by the button's padding. Nothing overflows and nothing errors — the text just sits low, and the `margin-top` that appears to fix it is correct at exactly one control size.
+**Applies when:** the row is baseline-aligned and the control has no text child. A control with a visible label has a baseline of its own and belongs in the group.
+
 ## Explanatory prose enters on request, and the request is a defect report
 
 **Trigger:** about to write helper text under a control, a sentence introducing a section, a caption beside an image, or an explanatory line at the top of a screen — or handed a request to add one.

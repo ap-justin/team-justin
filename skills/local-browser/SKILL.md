@@ -41,7 +41,7 @@ Headless means there is no window for the user to log into. The profile is the s
   --user-data-dir="$HOME/.cache/chrome-devtools-mcp/chrome-profile"
 ```
 
-Chrome locks that directory, so their window and the server's browser take turns — confirm they have quit before driving again. For a deliberately **logged-out** state, `new_page` with `isolatedContext` gives a clean cookie jar without touching the profile.
+Chrome locks that directory, so their window and the server's browser take turns — confirm they have quit before driving again. The lock cuts the other way too, and silently: while the headless server is running there **is** a Chrome process, so macOS treats Chrome as already running — the dock icon, `open <url>` and the command above all activate the invisible instance and no window appears. Kill it by its profile path first (`pkill -f chrome-devtools-mcp/chrome-profile`, `-9` if it lingers), then `open -a "Google Chrome"`. A visible Chrome opened *before* the server spawns makes the next headless launch harmless. For a deliberately **logged-out** state, `new_page` with `isolatedContext` gives a clean cookie jar without touching the profile.
 
 ## 5. Measure with `evaluate_script`
 
