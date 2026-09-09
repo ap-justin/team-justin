@@ -35,11 +35,30 @@ hedge=$(printf '%s' "$prompt" | grep -oiE '\b(may|might|could) mean\b|\bunclear 
 [ -n "$hedge" ] && reasons="${reasons}hedged term: \"${hedge}\" — settle what it means, or take the question to the user before dispatch (item 3, scan 3). "
 
 # the two texts briefs re-type as paraphrase, which no shingle sees — lead scan 2
-# names these greps. the budget check runs only where the user's own file
-# carries a memory figure, so a brief quoting a storage limit elsewhere passes.
+# names these greps.
 USER_CANON="$HOME/.claude/CLAUDE.md"
-if [ -f "$USER_CANON" ] && grep -qiE '\b[0-9]+ ?gb\b' "$USER_CANON"; then
-  budget=$(printf '%s' "$prompt" | grep -oiE '\b[0-9]+ ?gb\b|\b(one|a single) [a-z-]+ at a time\b' | head -1)
+if [ -f "$USER_CANON" ]; then
+  # a brief naming some other limit — an R2 object cap, a container's memory
+  # request, a machine that isn't this one — states a fact about the slice, so
+  # the figure has to be one this file spends before it reads as re-typed.
+  nfig() { tr '[:upper:]' '[:lower:]' | tr -d ' ' | sed 's/cores$/core/'; }
+  figs=$(grep -oiE '\b[0-9]+ ?(gb|cores?)\b' "$USER_CANON" | nfig | sort -u)
+  budget=""
+  # the reason quotes the brief's own spelling — the lead greps for the
+  # sentence it names.
+  if [ -n "$figs" ]; then
+    while IFS= read -r raw; do
+      [ -z "$raw" ] && continue
+      printf '%s\n' "$figs" | grep -Fxq "$(printf '%s' "$raw" | nfig)" || continue
+      budget="$raw"; break
+    done < <(printf '%s' "$prompt" | grep -oiE '\b[0-9]+ ?(gb|cores?)\b')
+  fi
+  # "one X at a time" is ordinary English — pacing tickets, rows, migrations,
+  # a single writer. it's the machine budget only where a machine word sits in
+  # the same sentence.
+  [ -z "$budget" ] && budget=$(printf '%s' "$prompt" |
+    grep -oiE '[^.]*\b(one|a single)( [a-z-]+){1,3} at a time\b[^.]*' |
+    grep -oiE '.{0,30}\b(ram|memory|swap|cores?|cpu|machine|budget|background shells?|long-running|headless|chromium|vitest|playwright|tsc)\b.{0,30}' | head -1)
   [ -n "$budget" ] && reasons="${reasons}paraphrases the user CLAUDE.md machine budget: \"${budget}\" — that file loads into every seat on its own; cut the sentence (scan 2). "
 fi
 comments=$(printf '%s' "$prompt" | grep -oiE '\bcomments?\b[^.]{0,80}\blowercase\b|\blowercase\b[^.]{0,80}\bcomments?\b' | head -1)
