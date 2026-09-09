@@ -22,8 +22,9 @@ sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 
 dir="$HOME/.claude/team-justin/audit"
 mkdir -p "$dir" 2>/dev/null || exit 0
-# crashed sessions leave ledgers nothing will audit; keep the dir bounded
-find "$dir" -name '*.jsonl' -mtime +7 -delete 2>/dev/null
+# crashed sessions leave ledgers nothing will audit, and the stop nudge's mark
+# beside each one; keep the dir bounded
+find "$dir" \( -name '*.jsonl' -o -name '*.jsonl.nudged' \) -mtime +7 -delete 2>/dev/null
 
 # prompt head capped at 4000 chars — enough for a brief's handoff items;
 # `truncated` tells the auditor an absent clause past the cut is not evidence
