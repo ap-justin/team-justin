@@ -41,6 +41,7 @@ Claude Code on the web: commit this to the repo's `.claude/settings.json`:
 - `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
 - `/team-justin:design-system audit`: audit the design system.
 - `/team-justin:seo-review`, `/team-justin:review-animations`, `/team-justin:improve-animations`, `/team-justin:design-gallery`: audits on shipped pages.
+- `/team-justin:ux-review <flow>`: audit a user flow — signup, checkout — end to end through source.
 
 ## Stack
 - **UI**: React, Svelte 5, Web Components.
