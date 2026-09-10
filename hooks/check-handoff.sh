@@ -111,8 +111,17 @@ if [ -n "$cwd" ]; then
   done
 fi
 if [ -n "$canon" ]; then
+  # a path and a backticked identifier are the pointer scan 2 asks for in place
+  # of the text, and stripping punctuation turns one of them into a six-word run
+  # any repo's own path map already spends — the gate refusing its own remedy.
+  # barrier each with a word no canon holds, so a pointer neither matches on its
+  # own nor joins the prose on either side of it.
+  BARRIER=' zzpointerzz '
+  point() { sed -E -e "s/\`[^\`]*\`/${BARRIER}/g" \
+    -e "s#[A-Za-z0-9_@~.-]*/[A-Za-z0-9_@~./-]*#${BARRIER}#g" \
+    -e "s/[A-Za-z0-9_-]+\.(tsx?|jsx?|mjs|cjs|svelte|vue|astro|md|go|py|rs|css|scss|json|sql|html|ya?ml|toml|sh)/${BARRIER}/g"; }
   norm() { tr '[:upper:]' '[:lower:]' | tr -c '[:alnum:]\n' ' ' | tr -s ' \n' ' '; }
-  hit=$(printf '%s' "$prompt" | norm | awk -v n="$SHINGLE" -v nr="$SHINGLE_REPO" -v ns="$SHINGLE_USER" -v short="$USER_CANON" -v repo=" $repo_canon " -v files="$canon" '
+  hit=$(printf '%s' "$prompt" | point | norm | awk -v n="$SHINGLE" -v nr="$SHINGLE_REPO" -v ns="$SHINGLE_USER" -v short="$USER_CANON" -v repo=" $repo_canon " -v files="$canon" '
     BEGIN {
       split(files, fs, " ")
       for (i in fs) { f = fs[i]; if (f == "") continue
