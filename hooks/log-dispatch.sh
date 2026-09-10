@@ -17,6 +17,11 @@ seat="${seat#team-justin:}"
 # only team seats are auditable against the lead contract
 [ -f "$plugin_root/agents/${seat}.md" ] || exit 0
 
+# seats carrying Block O owe a `Return pass:` line; the flag tells the auditor
+# whether an absent line is a deviation or simply a seat the block never bound
+block_o=false
+grep -q '^## The return pass' "$plugin_root/agents/${seat}.md" 2>/dev/null && block_o=true
+
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
 
@@ -27,14 +32,19 @@ mkdir -p "$dir" 2>/dev/null || exit 0
 find "$dir" \( -name '*.jsonl' -o -name '*.jsonl.nudged' \) -mtime +7 -delete 2>/dev/null
 
 # prompt head capped at 4000 chars — enough for a brief's handoff items;
-# `truncated` tells the auditor an absent clause past the cut is not evidence
-printf '%s' "$input" | jq -c --arg seat "$seat" '{
+# `truncated` tells the auditor an absent clause past the cut is not evidence.
+# the response itself is never stored — only whether it carried the return-pass
+# line — so the ledger stays a record of the lead's process, not of seat output
+printf '%s' "$input" | jq -c --arg seat "$seat" --argjson block_o "$block_o" '
+  (.tool_response // "" | if type == "string" then . else tojson end) as $resp | {
   ts: (now | todate),
   cwd: ((.cwd // "") | split("/") | last),
   seat: $seat,
   desc: (.tool_input.description // ""),
   prompt: ((.tool_input.prompt // "")[0:4000]),
-  truncated: (((.tool_input.prompt // "") | length) > 4000)
+  truncated: (((.tool_input.prompt // "") | length) > 4000),
+  block_o: $block_o,
+  return_pass: ($resp | test("Return pass:"))
 }' >> "$dir/$sid.jsonl" 2>/dev/null
 
 exit 0

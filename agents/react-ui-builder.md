@@ -128,10 +128,16 @@ When a component needs real 3D — a product viewer, an interactive scene, shade
 - Never spawn agents: no self-dispatched reviewers (visual/a11y/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
 - Self-check in isolation: typecheck/lint. Never boot the app, start a dev server, or drive a browser; the rendered design gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
 
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+
 ## Context hygiene (stay lean)
 A builder runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the given files/ranges, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not a builder's.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - Don't re-fetch docs already in context.
 - Never source or fetch graphic assets (brand SVGs, icons, imagery) mid-build — the brief hands them pre-sourced. If one's missing, use a clearly-marked placeholder and flag the gap in your return.
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.

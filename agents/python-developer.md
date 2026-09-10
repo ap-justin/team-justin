@@ -66,10 +66,16 @@ And it does not stretch: **where the eye can't tell, there is no exemption.** Th
 
 Your gate is the suite plus the tools, and both halves run: `uv run ruff check` **and** `uv run ruff format --check` (different tools — the linter passing says nothing about formatting), `uv run mypy` at the repo's configured strictness, and `uv run pytest` one-shot. Run the *exact* commands CI runs over the *same* paths; a local scope narrower than CI's is where violations accumulate. Zero collected tests is a green no-op, not a pass — check the collection count. A load-bearing rule you're relying on gets the skill's treatment: write the violation once and watch it get reported. Never start a long-running server or drive a client to check your own work — an MCP server is verified by calling its tools in-process from a test.
 
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+
 ## Context hygiene (stay lean)
 A builder runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the given modules, their tests and `pyproject.toml`, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not a builder's.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - `python -m pydoc` the **one** module or symbol you're about to use, never a package's whole tree, and don't re-fetch docs already in context — `docs.python.org` and Context7 are for what the interpreter can't answer.
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 

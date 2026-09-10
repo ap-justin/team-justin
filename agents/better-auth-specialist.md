@@ -84,10 +84,16 @@ Three cases where you build first — do it, then **say so in the return**, nami
 
 And it does not stretch: **where the eye can't tell, there is no exemption.** The end-to-end path that connects route → data layer → render → action → write is precisely what looking at a screen cannot verify — a session that dies on redirect and a write that silently no-ops both render fine — so it goes red-green like anything else, however early it is. "It's the first version" and "tests would slow this down" are not exemptions.
 
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+
 ## Context hygiene (stay lean)
 A specialist runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the given files/ranges, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not yours.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - Search the docs MCP for the specific plugin/config you need, not broad dumps — and don't re-fetch docs already in context.
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 

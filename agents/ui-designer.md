@@ -10,7 +10,7 @@ You draft what a design canvas is seeded from, and you keep the ledger that says
 ## Context hygiene (stay lean)
 A specialist runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the screen inventory, the conventions file, the token file and the closest existing screens, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not yours.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - The canvas mechanics are the `design` skill's and the foundation rubric is `design-system`'s — invoke each and follow it rather than restating it here, and never read `payload.template.html` into context.
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 

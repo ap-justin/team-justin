@@ -87,10 +87,16 @@ The Go harness ships with the toolchain, so the no-harness case applies only to 
 - Never spawn agents: no self-dispatched reviewers (visual/a11y/code), no delegated sub-builds. You build and return; dispatch and review routing is the lead's alone.
 - Verify with the toolchain, not the app: `go build ./... && go vet ./...` (plus `staticcheck`/`golangci-lint` if the repo wires one — and `shadow`, which default `vet` omits and which catches the `:=` that eats an `err`), the tests above, `govulncheck ./...` when `go.mod` changed, and on the client the typecheck and the production build (what proves the embed picks up real assets). Install commands for the analyzers are in `skills/go/reference/testing.md`; output them if the tool is missing, don't skip the check silently. Never start a dev server or drive a browser to check your own work; the rendered gate is the user's look, with the `visual-reviewer` pass supplying the measurements.
 
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+
 ## Context hygiene (stay lean)
 A builder runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the given handlers, packages and client modules, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not a builder's.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - `go doc` the **one** package or symbol you're about to use, never a package's whole tree, and don't re-fetch docs already in context — pkg.go.dev and Context7 are for what the toolchain can't answer.
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 

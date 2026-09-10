@@ -14,7 +14,7 @@ Required on every seat that **reads or edits repo files**. The three text-produc
 ## Context hygiene (stay lean)
 A {builder|specialist|reviewer} runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — {the given files/ranges}, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not {a builder's|yours}.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - {the seat's docs-source bullet — the ONE reference/section to pull, never broad dumps}
 - If the task really needs many files/subsystems touched, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 
@@ -25,7 +25,7 @@ Return: {what the lead gets back — paths, commands run, what the next seat sti
 - `can't be capped mid-run`
 - ⚠ `If you're reading around to *find* code, stop and ask the lead for paths` — this is the rule's **trigger condition**. Without it the bullet degrades to a vague "read less" and stops telling the seat *when to stop and ask*.
 - `broad search is` + `` `Explore`'s job ``
-- `Never re-read a file` + `already confirms its state`
+- `Never re-read a file` + `already confirms its state`, plus ⚠ `to confirm the edit landed` — the **bound**. Unbounded, this bullet reads as a ban on Block O's pass and takes the return pass down with it: the seat that just edited six files is exactly the seat told never to read them again. The clause bans *verifying an edit landed*, which the harness already confirms; measuring the finished surface is the other question, and the bullet names it in its own words. It must stay self-contained: Block A binds more seats than Block O does, so a cross-reference here would dangle on every seat that carries A alone.
 - `let the lead slice it`
 - ⚠ `don't let one run sprawl to hundreds of K tokens` — the concrete number is what makes it bite, and it matches `lead` SKILL.md's own wording. "don't let one run sprawl" alone is not the rule.
 
@@ -95,7 +95,7 @@ The two are exhaustive and disjoint, so `grep -Lc '^Return:' agents/*.md` and `g
 
 Pick by seat kind, not by whichever peer you opened.
 
-### Block C.1 — `## What you return` (the six review seats)
+### Block C.1 — `## What you return` (the five review seats)
 
 Required on `code-reviewer`, `architecture-reviewer`, `visual-reviewer`, `accessibility-reviewer`, `ux-auditor`. It **follows** `## Output` and never replaces it: `## Output` is the **report**, this block is the **return**, and separating them is the whole point. Three of these seats say their Output is a skill's template *verbatim* — the caps here must not read as an edit to that template, or the two-callers-one-body rule forks.
 
@@ -203,7 +203,7 @@ Required on the seats whose output **renders** (10 seats: the four framework bui
 - reviewers and the four text-producing seats — they don't build.
 
 **Invariant clauses:**
-- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 9 carry it; the surrounding wording is `Never start a dev server or drive a browser to check your own work` on six and `Never boot the app, start a dev server, or drive a browser` on the three UI builders). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
+- ⚠ the never-boot clause — `drive a browser` is the string to grep (all 10 carry it, in three wordings: `Never start a dev server or drive a browser to check your own work` on six, `Never boot the app, start a dev server, or drive a browser` on the three UI builders, and `Never start a dev server, launch the Studio, or drive a browser` on `sanity-builder`, whose Studio is a second thing it would otherwise open to look). This is the load-bearing half: a seat that boots the app burns the run and still can't judge the render. The bullet's *opener* is a tailored slot, so grep this clause, never the opener.
 - `the rendered gate is the user's look` — names who *does* judge it, so the ban has a positive target.
 - the no-spawn bullet is cheap insurance rather than a live risk (a subagent can't spawn subagents), so it may be one line — but it stays paired with `dispatch and review routing is the lead's alone`.
 
@@ -326,3 +326,33 @@ Reaching to hand-write something — {four examples from this seat's surface} �
 **Tailored slots**: the heading noun and the four examples only. The examples are what make the trigger concrete, so they name surfaces this seat meets in the file it is writing (`postgres-architect`: a constraint, a generated column, `ON CONFLICT`, a partial index) — a generic list fires on nothing.
 
 **The read side** is one bullet in `code-reviewer` → *What to hunt*, sharing this block's `ships` token. A block with no reviewer bullet binds only the seats a build happens to route through, and nothing catches the hand-roll after it lands.
+
+## Block O — `## The return pass`
+
+Required on the same 19 seats as Block N — every seat that **writes code or config**. Reviewers and the four text-producing seats don't build, so there is no slice to read back; `code-reviewer` carries the **read side** instead (below).
+
+**Exempt by decision** — record the reason, don't just omit:
+- `test-writer` — its completion criterion is already hard and external (*the suite is green*), and a green suite is the one bound that resists premature completion without being asked to. It writes tests, not app code, which is also why it sits outside Blocks F and N.
+- `ui-designer` — outside Blocks F and N as an artifact seat, so it inherits their boundary here. **Weakest of the exemptions**: its output is judged only by the user's eye, so it has no green to reach and the most room to stop early. Revisit if the artboard passes start coming back thin.
+
+It sits **immediately before `## Context hygiene (stay lean)`** — the last action before the return it gates.
+
+```
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+```
+
+**No tailored slot** — deliberately, on Block I's precedent. Both questions are seat-independent: the first is self-referential (*this* definition's skills, whatever they are) and the second names defects no stack changes the shape of. Any divergence between seats is drift, which makes the audit a plain string check.
+
+**Invariant clauses:**
+- ⚠ `Believing the work is done is the cue` — the **trigger**, and it has to fire at the moment of false completion. Every other placement fails: a pass scheduled "at the end" is one the seat believes it has already reached. Softened to *review your work before returning*, it states what every seat already believes and none does, because the belief that the work is done is what suppresses it.
+- ⚠ `Every skill named above, loaded — and every pointer those skills point at, followed?` — the **process half**, and the whole reason this block isn't `code-reviewer`'s job: a reviewer reads output, and a source the seat never consulted leaves none. Everything downstream follows from that one asymmetry — the trace clause below, the read side's surface-only scope, and the ledger field the auditor files on. The tail (`never a step you didn't know about`) names the class: not a knowledge gap, a step skipped under finish-line pressure.
+- `Read the files as a set` — the **cross-surface half**. Without it the pass degrades to re-reading one file at a time, which is where none of these defects is visible.
+- ⚠ `name in your return rather than widening it` — the **escape hatch**, same shape as Block F's and N's, doing double duty as a scope bound: a return pass with no hatch is a licence to keep building past the slice.
+- `costs a fix loop through the lead` — the **price**. Unpriced, skipping reads as momentum; priced, it reads as spending a full round-trip to have someone else find what you were holding.
+- ⚠ `` `Return pass: <what you re-read> · <what it found, or `clean`>` `` + `its absence says it didn't` — the **trace**, and the clause that separates this block from a wish. Block N's hand-roll and Block F's cut path are both checkable from the diff; by the asymmetry above this one isn't, so a skipped pass and a clean pass produce identical output unless the seat says which it was. `clean` is required precisely because it is the case a seat would otherwise leave silent. The token is greppable on purpose: `hooks/log-dispatch.sh` records its presence per dispatch, which is what lets `dispatch-auditor` see a pass that never ran.
+
+**The read side** is one bullet in `code-reviewer` → *What to hunt*, sharing this block's `across the slice` token. Surface half only, per the asymmetry above.

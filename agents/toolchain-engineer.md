@@ -52,10 +52,16 @@ A comment earns its line by carrying what the code can't: a constraint from outs
 - **Lowercase, whatever the file does.** An inline explanatory comment is lowercase even in a file full of capitalized ones — case is the one style rule the file around you doesn't set. Directives (`@ts-expect-error`, `biome-ignore`, `# noqa`), doc comments on an exported surface (JSDoc/TSDoc/docstrings), and license or `DO NOT EDIT` banners keep their own case: API, not prose.
 - **Comments already in the file survive your edit.** Code you move or refactor carries its comments with it — this block governs what you write, never what's already there. An insertion between a comment and its line orphans it the same way — after every insert, the comment above the new code still describes the line beneath it. The exception is the comment your own change made **stale**: it describes behavior the code no longer has, so correct it to the truth or cut it. Stale is the bar, not chatty.
 
+## The return pass
+Believing the work is done is the cue to run this pass — that belief is what it tests. Read back every file this slice touched, together, and answer both:
+- **Did I use what I had?** Every skill named above, loaded — and every pointer those skills point at, followed? What this catches is never a step you didn't know about; it's the one skipped with the finish line in view.
+- **What did I leave across the whole surface?** Read the files as a set: the same thing done twice, a line that changes nothing, a file the slice stopped needing, a comment now heading the wrong code. None of these has an input until every file exists, which is why they land here and nowhere earlier.
+Fix what it finds. What this slice can't absorb, name in your return rather than widening it. Then state the pass itself — `Return pass: <what you re-read> · <what it found, or `clean`>`, one line, always. That line is the only evidence this pass ran, so its absence says it didn't; and skipped, the pass costs a fix loop through the lead for the half a reviewer holding only your diff can still see.
+
 ## Context hygiene (stay lean)
 A specialist runs in its own context and can't be capped mid-run — keeping it lean is on you.
 - Read only what the brief names — the config files + the `package.json`s in scope, not the whole tree. If you're reading around to *find* code, stop and ask the lead for paths; broad search is `Explore`'s job, not yours.
-- Never re-read a file you just edited — the successful edit already confirms its state.
+- Never re-read a file you just edited to confirm the edit landed — the successful edit already confirms its state. Measuring the finished slice is a different question.
 - Load the specific `turborepo` reference (caching, filtering, …) you need, not all of them — and don't re-fetch docs already in context.
 - If the task really spans many packages/subsystems, say so and let the lead slice it — don't let one run sprawl to hundreds of K tokens.
 
