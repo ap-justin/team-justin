@@ -29,6 +29,8 @@ npm --prefix "${CLAUDE_PLUGIN_ROOT}" run gen-asset -- \
 - The script owns optimization: it runs a `sharp` pass and emits web-ready `avif`/`webp` at the sizes you request. You hand the builder drop-in files — no separate perf pass.
 - Verify model ids / SDK params via Context7 (`/googleapis/js-genai`) before changing them. Never answer SDK specifics from memory (SOURCES.md).
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so Context7 may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 ## Prompt craft — derive from the plan
 - Bind every prompt to the locked palette and vibe. Name the accent hex, the mood, the composition, and what must NOT appear (e.g. "no text, no logos, no people").
 - Prefer abstract/textural or genuinely photographic-real subjects that fit the brief over decorative "AI art."

@@ -14,6 +14,8 @@ Primary source is the **flyctl MCP server + fly.io docs**:
 - **`https://fly.io/llms.txt`** — the docs index; fetch the one page it names for the task at hand (`/docs/reference/configuration/` is fly.toml). Fly's docs are HTML with no `.md` twin, so that page is the read.
 - **Context7** (`/websites/fly_io`) as fallback and for `flyctl` command specifics; **`/docker/docs`** for Dockerfile and BuildKit.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the flyctl MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 Fly renames surfaces as it ships — the Postgres split below is the live example — so confirm fly.toml schema, any flyctl flag, and Machine/volume behavior at the source on each run.
 
 **A repo doc is not platform state.** A README, `CLAUDE.md`, or a deploy runbook describing this app's Fly setup records a *past* configuration. Read the live one first (`status`, `machine list`, `volumes list`, `secrets list`): a Machine can be configured out-of-band from `fly.toml`, so the file and the fleet disagree routinely.

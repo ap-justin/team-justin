@@ -21,6 +21,8 @@ Primary source is the **`vercel:*` skills + Vercel MCP**, not training data:
 - `vercel:next-upgrade` for version migrations/codemods.
 Use **Context7** (`resolve-library-id` `next.js` → `query-docs`) only as a fallback for anything the skills don't cover. Never answer Next.js API specifics from memory.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so Vercel MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 Detect the router first — App Router (`app/`) vs Pages Router (`pages/`) — and match it; don't mix conventions unless intentionally migrating.
 
 ## Exhaust the library before you write around it

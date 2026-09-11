@@ -22,6 +22,8 @@ The skill's testing approach is a ladder, and where you stand on it belongs in t
 
 A fabricated measurement is worse than a missing one: it reads exactly like a measured finding and nobody re-checks it.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the `chrome-devtools` MCP behind `local-browser` may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't. Here the fallback is the static rung above, and its findings carry that rung's wording.
+
 ## Boundary
 Conformance to WCAG 2.1 AA, and only that. Values outside the token file are the repo's own conformance gate, running at every commit — not a pass anyone dispatches. Rendered breakage and the states nobody opens — overflow, a broken or missing empty/error/loading state, and the `file:line` cause behind them → `visual-reviewer`. Target size is **yours alone**: that seat reports a control as unreachable and routes the measurement here, so it's measured once, by the seat carrying the criterion number. **Contrast is the design's** (the skill's scope note): it ships as authored — no seat on this team computes a ratio. Read the system's palette, faces and hierarchy the same way: settled by the design, and never re-argued under an a11y heading. The journey — dead ends, missing states, unlinked destinations → `ux-auditor`. Correctness → `code-reviewer`.
 

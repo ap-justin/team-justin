@@ -22,6 +22,13 @@ seat="${seat#kru:}"
 block_o=false
 grep -q '^## The return pass' "$plugin_root/agents/${seat}.md" 2>/dev/null && block_o=true
 
+# computed here rather than inside the jq below: the lead is told about this
+# pair too, and a turn-end audit lands long after the return was routed on
+return_pass=false
+printf '%s' "$input" |
+  jq -r '(.tool_response // "" | if type == "string" then . else tojson end)' 2>/dev/null |
+  grep -q 'Return pass:' && return_pass=true
+
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
 
@@ -35,8 +42,8 @@ find "$dir" \( -name '*.jsonl' -o -name '*.jsonl.nudged' \) -mtime +7 -delete 2>
 # `truncated` tells the auditor an absent clause past the cut is not evidence.
 # the response itself is never stored — only whether it carried the return-pass
 # line — so the ledger stays a record of the lead's process, not of seat output
-printf '%s' "$input" | jq -c --arg seat "$seat" --argjson block_o "$block_o" '
-  (.tool_response // "" | if type == "string" then . else tojson end) as $resp | {
+printf '%s' "$input" | jq -c --arg seat "$seat" \
+  --argjson block_o "$block_o" --argjson return_pass "$return_pass" '{
   ts: (now | todate),
   cwd: ((.cwd // "") | split("/") | last),
   seat: $seat,
@@ -44,7 +51,19 @@ printf '%s' "$input" | jq -c --arg seat "$seat" --argjson block_o "$block_o" '
   prompt: ((.tool_input.prompt // "")[0:4000]),
   truncated: (((.tool_input.prompt // "") | length) > 4000),
   block_o: $block_o,
-  return_pass: ($resp | test("Return pass:"))
+  return_pass: $return_pass
 }' >> "$dir/$sid.jsonl" 2>/dev/null
+
+# the lead reads a return and routes on it in the same breath, and this pair is
+# the one deviation nothing surfaces until the turn ends — by which time the
+# slice is through its gates. posttooluse cannot block a dispatch that already
+# finished (exit 2 is not honoured here); additionalContext is the whole lever,
+# and putting the fact in front of the lead in time is the whole job.
+if [ "$block_o" = true ] && [ "$return_pass" = false ]; then
+  jq -n --arg seat "$seat" '{ hookSpecificOutput: {
+    hookEventName: "PostToolUse",
+    additionalContext: ("kru: " + $seat + " carries Block O and its return states no `Return pass:` line — the pass either did not run or went unstated, so the slice arrives unread as a whole. Ask that seat for it (same-task reuse) before routing on this return.")
+  } }' 2>/dev/null
+fi
 
 exit 0

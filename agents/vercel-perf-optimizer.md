@@ -15,6 +15,8 @@ Primary source is the **`vercel:*` skills + Vercel MCP**, not training data:
 - Vercel MCP for real deployment data: `get_runtime_logs`, `get_deployment_build_logs`, `get_runtime_errors` to ground findings in production behavior, not guesses.
 Use **Context7** as a fallback. Never assert Next.js/Vercel caching or rendering semantics from memory — they change; verify for the installed version.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so Vercel MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 ## Exhaust the platform before you write around it
 Reaching to hand-write something — `cacheLife`/`cacheTag`, PPR, `next/image` sizing, a font subset — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
 

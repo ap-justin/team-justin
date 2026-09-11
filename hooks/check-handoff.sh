@@ -69,6 +69,11 @@ if [ -f "$USER_CANON" ]; then
   [ -n "$budget" ] && reasons="${reasons}paraphrases the user CLAUDE.md machine budget: \"${budget}\" — that file loads into every seat on its own; cut the sentence (scan 2). "
 fi
 comments=$(printf '%s' "$prompt" | grep -oiE '\bcomments?\b[^.]{0,80}\blowercase\b|\blowercase\b[^.]{0,80}\bcomments?\b' | head -1)
+# the standard's other half — comments already in the file survive your edit.
+# reworded it escapes the shingle check, and it is the clause whose loss prunes
+# the comment that carried the reason.
+[ -z "$comments" ] && comments=$(printf '%s' "$prompt" | grep -oiE \
+  '\b(preserve|keep|retain|never drop|do not drop|don.t drop)\b[^.]{0,60}\bcomments?\b|\bcomments?\b[^.]{0,60}\b(preserved|retained|survive|kept)\b' | head -1)
 [ -n "$comments" ] && reasons="${reasons}paraphrases the comment standard: \"${comments}\" — Block I rides in the seat prompt; cut the sentence (scan 2). "
 
 # a review seat writes its report where the brief says and returns a pointer —

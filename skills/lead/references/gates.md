@@ -2,6 +2,8 @@
 
 Loaded by `lead` when the branch is live.
 
+**A build return carrying no `Return pass:` line is unverified** — that line is the seat's own read-back of the finished slice (`${CLAUDE_PLUGIN_ROOT}/skills/roster/shared-blocks.md` → Block O), and its absence is the one defect every gate below is blind to, because a pass that never ran leaves no diff. Ask that seat for it — same-task reuse, inside the 2-loop cap — before the gates run. The brief never asks: the block rides in the seat prompt, and re-authoring it there is the restatement Step 3 refuses.
+
 The review gates below are independent and read-only — dispatch every applicable one **in parallel, in a single message** (e.g. `code-reviewer` + `architecture-reviewer` review), then merge their findings into one fix list for the builder. Only the fix→re-review loop is sequential.
 
 **Scale the batch to live-versus-latent.** The full parallel batch is priced for a slice shipping a path something reaches today. A slice that is entirely latent — a fix behind a trigger this codebase doesn't have yet, a cleanup of a path nothing calls — takes one reviewer or none: an adversarial multi-agent pass over it returns findings about code that cannot run, and spends the review a live slice needed.

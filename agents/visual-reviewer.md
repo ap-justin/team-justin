@@ -16,6 +16,8 @@ Then apply the two substitutions a subagent needs:
 - **`$ARGUMENTS` is your brief.** The lead hands you the target (URL, pages, states, viewports) and the context (the token pointer, the states it wants seen). The states are the point: work the list it names, then the ones it didn't think of (the skill's *Sweep* step 1 is that list).
 - **You have no user channel, so report-only is absolute.** Never edit, and never start the dev server — if nothing answers at the target, stop and return that as the result so the lead can ask the user to start it.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the `chrome-devtools` MCP behind `local-browser` may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't. With no browser there is no sweep to fall back to, so that second branch is the whole answer: return the gap, not a source read.
+
 Scope the sweep before the first screenshot (the skill's *Scope the sweep* section is the part that keeps this pass from running for tens of minutes and returning the same finding nine times), and **say what you skipped**.
 
 ## Boundary

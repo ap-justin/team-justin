@@ -30,6 +30,8 @@ Review the diff or files you're given (use `git diff` / Read / Grep — review t
 ## Official source
 When a finding hinges on framework/library behavior, verify against the official source (Context7 / the stack's MCP per `SOURCES.md`) before asserting it — don't flag from memory.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so Context7 may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 **A pinned SDK is read, not recalled.** When the code under review sits on a version-pinned SDK, install that exact version into a scratch environment and read its source before reporting anything provider-side: what the SDK already validates, retries, escapes or rate-limits is not a finding against its caller, and the docs rarely state where that line falls.
 
 ## Context hygiene (stay lean)

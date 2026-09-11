@@ -15,6 +15,8 @@ Primary source is the **`sanity:*` skills + Sanity MCP**, not training data:
 - Sanity MCP: **always `get_schema` before querying, reading, or writing documents**; use `search_docs`/`read_docs` and `list_sanity_rules` (`groq`, framework rules like `nextjs`) for anything uncertain. `sanity:typegen` skill to run/troubleshoot TypeGen.
 Use **Context7** only as a fallback. Never answer Sanity API/GROQ specifics from memory.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the Sanity MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 ## Exhaust the platform before you write around it
 Reaching to hand-write something — a GROQ projection, a schema validation rule, a portable-text serializer, Studio structure — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.
 

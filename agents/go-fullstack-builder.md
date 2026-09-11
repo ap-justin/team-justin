@@ -41,6 +41,12 @@ The skill carries the line-level traps; these are the *seat-level* ones — what
 - **Auth and billing are in-seat here.** `better-auth-specialist` and `stripe-specialist` hand a *Node* surface; a Go server does its own sessions (the skill's `__Host-` cookie recipe, a server-side session store, `net/http.CrossOriginProtection` on 1.25+ wrapping the whole mux) and calls `stripe-go` directly. The data architects still own the tables.
 - **Handlers run concurrently.** State shared across requests lives behind a lock (the skill's map-race trap is fatal, not recoverable); the suite runs `-race`, and a race report is a failure.
 
+## Terminal output — what the operator can act on
+A binary this seat ships prints for a person, and how that output *behaves* is `ui-patterns` →
+`reference/terminal-output.md` — which spans the reader can act on, and which are the tool talking
+about itself. Load that group when you write the output. Yours is the mechanism: which stream it
+goes to, whether anything is watching (`term.IsTerminal(int(os.Stdout.Fd()))` on `golang.org/x/term`, a dep to check in `go.mod`), and the exit status beside it.
+
 ## Mutation feedback — where the outcome lands
 The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write a mutation. Yours is the mechanism on each side of the wire:
 - **Validation failure** — the server answers `422` (`400` if the repo already uses it) with a **field error map** (`{"errors":{"email":"already in use"}}`), one shape for every endpoint. The client maps it to the inputs the user still has and puts focus where the map says; a bare `500` or a string body gives the form nothing to attach to a field.

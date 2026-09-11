@@ -5,18 +5,25 @@
 # .claude/CLAUDE.md as a line the model may or may not act on. an instruction is
 # discretionary and a hook is not.
 #
-# it gates the first tool call it sees, whatever that tool is: a session edits
+# it gates the first tool call it sees, with one carve-out: a session edits
 # through bash as readily as through Edit or Write — sed -i, a heredoc, git
-# apply — so the tools a build touches are every tool.
+# apply — so bash is gated too, but a bash command that only *reads* is not a
+# build, and a config or triage turn that will never dispatch a seat should not
+# pay the contract's price to run `cat`. every verb has to read, or the gate
+# stands; anything unparsed keeps it, because a miss here is a silent ungated
+# build and a false gate costs one message.
 #
 # it fires once per session: the mark is written whether or not the block lands,
 # so a session that declines is nagged no further and a subagent's own tool call
 # never trips a gate meant for the lead.
 #
-# fail open on anything that isn't a clear miss. kill switch:
-# export KRU_NO_LEAD_GATE=1
+# fail open on anything that isn't a clear miss. kill switch: touch the file
+# ~/.claude/kru/lead-gate/off. a marker file rather than a flag alone, because
+# a bypass flag typed into a command string is what the harness's auto-mode
+# classifier denies — the env var is honoured too, where auto mode is off.
 command -v jq >/dev/null 2>&1 || exit 0
 [ -n "$KRU_NO_LEAD_GATE" ] && exit 0
+[ -e "$HOME/.claude/kru/lead-gate/off" ] && exit 0
 plugin_root="${1:-$CLAUDE_PLUGIN_ROOT}"
 [ -f "$plugin_root/skills/lead/SKILL.md" ] || exit 0
 input=$(cat) || exit 0
@@ -24,6 +31,37 @@ input=$(cat) || exit 0
 # the load itself is a Skill call — gating it would close the only door out
 tool=$(printf '%s' "$input" | jq -r '.tool_name // empty' 2>/dev/null)
 [ "$tool" = "Skill" ] && exit 0
+
+# a read-only bash command is an inspection, not a build
+if [ "$tool" = "Bash" ]; then
+  cmd=$(printf '%s' "$input" | jq -r '.tool_input.command // empty' 2>/dev/null)
+  case "$cmd" in
+    # a redirect, a substitution or an in-place edit writes whatever the verb is
+    *'>'*|*'$('*|'`'*|*'sed -i'*|*'perl -i'*|*'--in-place'*|*'-exec'*|*'xargs'*) ;;
+    *)
+      readonly_cmd=true
+      for verb in $(printf '%s' "$cmd" | tr '|;&' '\n' | awk 'NF {print $1}'); do
+        case "${verb##*/}" in
+          ls|cat|head|tail|wc|grep|egrep|fgrep|rg|find|file|stat|pwd|realpath|basename|dirname) ;;
+          which|command|type|echo|printf|jq|yq|sort|uniq|cut|tr|column|date|test|true|env|diff) ;;
+          # safe only because the write-tell case above already took sed -i and any redirect
+          sed|awk|nl|tac|comm|xxd|base64) ;;
+          # these branch on a subcommand, checked below
+          git|gh|claude|node|python3|npm|pnpm) readonly_cmd=false ;;
+          *) readonly_cmd=false ;;
+        esac
+        [ "$readonly_cmd" = false ] && break
+      done
+      # the read-only subcommands of the tools a triage turn actually reaches for
+      if [ "$readonly_cmd" = false ]; then
+        case "$cmd" in
+          'git status'*|'git log'*|'git diff'*|'git show'*|'git branch'|'git branch '-*|'git remote -v'*) readonly_cmd=true ;;
+          'claude mcp list'*|'claude plugin list'*|'claude plugin details'*) readonly_cmd=true ;;
+        esac
+      fi
+      [ "$readonly_cmd" = true ] && exit 0 ;;
+  esac
+fi
 
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
@@ -52,5 +90,5 @@ mark="$mark_dir/$sid"
 [ -e "$mark" ] && exit 0
 mkdir -p "$mark_dir" 2>/dev/null && : > "$mark" 2>/dev/null
 
-printf 'kru: this session has not loaded the lead contract. Invoke the kru:lead skill, then take the action again — nothing else about the request has changed. This fires once per session, from the kru plugin. To run without it, `export KRU_NO_LEAD_GATE=1`.\n' >&2
+printf 'kru: this session has not loaded the lead contract. Invoke the kru:lead skill, then take the action again — nothing else about the request has changed. This fires once per session, from the kru plugin, and read-only commands are exempt. To run without it: touch ~/.claude/kru/lead-gate/off\n' >&2
 exit 2

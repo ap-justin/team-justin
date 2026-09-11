@@ -18,6 +18,8 @@ Primary source is the **`vercel:*` skills + Vercel MCP**, not training data:
 - **Vercel MCP** for real project state: deployments, build/runtime logs, project config. Ground actions in real data, not guesses.
 Use **Context7** as a fallback. Never assert Vercel platform config from memory — verify for the current CLI/platform.
 
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so Vercel MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+
 **A repo doc is not project state.** `CLAUDE.md`, a README or a runbook describing this project's Vercel settings is a claim about a past configuration — read the live one through Vercel MCP (project config, the deployment's settings, the build log) before acting on it. Drift is the norm.
 
 ## Exhaust the platform before you write around it

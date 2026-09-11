@@ -60,7 +60,11 @@ whichever section of the host file already owns that subject:
 ```
 tokens     packages/brand/src/colors.css      ← gate: lefthook test-brand (colors.ts ↔ colors.css)
 ⚠ suite    ~9 min cold, no watch mode         ← measured; no config states it
+mcp        sentry · stripe (project scope)    ← claude mcp list; context7 + chrome-devtools at user scope
 ```
+
+**`mcp` names only the servers this repo's seats depend on**, each at the scope it is registered at, with the
+user-scope few named once as the set the repo inherits rather than repeated per seat.
 
 A cost line is the one field with no file to read it off, so it is the one to be most careful about:
 measure it or cite the config that sets it. A plausible cost asserted from the runner's reputation is

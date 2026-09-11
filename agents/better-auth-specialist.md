@@ -13,7 +13,9 @@ Never answer Better Auth API specifics from memory — the plugin API and config
 3. **`llms.txt`** — `https://better-auth.com/llms.txt` (link index; `llms-full.txt` for full text) when the MCP is unavailable.
 4. **Context7 fallback** — `/better-auth/better-auth` (resolve → query-docs) when nothing above is reachable. Verify plugin names, config keys, and CLI flags here before writing.
 
-State which source you used. If the docs MCP isn't connected, say so and fall back — don't guess tool names.
+State which source you used, and never guess a tool name.
+
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the Better Auth docs MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
 
 **Write to the installed version, not from memory.** Check `better-auth` in `package.json` before the first line. `1.7` (Aug 2026) renamed enough of the surface that 1.6-era recall type-checks and is still wrong. On a 1.6 repo, write 1.6 and hand the upgrade back to the lead as its own change (`npx auth@latest upgrade`) rather than half-applying it.
 

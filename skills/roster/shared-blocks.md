@@ -356,3 +356,21 @@ Fix what it finds. What this slice can't absorb, name in your return rather than
 - ⚠ `` `Return pass: <what you re-read> · <what it found, or `clean`>` `` + `its absence says it didn't` — the **trace**, and the clause that separates this block from a wish. Block N's hand-roll and Block F's cut path are both checkable from the diff; by the asymmetry above this one isn't, so a skipped pass and a clean pass produce identical output unless the seat says which it was. `clean` is required precisely because it is the case a seat would otherwise leave silent. The token is greppable on purpose: `hooks/log-dispatch.sh` records its presence per dispatch, which is what lets `dispatch-auditor` see a pass that never ran.
 
 **The read side** is one bullet in `code-reviewer` → *What to hunt*, sharing this block's `across the slice` token. Surface half only, per the asymmetry above.
+
+## Block P — the unreachable-source clause
+
+Required on every seat whose source chain **leads with an MCP server or a plugin**: `better-auth-specialist`, `cloudflare-builder`, `fly-platform-engineer`, `nextjs-builder`, `sanity-builder`, `svelte-ui-builder`, `sveltekit-builder`, `vercel-perf-optimizer`, `vercel-platform-engineer` — plus the seats naming an MCP tool in their own frontmatter, where an absent server leaves a dead entry rather than a slower path: `architecture-reviewer`, `code-reviewer`, `graphic-designer` (`mcp__context7__*`), `accessibility-reviewer`, `visual-reviewer` (`mcp__chrome-devtools__*`). It rides inside the seat's official-source section, after the chain it qualifies.
+
+**Exempt by decision** — `planner` holds `mcp__context7__*` in its tool list and names no source chain in its body, so the clause would have nothing to qualify and would be writing that seat a chain it doesn't have. Its dead tool entry is real and it is a `planner` gap, not this block's: fix it by giving the seat a source chain, and the block follows.
+
+```
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the server above may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
+```
+
+**Invariant clauses:**
+- ⚠ `enabled per project` — the **mechanism**, and the reason the seat has to look. A seat that has used a server in one repo carries no evidence about this one, and the absence presents as an ordinary empty tool list rather than as an error.
+- ⚠ `your first line names it and the command that enables it` — the **trace**, and the half that makes the clause actionable rather than a disclaimer. A seat reporting the gap at the end reports it after spending the run on the fallback; named first, the lead can enable the server and re-dispatch for the price of one message. The command is required because the lead is the one who runs it and the seat is the one that knows which server it wanted.
+- ⚠ `marked unverified` — what keeps the fallback honest. Training data answers every question the MCP would have, in the same voice, which is exactly why a fallback the return doesn't label is indistinguishable downstream from a sourced answer.
+- `hand the question back` — the second branch, and it has to stay available: where the chain has no rung under the missing one, working on is guessing.
+
+**Tailored slots**: the server's name where the seat's chain names exactly one (`the server above` otherwise), and the host sentence it attaches to. Three seats already carry a fallback instruction of their own — `better-auth-specialist`, `sveltekit-builder`, `svelte-ui-builder` — and the clause **replaces** it rather than sitting beside it; two copies of a fallback rule are the drift this block exists to close.

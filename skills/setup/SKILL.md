@@ -51,6 +51,7 @@ re-run has no way to check it.
 | `screens` | whether this repo renders UI, and what starts its dev server | the screen passes and the design gate |
 | `test` | the runner, its command, and **what a run costs** | rediscovering the repo's testing conventions |
 | `verify` | typecheck and lint commands | the behavior gate's generic form |
+| `mcp` | `claude mcp list` and `claude plugin list`, against the seats the rows above named and their **`${CLAUDE_PLUGIN_ROOT}/SOURCES.md`** rows | a seat reaching mid-run for a server this repo never enabled, and a dispatch spent finding that out |
 
 **Cost is a field.** A runner that spawns a browser per test file, a suite that takes ten minutes, a
 machine that swaps under a fan-out — none of it is knowable from the plugin, and it decides whether a
@@ -94,6 +95,47 @@ Then **deploy the team**: steps 4–6 as on a full run, each line citing the dec
 lands swaps each decision citation for the manifest that now carries it.
 
 Completion: the sheet holds the decided stack with its seats.
+
+### 1c. Wire what the seats reach for — *full run*
+A seat's source chain names an MCP server or a plugin, and both are enabled **per project** — so a repo
+that never enabled one leaves that seat holding the tool names and none of the tools. Run
+`claude mcp list` and `claude plugin list`, diff against what the step-1 seats reach for
+(**`${CLAUDE_PLUGIN_ROOT}/SOURCES.md`**), and wire the gap.
+
+**Scope is the server's blast radius, not habit.** A server encoding a fact about *this* project —
+Sentry, Stripe, an auth provider, a queue — is project-scoped: `claude mcp add --scope local`, and
+`claude plugin enable --scope project` (`--scope local` in a shared repo, so it stays out of the
+commit). The cache is one shared copy, so a per-project entry costs a line of JSON rather than disk.
+User scope is for a server genuinely reached from every engagement, and that set stays small — today
+`kru`, `context7`, `typescript-lsp`, `chrome-devtools`. **Count the footprint before promoting one**:
+a config byte-identical across twenty repos is the duplication the project rule prevents, not an
+instance of it, and a server sitting in one repo's list out of twenty is a project fact wearing a
+user-scope coat.
+
+Three that fail with no error:
+
+- **The name is the namespace.** Several seats name `mcp__context7__resolve-library-id` /
+  `query-docs` in their own tool lists, so Context7 has to be registered under the bare name
+  `context7` (user scope, http `https://mcp.context7.com/mcp`). The official plugin namespaces it to
+  `mcp__plugin_context7_context7__*` and the claude.ai connector to `mcp__claude_ai_Context7__*` —
+  either leaves those seats holding entries that resolve to nothing.
+- **A permission allowlist entry is coupled to that same prefix.** Moving a server between plugin,
+  connector and local scope dead-letters every rule naming it: the rule stops matching, nothing
+  errors, and the user is re-prompted forever. Re-point the allowlist in the same change that moves
+  the server, never after.
+- **A language server is not its compiler.** `typescript-lsp@claude-plugins-official` declares
+  `lspServers` and ships no binary, so it stays inert until `typescript-language-server` is on PATH.
+  Verify with an `initialize` handshake — `--version` answers from the compiler and tells you
+  nothing about the server. Where a global TypeScript feeds it, pin `typescript@6`: bare `latest`
+  resolves to 7.x, the native port, whose `lib/` carries no `tsserver.js`, leaving the stale
+  `tsserver` shim on PATH and the LSP nothing to drive. Project-local TypeScript, which the language
+  server prefers, is unaffected.
+
+Where an http remote and a stdio `npx -y <pkg>@latest` serve the same server, take the remote — the
+stdio form spawns a process per session and re-resolves `@latest` on every start.
+
+Completion: every seat the derivation named can reach the source its row names, or the user has been
+told which one it can't and what enabling it would cost.
 
 ### 2. Read what the repo already says
 Open the repo's `CLAUDE.md`, `.claude/CLAUDE.md`, `.claude/rules/*`, `AGENTS.md`, and any nested

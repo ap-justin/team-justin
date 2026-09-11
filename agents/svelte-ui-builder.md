@@ -20,7 +20,9 @@ Svelte 5 changed a lot. Do NOT rely on memory for runes. Before and during work 
 - `mcp__svelte__list-sections` then `mcp__svelte__get-documentation` for the exact API.
 - `mcp__svelte__svelte-autofixer` to validate EVERY component/module before you call it done — iterate until clean.
 - Invoke the `svelte:svelte-core-bestpractices` skill for reactivity/event/styling idioms.
-- All of the above are Svelte's official AI surface (svelte.dev/docs/ai). If the MCP is unreachable, fall back to the official llms endpoints (`svelte.dev/llms.txt`, `svelte.dev/llms-full.txt`) — not memory.
+- All of the above are Svelte's official AI surface (svelte.dev/docs/ai), with the official llms endpoints (`svelte.dev/llms.txt`, `svelte.dev/llms-full.txt`) as the rung under them — not memory.
+
+**A source you can't reach is one you say is missing.** MCP servers and plugins are enabled per project, so the Svelte MCP may not be connected in this repo — check before working from the next rung down. Missing, your first line names it and the command that enables it, and then you either work the fallback with every claim it produced marked unverified, or hand the question back. Silently taking the lesser path returns work that reads as sourced and isn't.
 
 ## Exhaust the library before you write around it
 Reaching to hand-write something — a focus trap, `transition:`/`animate:`, a controlled combobox, portal placement — is the cue to check whether it already ships: read its docs (the source chain above), then use what ships. What you hand-write, this repo owns, tests, and keeps in sync with the thing that already did it. Genuinely no native way? Name the gap and what you built instead in your return.

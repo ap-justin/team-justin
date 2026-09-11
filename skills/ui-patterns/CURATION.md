@@ -51,7 +51,9 @@ Entries live in `reference/<group>.md`, several per file, `##`-headed:
 
 By **what the builder is about to build**, never by what kind of rule it is. Grouping by category (color rules, spacing rules) would force every build to load every file, which defeats the index.
 
-Three groups: `forms-and-mutations` · `lists-and-rows` · `text-and-icons`.
+Four groups: `forms-and-mutations` · `lists-and-rows` · `text-and-icons` · `terminal-output`.
+
+**`terminal-output`'s reader is not building a component**, which is why the second bar is worded *appearance* rather than *the token file*: a CLI has neither, so the test there is whether the entry survives the program choosing any palette. An entry naming a colour fails it exactly as a web entry naming a border would.
 
 A pattern fitting two groups goes in the one matching the **build target that summons it**, cross-referenced from the other — never duplicated. Two files stating one rule is the failure this corpus exists to prevent, and it's the failure that killed the seat-prompt version of these patterns.
 
