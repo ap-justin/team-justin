@@ -10,7 +10,7 @@ plugin_root="${1:-$CLAUDE_PLUGIN_ROOT}"
 input=$(cat) || exit 0
 
 seat=$(printf '%s' "$input" | jq -r '.tool_input.subagent_type // empty' 2>/dev/null)
-seat="${seat#team-justin:}"
+seat="${seat#kru:}"
 [ -z "$seat" ] && exit 0
 # the auditor's own dispatch would re-create the ledger it just deleted
 [ "$seat" = "dispatch-auditor" ] && exit 0
@@ -25,7 +25,7 @@ grep -q '^## The return pass' "$plugin_root/agents/${seat}.md" 2>/dev/null && bl
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
 
-dir="$HOME/.claude/team-justin/audit"
+dir="$HOME/.claude/kru/audit"
 mkdir -p "$dir" 2>/dev/null || exit 0
 # crashed sessions leave ledgers nothing will audit, and the stop nudge's mark
 # beside each one; keep the dir bounded

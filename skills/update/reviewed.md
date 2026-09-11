@@ -18,7 +18,7 @@
 ### Considered — the user's call
 
 - **`hooks:` in agent frontmatter** (PreToolUse/PostToolUse/Stop, agent-scoped). The obvious target is the conformance gate, but that gate is built in the *target* repo at Phase 0 and keyed to that repo's token file — a plugin-level hook can't know it. Worth revisiting as a builder-authored hook written into the target repo's own `.claude/settings.json` alongside the test.
-- **`isolation: worktree`** on builders — declarative parallel builds without collision. Against it: parallel worktrees plus `tsc` is the fan-out `~/.claude/CLAUDE.md` forbids on an 8 GB machine.
+- **`isolation: worktree`** on builders — declarative parallel builds without collision. Against it: parallel worktrees plus `tsc` is the fan-out a machine budget in `~/.claude/CLAUDE.md` forbids.
 - **`context: fork` + `background:`** on the read-only skills (`todos`, `issues`, `comment-fix`'s audit). Forked skills run in the background by default (2.1.218), which is the wrong shape for a list the user typed and is waiting on.
 - **`claude plugin eval`** — `evals/**/case.yaml` with an `--ablation with-without` arm scores the plugin against a no-plugin baseline, which is the only mechanical answer to *did the lead route to the right seat*. Currently replies `plugin eval is currently in early access` on this install; re-check each sweep.
 
@@ -35,7 +35,7 @@
 
 ### Swept through
 
-Not yet swept — first run: `/team-justin:update vendored`. Until then the pin of every copy is its provenance comment (or its `SOURCES.md` → *Vendored resources* row).
+Not yet swept — first run: `/kru:update vendored`. Until then the pin of every copy is its provenance comment (or its `SOURCES.md` → *Vendored resources* row).
 
 | Skill | Recorded | Upstream head | Verdict |
 |---|---|---|---|
@@ -44,7 +44,7 @@ Not yet swept — first run: `/team-justin:update vendored`. Until then the pin 
 
 ### Swept through
 
-Not yet swept — first run: `/team-justin:update libs`. Until then each skill's `Reproduced on` line is its own pin.
+Not yet swept — first run: `/kru:update libs`. Until then each skill's `Reproduced on` line is its own pin.
 
 | Skill | Pin | Latest (date) | Delta | Verdict · claims to re-verify |
 |---|---|---|---|---|

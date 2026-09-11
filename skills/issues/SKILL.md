@@ -11,7 +11,7 @@ Take the defect list to the user as a decision, not a listing. The artifact is `
 
 ## 1. Reconcile — every file against the code
 
-List `issues/` at `~/.claude/team-justin/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → *no known defects*, name `/team-justin:issue <what's wrong>`, stop.
+List `issues/` at `~/.claude/kru/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → *no known defects*, name `/kru:issue <what's wrong>`, stop.
 
 Then check each file against the codebase — resolve every cited `file:line`, read the code around it, budgeted at a read pass per file, not a repro. Every file lands in one bucket:
 
@@ -64,7 +64,7 @@ On the user's answer, in this order:
 2. **Each accepted batch file** → one of three outcomes, named individually:
    - **fixed** — `lead` Step 3 routing, Step 4 review, **one commit per file** with the repro test that replaces the write-up; the file is **deleted** at Step 4.5, in the same change.
    - **already fixed** — turned out gone on contact. Delete the file, change nothing.
-   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/team-justin:brief`. Say which; never half-fix it to justify the batch.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it or hand it to `/kru:brief`. Say which; never half-fix it to justify the batch.
    - **declined** — the user chose to carry the risk. Move the file to `archive/declined-<date>/` and add it to that dir's `README.md` with the one-line reason they gave; create both on first use.
    - **tombstone** — the user closed the premise as wrong. Write `status: resolved` into the frontmatter and their reasoning at the top; the file stays.
 3. **Report**: what was fixed against which commits, what was deleted as fixed, what was rescored and to what, and the dir's file count before and after.
@@ -76,4 +76,4 @@ On the user's answer, in this order:
 - **No write before §4.** Reconcile, found call sites and scores are proposals until the user answers; the dir survives an interrupted run untouched.
 - **Delete only what the user confirmed or what a landed fix closes.** A file that looks stale is *moved* or *open* until §1 shows the behaviour gone.
 - **A stub stays legible as one.** Fields the read pass didn't reach keep their `_not investigated_` marker — an unanchored claim that looks investigated is what `issues/` exists to prevent.
-- **Wants live in `IDEAS.md`** — `/team-justin:todos` works those the same way.
+- **Wants live in `TODOS.md`** — `/kru:todos` works those the same way.

@@ -1,11 +1,11 @@
 ---
 name: todos
-description: Work the project's parked wants — reconcile IDEAS.md against the code, score what's unsized, propose a batch, and build what the user picks.
+description: Work the project's parked wants — reconcile TODOS.md against the code, score what's unsized, propose a batch, and build what the user picks.
 disable-model-invocation: true
 argument-hint: "[n | substring]"
 ---
 
-Take the parking lot to the user as a decision, not a listing. The artifact is `IDEAS.md` at the plan store root; `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`IDEAS.md`* holds its lifecycle. This is the one verb where a filed want meets the codebase: `IDEAS.md` only ever grows otherwise — `issues/` is emptied by the fix that closes a file, and a want has no other exit.
+Take the parking lot to the user as a decision, not a listing. The artifact is `TODOS.md` at the plan store root; `${CLAUDE_PLUGIN_ROOT}/TRACKER.md` → *`TODOS.md`* holds its lifecycle. This is the one verb where a filed want meets the codebase: `TODOS.md` only ever grows otherwise — `issues/` is emptied by the fix that closes a file, and a want has no other exit.
 
 **The gate is the verb.** Steps 1–3 compute a proposal — nothing touches the file until the user has answered §4. The order is arithmetic, the batch is a proposal, *what gets built* is the user's call. Building off the ranking alone is the autonomous triage the parking lot exists to prevent, which is why this skill is user-invoked.
 
@@ -13,7 +13,7 @@ Take the parking lot to the user as a decision, not a listing. The artifact is `
 
 ## 1. Reconcile — every line against the code
 
-Read `IDEAS.md` at `~/.claude/team-justin/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → say so, name `/team-justin:todo <the thing>`, stop.
+Read `TODOS.md` at `~/.claude/kru/management/<project-slug>/` (`<project-slug>` = the working repo's dir name; no repo → the cwd's). Missing or empty → say so, name `/kru:todo <the thing>`, stop.
 
 Then check each **candidate** against the codebase — a targeted grep or file-open per line, `Explore` for the vague ones, budgeted at a read pass, not an investigation. Every candidate lands in one bucket:
 
@@ -71,7 +71,7 @@ On the user's answer, in this order:
 2. **Each accepted batch line** → one of three outcomes, named individually:
    - **built** — `lead` Step 3 routing, Step 4 review, **one commit per line** so a bad one reverts alone; the line is **deleted** at Step 4.5, in the same reconciliation as the commit.
    - **already done** — turned out moot on contact. Delete the line, build nothing.
-   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it parked or hand it to `/team-justin:brief`. Say which; never half-build it to justify the pull.
+   - **bigger than its `effort`** — leaves the batch. Rescore in place, then leave it parked or hand it to `/kru:brief`. Say which; never half-build it to justify the pull.
 3. **Report**: what landed against which commits, what was deleted as done, what was rescored and to what, and the file's entry count before and after. Lines the batch never reached are exactly as filed, plus whatever digit the user confirmed.
 
 **Completion criterion: every accepted line has a named outcome, and every file edit the user confirmed is in the file.** A line that quietly stays without an outcome is a want the user now believes was handled.
@@ -81,4 +81,4 @@ On the user's answer, in this order:
 - **No write before §4.** Reconcile and score are proposals until the user answers; the file survives an interrupted run untouched.
 - **Delete only what the user confirmed or what a landed commit satisfies.** Stale is old, not done; a duplicate is two lines until the user says which one goes.
 - **A `discovered` line enters the batch only when the user names it** (`$ARGUMENTS`) — a want is the user's to pull; the team's own captures wait at the gate for that.
-- **Defects live in `issues/`** — `/team-justin:issues` works those the same way.
+- **Defects live in `issues/`** — `/kru:issues` works those the same way.

@@ -1,4 +1,4 @@
-<!-- The sheet's content and its renderings. `/team-justin:setup` writes this into a repo's
+<!-- The sheet's content and its renderings. `/kru:setup` writes this into a repo's
      `.claude/CLAUDE.md` in that file's own idiom. What each line says is derived from the repo; how
      it is laid out is derived from the host file. A repo's copy is a cache the next re-run rewrites. -->
 
@@ -7,7 +7,7 @@ one line that makes the sheet act rather than sit, since a session that never lo
 answers and no practice:
 
 ```
-Load **`team-justin:lead`** before building, reviewing, or dispatching a seat — it carries how the
+Load **`kru:lead`** before building, reviewing, or dispatching a seat — it carries how the
 team works.
 ```
 
@@ -28,20 +28,20 @@ Match the host file. The same sheet, in the two idioms most files are already wr
 block for a file that reaches for code fences and tables:
 
 ```
-routes     team-justin:react-router-builder     ← react-router 7.16.0 framework mode, fs-routes
-ui         team-justin:react-ui-builder         ← packages/ui components, tailwind 4
-data       team-justin:postgres-architect       ← drizzle-orm, apps/api/.server/pg/migrations
-skills     team-justin:drizzle · zod · conform  ← drizzle-orm 0.44 · zod 4.1 · @conform-to/react 1.9
+routes     kru:react-router-builder     ← react-router 7.16.0 framework mode, fs-routes
+ui         kru:react-ui-builder         ← packages/ui components, tailwind 4
+data       kru:postgres-architect       ← drizzle-orm, apps/api/.server/pg/migrations
+skills     kru:drizzle · zod · conform  ← drizzle-orm 0.44 · zod 4.1 · @conform-to/react 1.9
 project    .claude/skills/db-admin · e2e        ← prefer these over a plugin seat
 ```
 
 and bold-led bullets for a file written in prose:
 
 ```markdown
-- **routes** → `team-justin:react-router-builder` — react-router 7.16.0 framework mode, fs-routes
-- **ui** → `team-justin:react-ui-builder` — `packages/ui` components, tailwind 4
-- **data** → `team-justin:postgres-architect` — drizzle-orm, `apps/api/.server/pg/migrations`
-- **skills** → `team-justin:drizzle`, `zod`, `conform` — drizzle-orm 0.44, zod 4.1, `@conform-to/react` 1.9
+- **routes** → `kru:react-router-builder` — react-router 7.16.0 framework mode, fs-routes
+- **ui** → `kru:react-ui-builder` — `packages/ui` components, tailwind 4
+- **data** → `kru:postgres-architect` — drizzle-orm, `apps/api/.server/pg/migrations`
+- **skills** → `kru:drizzle`, `zod`, `conform` — drizzle-orm 0.44, zod 4.1, `@conform-to/react` 1.9
 - **project seats** — `.claude/skills/db-admin`, `e2e`; prefer these over a plugin seat where they overlap
 ```
 

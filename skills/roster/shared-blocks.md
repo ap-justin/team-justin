@@ -125,7 +125,7 @@ Your context is your own; the lead's is the scarce one, and it pays for every wo
 - `architecture-reviewer` **design mode returns its interface spec in full** — the spec is not a finding list, it's what a builder implements, and capping it breaks the build it was dispatched to unblock. Signatures are that mode's exception to *return no code*. Review mode caps normally.
 - `ux-auditor`'s **path map goes to the report, not the return** — it's the artifact that makes findings checkable, so it stays written in full, but the lead routes off defects. Its header (resolved entry route, step count, unfollowed branches) returns; the map doesn't.
 
-**The lead's half.** A seat can only write the long half somewhere if the lead names where — `lead` SKILL.md Step 4 puts `report: ${TMPDIR:-/tmp}/team-justin-review/<project-slug>/<seat>-<slice-slug>.md` in every review brief. That location is **deliberately ephemeral and outside the plan store**: a review is per-run and has none of the four lifetimes `TRACKER.md` defines, so nothing durable may point at it. What survives is the routed fix list and any `issues/<kebab-slug>.md` capture — never the report file.
+**The lead's half.** A seat can only write the long half somewhere if the lead names where — `lead` SKILL.md Step 4 puts `report: ${TMPDIR:-/tmp}/kru-review/<project-slug>/<seat>-<slice-slug>.md` in every review brief. That location is **deliberately ephemeral and outside the plan store**: a review is per-run and has none of the four lifetimes `TRACKER.md` defines, so nothing durable may point at it. What survives is the routed fix list and any `issues/<kebab-slug>.md` capture — never the report file.
 
 ## Block D — `## Test-first (shared skill)`
 

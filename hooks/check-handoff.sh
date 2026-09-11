@@ -9,13 +9,13 @@
 # again. fail open on anything that isn't a clear hit — a gate that misfires
 # costs more than one it lets through.
 command -v jq >/dev/null 2>&1 || exit 0
-[ -n "$TEAM_JUSTIN_NO_GATE" ] && exit 0
+[ -n "$KRU_NO_GATE" ] && exit 0
 plugin_root="${1:-$CLAUDE_PLUGIN_ROOT}"
 [ -d "$plugin_root/agents" ] || exit 0
 input=$(cat) || exit 0
 
 seat=$(printf '%s' "$input" | jq -r '.tool_input.subagent_type // empty' 2>/dev/null)
-seat="${seat#team-justin:}"
+seat="${seat#kru:}"
 [ -z "$seat" ] && exit 0
 # the auditor's brief is the stop nudge's own template, not a handoff
 [ "$seat" = "dispatch-auditor" ] && exit 0
@@ -28,7 +28,7 @@ reasons=""
 # a coordinate is a stale cache: file.ext:NN, or a bare "line 91" / "lines 20-21"
 coords=$(printf '%s' "$prompt" | grep -oE '\.(tsx?|jsx?|mjs|cjs|svelte|vue|astro|md|go|py|rs|css|scss|json|sql|html|ya?ml|toml|sh)\b:[0-9]+|\blines? [0-9]+' | head -5 | tr '\n' ' ')
 [ -n "$coords" ] && reasons="coordinates instead of named anchors: ${coords}(re-anchor each to its function/const/section — item 2, scan 1). "
-printf '%s' "$prompt" | grep -q 'inbox.md' || reasons="${reasons}no learnings channel: the brief must carry the literal path ~/.claude/team-justin/inbox.md and the one-line format (item 7, scan 4). "
+printf '%s' "$prompt" | grep -q 'inbox.md' || reasons="${reasons}no learnings channel: the brief must carry the literal path ~/.claude/kru/inbox.md and the one-line format (item 7, scan 4). "
 # a hedge on a term the builder codes against is a decision delegated by
 # accident — scan 3's hedge half. the imperative half stays a reading check.
 hedge=$(printf '%s' "$prompt" | grep -oiE '\b(may|might|could) mean\b|\bunclear (whether|if)\b|\bnot sure (whether|if)\b' | head -1)
@@ -75,7 +75,7 @@ comments=$(printf '%s' "$prompt" | grep -oiE '\bcomments?\b[^.]{0,80}\blowercase
 # no path and the whole report lands in the lead's context (item 7, gates.md).
 case "$seat" in
   code-reviewer|architecture-reviewer|accessibility-reviewer|visual-reviewer|ux-auditor)
-    printf '%s' "$prompt" | grep -q 'team-justin-review' || reasons="${reasons}review brief names no report path: hand it report: \${TMPDIR:-/tmp}/team-justin-review/<project-slug>/<seat>-<slice-slug>.md (item 7, gates.md). " ;;
+    printf '%s' "$prompt" | grep -q 'kru-review' || reasons="${reasons}review brief names no report path: hand it report: \${TMPDIR:-/tmp}/kru-review/<project-slug>/<seat>-<slice-slug>.md (item 7, gates.md). " ;;
 esac
 
 # an always-loaded rule restated in the brief is a second source that drifts —
@@ -140,9 +140,9 @@ fi
 
 # planner reads a written brief.md (lead step 2.6)
 if [ "$seat" = "planner" ] && ! printf '%s' "$prompt" | grep -q 'brief\.md'; then
-  reasons="${reasons}planner brief names no brief.md: run /team-justin:brief first and point the seat at the written file (step 2.6). "
+  reasons="${reasons}planner brief names no brief.md: run /kru:brief first and point the seat at the written file (step 2.6). "
 fi
 
 [ -z "$reasons" ] && exit 0
-printf 'team-justin handoff gate refused the dispatch to %s — %sFix the brief and dispatch again.\n' "$seat" "$reasons" >&2
+printf 'kru handoff gate refused the dispatch to %s — %sFix the brief and dispatch again.\n' "$seat" "$reasons" >&2
 exit 2

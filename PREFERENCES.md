@@ -4,20 +4,20 @@ The team is **project-agnostic**: the same agents start from the same frozen def
 
 This file documents the loop that fixes that: **capture → sweep → evolve**. It is the preference-store sibling of `TRACKER.md` (the plan store). The distinction:
 
-- **`TRACKER.md` / `IDEAS.md` / `issues/` / `notes/`** — *project-specific* ideas, known defects, brainstorming, and the current change's brief. They live at user level too, but **keyed per project** (`~/.claude/team-justin/management/<project-slug>/`), because they're about *that product*.
-- **This store** — *cross-project* preferences about how **the team itself** should work. They live **un-keyed at the team-justin root**, because they belong to the team, not any product.
+- **`TRACKER.md` / `TODOS.md` / `issues/` / `notes/`** — *project-specific* todos, known defects, brainstorming, and the current change's brief. They live at user level too, but **keyed per project** (`~/.claude/kru/management/<project-slug>/`), because they're about *that product*.
+- **This store** — *cross-project* preferences about how **the team itself** should work. They live **un-keyed at the kru root**, because they belong to the team, not any product.
 
 ## The loop
 
 ```
-any project (cwd = someone's repo)         ~/.claude/team-justin/
-  /team-justin:remember  ───────────────▶  inbox.md   ◀─── agents append learnings
+any project (cwd = someone's repo)         ~/.claude/kru/
+  /kru:remember  ───────────────▶  inbox.md   ◀─── agents append learnings
                                               │            (end-of-run, via lead handoff)
                                               │        ◀─── dispatch-auditor files process
                                               │            deviations (hook-fired at turn end)
                                               │        ◀─── /setup files what a repo knows
                                               │            that a plugin skill lacks
-                                     /team-justin:roster learn
+                                     /kru:roster learn
                                               │  (run from the plugin source repo; user gates each edit)
                                               ▼
                               the plugin, versioned + shared
@@ -25,28 +25,28 @@ any project (cwd = someone's repo)         ~/.claude/team-justin/
                                 skills/<owner>/SKILL.md       (incl. lead — orchestration-wide rules)
                                 → commit + tag  (minor bump)
                                               │
-                                     /team-justin:setup      (typed in a repo)
+                                     /kru:setup      (typed in a repo)
                                               ▼
                               that repo's .claude/CLAUDE.md
                                 this engagement's answers, in that file's voice,
                                 stamped with the plugin version they came from
 ```
 
-Three arrows, one circuit. **Cheap lossless capture**, then a **curated, human-gated sweep** that edits the team (mirroring the `IDEAS.md` → `/team-justin:brief` promotion the team already runs), then the **return leg**: a repo picks the evolved practice back up by re-running `/team-justin:setup`, which re-derives its answers against the newer plugin.
+Three arrows, one circuit. **Cheap lossless capture**, then a **curated, human-gated sweep** that edits the team (mirroring the `TODOS.md` → `/kru:brief` promotion the team already runs), then the **return leg**: a repo picks the evolved practice back up by re-running `/kru:setup`, which re-derives its answers against the newer plugin.
 
 **The plugin holds the practice; a repo's own file holds the engagement.** That split is what the sweep routes on — a preference that would still be true in the next repo goes upstream into a seat or a skill, one true only where it surfaced goes into that repo's sheet (`skills/roster/learn.md` → step 2). The plugin is the same in every engagement, which is exactly why nothing client-specific may land in it.
 
 ## Tier 1 — capture (the inbox)
 
-**Location: `~/.claude/team-justin/inbox.md`** — a single user-global file, created on first capture. Not per-project (the team is project-agnostic, so captures don't belong in any per-project plan store), and **not** the plugin's install dir (that resolves to a read-only, version-pinned cache when installed from the marketplace — unwritable from other projects and blown away on update). Home dir is the one place writable from every project and durable across plugin updates.
+**Location: `~/.claude/kru/inbox.md`** — a single user-global file, created on first capture. Not per-project (the team is project-agnostic, so captures don't belong in any per-project plan store), and **not** the plugin's install dir (that resolves to a read-only, version-pinned cache when installed from the marketplace — unwritable from other projects and blown away on update). Home dir is the one place writable from every project and durable across plugin updates.
 
 It has **three writers**:
 
-1. **The user, explicitly** — `/team-justin:remember <what they liked>`. Never inferred from approval; the team does not guess. A liked *pattern* with concrete code is saved as an artifact under `~/.claude/team-justin/patterns/<slug>.md` and indexed by an inbox line.
+1. **The user, explicitly** — `/kru:remember <what they liked>`. Never inferred from approval; the team does not guess. A liked *pattern* with concrete code is saved as an artifact under `~/.claude/kru/patterns/<slug>.md` and indexed by an inbox line.
 2. **Agents, as they work** — a builder/reviewer that discovers a durable preference (the user rejected X twice and chose Y; this repo's approved convention is Z) appends one line at end-of-run. This is journaling a *learning*, not reading approval — the same instinct as `test-writer` capturing a repo's testing conventions. The **lead** hands each dispatched seat the inbox path + this format so the learning lands (Step 3).
-3. **`dispatch-auditor`, on the team's own process** — the plugin's hooks log every team-seat dispatch to a session ledger (`~/.claude/team-justin/audit/`), and a Stop-hook nudge fires the seat to audit it against the `lead` Step 3 contract, filing `[workflow]` lines for durable deviations (routing misses, incomplete handoffs, restated ambient blocks). This is the loop's autonomous half — the team observes how it was run and proposes its own corrections — and it is autonomy at the **capture** tier only: still never inferred from approval (the ledger holds the lead's dispatch text, not the user's reactions), and still gated at the sweep like every other line.
+3. **`dispatch-auditor`, on the team's own process** — the plugin's hooks log every team-seat dispatch to a session ledger (`~/.claude/kru/audit/`), and a Stop-hook nudge fires the seat to audit it against the `lead` Step 3 contract, filing `[workflow]` lines for durable deviations (routing misses, incomplete handoffs, restated ambient blocks). This is the loop's autonomous half — the team observes how it was run and proposes its own corrections — and it is autonomy at the **capture** tier only: still never inferred from approval (the ledger holds the lead's dispatch text, not the user's reactions), and still gated at the sweep like every other line.
 
-Entry format — one line, untriaged, lossless (mirrors the `IDEAS.md` line):
+Entry format — one line, untriaged, lossless (mirrors the `TODOS.md` line):
 
 ```markdown
 - [design] prefers bento-grid hero over centered-stack — _user · acme-site · 2026-07-21_
@@ -60,13 +60,13 @@ Entry format — one line, untriaged, lossless (mirrors the `IDEAS.md` line):
 - **project** the repo slug it surfaced in, then the date captured. The slug is the **promotion bar**, not just context: the sweep collapses a group to its distinct slugs, and one slug reads as that client where two or more read as the team (`skills/roster/learn.md` → step 1).
 - Optional `→ patterns/<slug>.md` when a concrete artifact backs it.
 
-Capture never derails the task — park the line, keep working (`IDEAS.md` discipline).
+Capture never derails the task — park the line, keep working (`TODOS.md` discipline).
 
 ## Tier 2 — sweep (`/roster learn`)
 
-The **curated, human-gated** half — it edits the team, so it lives under roster-ops (`/team-justin:roster learn`), reusing the same version/wiring machinery as `hire`/`author`. Run it **from the plugin source repo** periodically (not from a product repo — it commits the plugin). It:
+The **curated, human-gated** half — it edits the team, so it lives under roster-ops (`/kru:roster learn`), reusing the same version/wiring machinery as `hire`/`author`. Run it **from the plugin source repo** periodically (not from a product repo — it commits the plugin). It:
 
-1. Reads `~/.claude/team-justin/inbox.md` (+ `patterns/`); groups by lane, dedupes, drops noise.
+1. Reads `~/.claude/kru/inbox.md` (+ `patterns/`); groups by lane, dedupes, drops noise.
 2. For each keeper, picks a **destination**:
    - **seat-specific** (a default only `graphic-designer`, or only the Svelte builder, should carry) → a **targeted prompt edit** to that `agents/<seat>.md`.
    - **cross-seat** (several seats should carry it) → the same targeted edit in each affected seat, or the owning skill (`lead` SKILL.md for orchestration-wide rules).

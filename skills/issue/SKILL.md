@@ -15,7 +15,7 @@ Write the defect file from what the user just told you and get out. They hit som
 
 1. **Read `$ARGUMENTS`** — what's wrong. If empty, ask one line ("What's wrong?") and stop.
 2. **Glance at `issues/`** (`ls`, nothing more). Same defect already has a file → append the user's new detail to it and stop. One directory listing isn't investigation; two files for one bug is drift.
-3. **Write `issues/<kebab-slug>.md`** at the store root — `~/.claude/team-justin/management/<project-slug>/`, where `<project-slug>` is the working repo's dir name (no repo → the cwd's). **No precondition**: create the dir if it isn't there.
+3. **Write `issues/<kebab-slug>.md`** at the store root — `~/.claude/kru/management/<project-slug>/`, where `<project-slug>` is the working repo's dir name (no repo → the cwd's). **No precondition**: create the dir if it isn't there.
 
    ```markdown
    ---
@@ -37,6 +37,6 @@ Write the defect file from what the user just told you and get out. They hit som
 
 ## Don't
 
-- **Don't take a non-defect.** Something merely *wanted* — a feature, a refactor, a cleanup, duplication, misfiled config — is `/team-justin:todo`'s line, not a defect file. The store's three-way split holds: **wrong → `issues/`, wanted → `IDEAS.md`, unformed → `notes/`**. Say in one line which you did.
-- Don't fix it, and don't offer a fix. Filling the file in is a normal `/team-justin:lead <task>`; fixing it deletes the file in that same change, along with the repro test that replaces it (`lead` Step 4.5).
+- **Don't take a non-defect.** Something merely *wanted* — a feature, a refactor, a cleanup, duplication, misfiled config — is `/kru:todo`'s line, not a defect file. The store's three-way split holds: **wrong → `issues/`, wanted → `TODOS.md`, unformed → `notes/`**. Say in one line which you did.
+- Don't fix it, and don't offer a fix. Filling the file in is a normal `/kru:lead <task>`; fixing it deletes the file in that same change, along with the repro test that replaces it (`lead` Step 4.5).
 - Don't write into the working repo. Store files stay at user level, always (`TRACKER.md`).

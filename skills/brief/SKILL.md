@@ -17,9 +17,9 @@ answered from the codebase, never asked.
 
 ## 1. Read the intake first
 
-The store's existing `plan/<effort>/brief.md` (if you're re-grilling an effort), `IDEAS.md` (the captured, untriaged one-liners), and the store's `notes/` (freeform brainstorming — **input, never authority**: cite it as *"there's a note that says…"*, never as a decision, and never let it override the brief, the repo's docs, or the user).
+The store's existing `plan/<effort>/brief.md` (if you're re-grilling an effort), `TODOS.md` (the captured, untriaged one-liners), and the store's `notes/` (freeform brainstorming — **input, never authority**: cite it as *"there's a note that says…"*, never as a decision, and never let it override the brief, the repo's docs, or the user).
 
-Bring them back to the user during the grill: an old brief's open threads get re-decided, and an `IDEAS.md` line is either pulled into this change's scope or left where it is. Surface it **ranked `value ÷ effort`** the way `/team-justin:todos` prints it — high value and low effort first, a `~n` ranked as filed and shown with its tilde, legacy lines with no digits listed after — and mark the ones filed 90+ days ago or against a `plan/<slug>/` that's since been archived, since those are the lines most likely to be asking for a codebase that no longer exists. That ordering is arithmetic over filed numbers, not a triage: you don't triage `IDEAS.md` on your own — you surface it and the user calls it.
+Bring them back to the user during the grill: an old brief's open threads get re-decided, and a `TODOS.md` line is either pulled into this change's scope or left where it is. Surface it **ranked `value ÷ effort`** the way `/kru:todos` prints it — high value and low effort first, a `~n` ranked as filed and shown with its tilde, legacy lines with no digits listed after — and mark the ones filed 90+ days ago or against a `plan/<slug>/` that's since been archived, since those are the lines most likely to be asking for a codebase that no longer exists. That ordering is arithmetic over filed numbers, not a triage: you don't triage `TODOS.md` on your own — you surface it and the user calls it.
 
 **Walk `issues/` too — this is the dir's only reader.** Every file in it claims an open defect, and nothing else in the team ever checks that claim: read each one against the current code, **delete the ones the codebase has since fixed**, and surface the survivors to the user as scope candidates for this change, **split live from latent** — live is reachable today by an input or a user you can name; latent's trigger doesn't exist in this codebase yet. That split is a fact off the code you just read, not a priority call (the user still picks), and it's the one thing the filed `severity` can't carry, having been written before anyone checked reachability. Completion criterion: **every file in `issues/` accounted for — reproduced, deleted, or explicitly left open** — because a dir nobody walks is how a bug fixed months ago stays on the books as a known defect.
 
@@ -49,7 +49,7 @@ Once `Decisions resolved` stops being re-readable, split its long-form records (
 
 ## 4. Report
 
-The brief's path + the one-line change, and what's next: **`/team-justin:lead`** builds it, or **`planner`** slices it when it won't fit one context (`lead` Step 2.6).
+The brief's path + the one-line change, and what's next: **`/kru:lead`** builds it, or **`planner`** slices it when it won't fit one context (`lead` Step 2.6).
 
 ## Cadence is yours, and it persists in the brief
 

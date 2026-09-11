@@ -1,0 +1,25 @@
+# NOTICE
+
+team-justin is MIT-licensed (`LICENSE`). It redistributes skills copied from the
+projects below, each under its own license. Where an upstream ships a license file
+it is kept verbatim inside the vendored directory.
+
+Full provenance — upstream ref, sha, what was excluded, how to re-sync, and which
+copies deviate from upstream — is in `SOURCES.md` → *Vendored resources*.
+
+| Upstream | License | Vendored as |
+|---|---|---|
+| `anthropics/skills` | Apache-2.0 (`skills/algorithmic-art/LICENSE.txt`) | `skills/algorithmic-art/` |
+| `anthropics/knowledge-work-plugins` (`design` plugin) | Apache-2.0 | `skills/accessibility-review/`, `skills/user-research/`, `skills/research-synthesis/`, `skills/ux-copy/` — team-adapted, not verbatim |
+| `remix-run/react-router` | MIT | `skills/react-router/` |
+| `mattpocock/skills` | MIT | `skills/to-spec/`, `skills/to-tickets/`, `skills/wayfinder/`, `skills/codebase-design/`, `skills/tdd/`, `skills/diagnosing-bugs/`, `skills/domain-modeling/`, `skills/grilling/`, `skills/writing-for-agents/` |
+| `emilkowalski/skills` | MIT (`LICENSE` per directory) | `skills/find-animation-opportunities/`, `skills/emil-design-eng/`, `skills/animation-vocabulary/`, `skills/review-animations/`, `skills/improve-animations/` |
+| `coreyhaines31/marketingskills` | MIT | `skills/copywriting/`, `skills/copy-editing/`, `skills/cro/` |
+| `vercel/turborepo` | MIT (`skills/turborepo/LICENSE`) | `skills/turborepo/` |
+| `shadcn-ui/ui` | MIT | `skills/shadcn/` |
+| `cloudflare/skills` | Apache-2.0 (`LICENSE` per directory) | `skills/cloudflare/`, `skills/wrangler/` |
+| `dgreenheck/webgpu-claude-skill` | MIT per the upstream README; no license file upstream | `skills/webgpu-threejs-tsl/` |
+
+Everything else in this repository — the lead skill, the seat definitions under
+`agents/`, the hooks, the first-party skills, and the reference documents — is
+original work under the MIT license above.

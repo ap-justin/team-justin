@@ -1,47 +1,92 @@
-# team-justin
+# kru
 
-An engineering team for Claude Code, as a plugin.
+*(said “crew”)*
+
+An engineering team for Claude Code, as a plugin. One **lead** skill scopes the work, detects the
+stack, and routes it to 30 specialist seats — builders, reviewers, design, platform — each pinned to
+its framework's official source rather than to training data.
+
+You talk to the lead the way you'd talk to an engineering lead. It does the routing.
 
 ## Install
 ```
-/plugin marketplace add ap-justin/team-justin
-/plugin install team-justin@team-justin
+/plugin marketplace add ap-justin/kru
+/plugin install kru@kru
 ```
 Claude Code on the web: commit this to the repo's `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "team-justin": { "source": { "source": "github", "repo": "ap-justin/team-justin" } }
+    "kru": { "source": { "source": "github", "repo": "ap-justin/kru" } }
   },
-  "enabledPlugins": { "team-justin@team-justin": true }
+  "enabledPlugins": { "kru@kru": true }
 }
 ```
 
 ## Requirements
 - **Claude Code 2.1.248 or newer.** An older CLI runs the seats but silently drops the newer settings they carry.
+- **`jq`**, for the hooks. Without it every hook fails open and the team still runs, ungated.
+- **Model access to `claude-opus-5` and `claude-sonnet-5`.**
 - **The `chrome-devtools` MCP server**, for the visual and accessibility reviewers only; without it they audit from source.
   ```
   claude mcp add chrome-devtools --scope user -- npx chrome-devtools-mcp@latest --headless=true --screenshotFormat=webp --screenshotMaxWidth=1440
   ```
-- **`jq`**, for the hooks; they fail open without it.
-- **Model access to `claude-opus-5` and `claude-sonnet-5`.**
+- **Optional, for generated image/video assets:** `GOOGLE_API_KEY` (Google AI Studio) and a one-time
+  `npm --prefix <plugin dir> install`. Without them the `graphic-designer` seat reports what's missing
+  and offers a fallback instead of shipping a placeholder.
+
+## First run
+In the repo you want the team to work on:
+
+```
+/kru:setup
+```
+
+It reads the repo — stack, framework versions, conventions, test setup, design system — and writes the
+answers into that repo's `.claude/CLAUDE.md`, so later sessions don't re-derive them. Run it once per
+repo, again when the repo or the plugin moves. On an empty repo it grills the subject and the stack
+with you first.
+
+Then just ask: *"add feature Y"*, *"fix Z"*, *"build a landing page for X"*. The lead picks the seats.
+
+## What it does to your machine
+The team is opinionated about process, and it enforces that with four hooks. Each one fails open
+without `jq`, and each interruption below is one you can turn off.
+
+| When | What happens | Turn it off |
+|---|---|---|
+| First tool call of a session | Blocks once until the lead contract is loaded, so no build starts off-contract | `export KRU_NO_LEAD_GATE=1` |
+| Dispatching a seat | Refuses a handoff that carries stale line numbers, restates a rule the seat already has, or leaves a decision open | `export KRU_NO_GATE=1` |
+| End of a turn that dispatched seats | Blocks once to run the dispatch auditor over the session's routing | `export KRU_NO_AUDIT=1` |
+| After each dispatch | Appends one line to a session ledger the auditor reads | — |
+
+It writes outside your repo, never inside it — the one exception is `/kru:setup`, which edits
+that repo's `.claude/CLAUDE.md`:
+
+- `~/.claude/kru/management/<project>/` — briefs, plans, tickets, todos, issues. Kept at user
+  level on purpose: your repo stays clean, and the plan survives branch churn and a re-clone.
+- `~/.claude/kru/inbox.md`, `patterns/` — preferences you bank with `/kru:remember`.
+- `~/.claude/kru/audit/`, `lead-gate/` — per-session bookkeeping for the hooks above; audit
+  ledgers self-delete after 7 days.
+- `${TMPDIR}/kru-review/` — review reports, so an audit trail stays out of the conversation.
 
 ## Commands
 **Getting started**
-- `/team-justin:setup`: set the team up in this repo. Once per repo, again when the repo or the plugin moves.
-- Then ask: "add feature Y", "fix Z", "build a landing page for X". Or `/team-justin:lead <task>`.
+- `/kru:setup`: set the team up in this repo. Once per repo, again when the repo or the plugin moves.
+- Then ask: "add feature Y", "fix Z", "build a landing page for X". Or `/kru:lead <task>`.
 
 **Coding sessions**
-- `/team-justin:brief <subject>`: grill a change and keep the record before building.
-- `/team-justin:todo <the thing>`, `/team-justin:issue <what's wrong>`: park a want or a defect without breaking the session.
-- `/team-justin:landed`: after the PR merges, sync back onto the base branch.
-- `/team-justin:comment-fix`, `/team-justin:prose-fix`, `/team-justin:doc-fix` `[<path> | <branch> | <pr>]`: fix comments, rendered copy, or doc prose in place.
+- `/kru:brief <subject>`: grill a change and keep the record before building.
+- `/kru:todo <the thing>`, `/kru:issue <what's wrong>`: park a want or a defect without breaking the session.
+- `/kru:remember <what you liked>`: bank a preference for the team to absorb later.
+- `/kru:landed`: after the PR merges, sync back onto the base branch.
+- `/kru:comment-fix`, `/kru:prose-fix`, `/kru:doc-fix` `[<path> | <branch> | <pr>]`: fix comments, rendered copy, or doc prose in place.
 
 **Backlog and tech debt**
-- `/team-justin:todos`, `/team-justin:issues`: work the backlog; each entry landed is deleted.
-- `/team-justin:design-system audit`: audit the design system.
-- `/team-justin:seo-review`, `/team-justin:review-animations`, `/team-justin:improve-animations`, `/team-justin:design-gallery`: audits on shipped pages.
-- `/team-justin:ux-review <flow>`: audit a user flow — signup, checkout — end to end through source.
+- `/kru:todos`, `/kru:issues`: work the backlog; each entry landed is deleted.
+- `/kru:design-system audit`: audit the design system.
+- `/kru:seo-review`, `/kru:review-animations`, `/kru:improve-animations`, `/kru:design-gallery`: audits on shipped pages.
+- `/kru:ux-review <flow>`: audit a user flow — signup, checkout — end to end through source.
 
 ## Stack
 - **UI**: React, Svelte 5, Web Components.
@@ -52,3 +97,20 @@ Claude Code on the web: commit this to the repo's `.claude/settings.json`:
 - **Tooling**: pnpm, Turborepo, Biome.
 
 Design runs upstream of every build (flows, the canvas, assets) and review after it (correctness, structure, rendered UI, accessibility, UX). The seats behind each layer, and how to spawn one directly: `ROSTER.md`.
+
+A stack with no seat is a question the lead brings to you before it guesses.
+
+## Forking the team
+`/kru:roster` (hire a seat, author a skill, sweep banked preferences into the seats) and
+`/kru:update` (sweep what moved upstream) **edit the plugin's own files**. Run them in a clone
+of this repo, not against an installed copy — the install lives in a cache directory that the next
+plugin update overwrites.
+
+If you just want the team to learn your preferences, `/kru:remember` is the channel that
+works on an installed copy: it writes to your home directory, and the edits it feeds survive updates.
+
+How the team is structured and grown: `ROSTER.md`. What each stack's official source is: `SOURCES.md`.
+The preference loop: `PREFERENCES.md`. The plan store's file format: `TRACKER.md`.
+
+## License
+MIT — see `LICENSE`. Vendored upstream skills keep their own licenses; see `NOTICE`.

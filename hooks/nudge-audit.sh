@@ -5,8 +5,8 @@
 command -v jq >/dev/null 2>&1 || exit 0
 input=$(cat) || exit 0
 
-# kill switch: export TEAM_JUSTIN_NO_AUDIT=1 to silence the loop
-[ -n "$TEAM_JUSTIN_NO_AUDIT" ] && exit 0
+# kill switch: export KRU_NO_AUDIT=1 to silence the loop
+[ -n "$KRU_NO_AUDIT" ] && exit 0
 
 # already continuing because of a stop hook — never block twice in one cycle
 active=$(printf '%s' "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)
@@ -14,7 +14,7 @@ active=$(printf '%s' "$input" | jq -r '.stop_hook_active // false' 2>/dev/null)
 
 sid=$(printf '%s' "$input" | jq -r '.session_id // empty' 2>/dev/null)
 [ -z "$sid" ] && exit 0
-ledger="$HOME/.claude/team-justin/audit/$sid.jsonl"
+ledger="$HOME/.claude/kru/audit/$sid.jsonl"
 # the mark holds the dispatch count already nudged for. an audit that never
 # runs — declined, interrupted, a session that ends somewhere else — leaves the
 # ledger behind for the rest of the session, and the ledger only grows, so that
@@ -34,6 +34,6 @@ case "$prev" in ''|*[!0-9]*) prev=0 ;; esac
 printf '%s' "$n" > "$mark" 2>/dev/null
 jq -n --arg ledger "$ledger" --arg n "$n" --arg contract "$plugin_root/skills/lead/SKILL.md" '{
   decision: "block",
-  reason: "team-justin dispatch audit pending: \($n) team-seat dispatch(es) this session, logged at \($ledger). Dispatch the team-justin:dispatch-auditor subagent exactly once, with the prompt: Audit the dispatch ledger at \($ledger). Lead contract (for exact wording only): \($contract), Step 3. The seat carries its own rulebook; it files durable orchestration learnings to the preference inbox and deletes the ledger. Relay its one-line return, then stop."
+  reason: "kru dispatch audit pending: \($n) team-seat dispatch(es) this session, logged at \($ledger). Dispatch the kru:dispatch-auditor subagent exactly once, with the prompt: Audit the dispatch ledger at \($ledger). Lead contract (for exact wording only): \($contract), Step 3. The seat carries its own rulebook; it files durable orchestration learnings to the preference inbox and deletes the ledger. Relay its one-line return, then stop."
 }'
 exit 0

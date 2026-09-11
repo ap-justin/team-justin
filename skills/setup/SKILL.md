@@ -66,7 +66,7 @@ for its own subsystem knows something the plugin does not.
 **What the repo knows that a skill lacks goes upstream.** The derivation reads the repo's own testing
 docs, configs and `.claude/skills/*`; where one carries a recipe a plugin skill would need in the next
 repo too — a `vitest` gotcha `skills/vitest/` has no row for, a runner cost the skill doesn't state, a
-convention its docs are silent on — append it to `~/.claude/team-justin/inbox.md` in
+convention its docs are silent on — append it to `~/.claude/kru/inbox.md` in
 `${CLAUDE_PLUGIN_ROOT}/PREFERENCES.md`'s line format: lane `[code]`, source `setup`, citing the repo
 file it came from. The sheet still cites the fact for this repo (*The line between the plugin and the
 repo*, below).
@@ -108,7 +108,7 @@ this a pass over the file rather than an append to it.
 
 1. **Only this repo could produce it.** A line that would read the same in any repo is a no-op paying
    rent: it changes no behavior against the default, and the model already had it from the plugin.
-   The team's own identity is the standing example — `team-justin:lead` carries it, so a sentence
+   The team's own identity is the standing example — `kru:lead` carries it, so a sentence
    introducing the team is a sentence the pointer already spent. **Keep the operative test and drop
    the frame around it**: a file describing itself or the surface it sits on — "everything here is
    loaded into every session", "this file holds X" — tells the reader what reading it already told
@@ -189,7 +189,7 @@ commands, a token file beside its gate — which leaves the team section holding
 **The stamp** is one HTML comment directly above that section:
 
 ```
-<!-- team-justin vX.Y.Z · derived YYYY-MM-DD · /team-justin:setup to re-derive -->
+<!-- kru vX.Y.Z · derived YYYY-MM-DD · /kru:setup to re-derive -->
 ```
 
 It renders as nothing and does two jobs no prose does: it tells a later session the team was set up
@@ -232,7 +232,7 @@ else's words is theirs — cite it and move on.
 
 ## The line between the plugin and the repo
 The repo's file holds the **engagement**; the plugin holds the **practice**. A rule that would still
-be true in the next repo belongs upstream — `/team-justin:remember` files it and `/roster learn`
+be true in the next repo belongs upstream — `/kru:remember` files it and `/roster learn`
 gates it (`${CLAUDE_PLUGIN_ROOT}/PREFERENCES.md`). A rule true only here stays in the repo.
 
 The plan store stays outside the working repo, its pointer included

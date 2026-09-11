@@ -6,14 +6,14 @@ The lead owns this (it edits the plan store — `TRACKER.md`) but never runs it 
 
 ## 1. Measure the recurring read, not the total
 
-Size ≠ cost. Split the store into **recurring** (opened on every run — the brief, the ideas parking lot) and **pay-per-use** (opened only when a task needs it — the long-form decisions file, reference docs). A 306KB decisions file read via pointers costs nothing per run; a 138KB brief costs 35k tokens every single time.
+Size ≠ cost. Split the store into **recurring** (opened on every run — the brief, the todos parking lot) and **pay-per-use** (opened only when a task needs it — the long-form decisions file, reference docs). A 306KB decisions file read via pointers costs nothing per run; a 138KB brief costs 35k tokens every single time.
 
 Curate the recurring set. Leave the rest alone — and say so, rather than shrinking things that were never costing anything.
 
 ```bash
 # recurring vs total
 find . -type f -not -path './.git/*' -exec wc -c {} + | sort -rn | head -12
-wc -c IDEAS.md plan/<effort>/brief.md          # the every-run cost
+wc -c TODOS.md plan/<effort>/brief.md          # the every-run cost
 ```
 
 ## 2. Checkpoint first
@@ -53,7 +53,7 @@ while IFS= read -r p; do grep -qiF "$p" /tmp/heads.txt || echo "MISSING: $p"; do
 awk '/^## Landing plan/,/^## Decisions/' brief.md | grep -o '^\s*- \[[ x]\]' | sort | uniq -c
 
 # entry accounting must balance: N in = stayed + moved
-grep -c '^- ' IDEAS.md; grep -c '^- ' archive/<dir>/ideas-decided.md
+grep -c '^- ' TODOS.md; grep -c '^- ' archive/<dir>/todos-decided.md
 ```
 
 Report counts back to the user, including where the agent's self-count disagreed (one claimed 21 records where `grep` found 20).

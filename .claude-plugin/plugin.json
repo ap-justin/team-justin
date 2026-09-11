@@ -1,12 +1,13 @@
 {
-  "name": "team-justin",
-  "displayName": "Claude Engineering Team",
-  "version": "0.77.0",
+  "name": "kru",
+  "displayName": "kru",
+  "version": "0.78.0",
   "description": "A versioned engineering team for Claude Code — a lead skill that scopes work, detects the stack, and routes to 30 specialist subagents (builders, reviewers, design, platform).",
   "author": {
     "name": "ap-justin"
   },
-  "repository": "https://github.com/ap-justin/team-justin",
+  "repository": "https://github.com/ap-justin/kru",
+  "license": "MIT",
   "keywords": [
     "subagents",
     "orchestration",
