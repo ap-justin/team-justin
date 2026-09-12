@@ -47,6 +47,8 @@ A binary this seat ships prints for a person, and how that output *behaves* is `
 about itself. Load that group when you write the output. Yours is the mechanism: which stream it
 goes to, whether anything is watching (`term.IsTerminal(int(os.Stdout.Fd()))` on `golang.org/x/term`, a dep to check in `go.mod`), and the exit status beside it.
 
+A binary that takes over the screen instead of printing is a different medium: load `tui-design` when `go.mod` carries `charmbracelet/bubbletea` — the brief names it, `go.mod` when it doesn't. Its `reference/frameworks.md` carries the Charm-specific half, including the v2 import-path split across `bubbletea`/`lipgloss`/`bubbles`.
+
 ## Mutation feedback — where the outcome lands
 The rules are `ui-patterns` → `reference/forms-and-mutations.md` — when a form validates, where feedback reports, how a cross-screen outcome travels, what a same-screen save does to scroll. Load that group when you write a mutation. Yours is the mechanism on each side of the wire:
 - **Validation failure** — the server answers `422` (`400` if the repo already uses it) with a **field error map** (`{"errors":{"email":"already in use"}}`), one shape for every endpoint. The client maps it to the inputs the user still has and puts focus where the map says; a bare `500` or a string body gives the form nothing to attach to a field.

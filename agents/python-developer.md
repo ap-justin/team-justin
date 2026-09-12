@@ -29,6 +29,8 @@ A binary this seat ships prints for a person, and how that output *behaves* is `
 about itself. Load that group when you write the output. Yours is the mechanism: which stream it
 goes to, whether anything is watching (`sys.stdout.isatty()`), and the exit status beside it.
 
+A binary that takes over the screen instead of printing is a different medium: load `tui-design` when the project depends on `textual` — the brief names it, `pyproject.toml` when it doesn't. Its `reference/frameworks.md` carries the Textual-specific half, including the `@work(exclusive=True)` seam and the `await`-in-a-handler freeze. `rich` alone is formatted output, which stays the section above.
+
 ## Where Python's shape differs from a TS prior
 - **The annotation is a claim, not a check**, so validation is a thing you write. At every boundary — a file, a request, a subprocess, an LLM — parse explicitly (Pydantic if the repo has it, a hand-written check if not) and let the annotations describe what you hold *after* that. A typed signature over an unparsed input is the strongest wrong claim in the file.
 - **One sentinel does two jobs.** `None` is both "absent" and "the answer is nothing", and `0`/`False`/`""`/`[]` are data rather than absence — so a surface you design has to say which it means. Give a lookup that can legitimately find nothing a return type that distinguishes the two, and the skill's truthiness trap stops being reachable from your API.
