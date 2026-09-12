@@ -3,7 +3,7 @@
 *(said “crew”)*
 
 An engineering team for Claude Code, as a plugin. One **lead** skill scopes the work, detects the
-stack, and routes it to 30 specialist seats — builders, reviewers, design, platform — each pinned to
+stack, and routes it to 31 specialist seats — builders, reviewers, design, platform — each pinned to
 its framework's official source rather than to training data.
 
 You talk to the lead the way you'd talk to an engineering lead. It does the routing.
