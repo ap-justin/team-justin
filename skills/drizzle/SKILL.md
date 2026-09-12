@@ -63,6 +63,8 @@ if (violations.length) throw new Error(`migration left FK violations: ${JSON.str
 
 Verified to preserve all 3 child rows with a clean `foreign_key_check`. Back it up first regardless — `VACUUM INTO` a copy before migrating a file you don't control.
 
+**`foreign_keys` is the pragma, and `defer_foreign_keys` is the one that looks like it.** The sibling does take effect inside a transaction — it holds a violation open until the commit — which is what makes it the tempting hand-edit to the migration file. It defers the *check*, not the `ON DELETE CASCADE` action, so with `PRAGMA defer_foreign_keys=ON` as the file's first statement the cascade still fires and `foreign_key_check` still comes back clean (verified, SQLite 3.53.4).
+
 ## `push` vs `generate` + `migrate`
 `push` diffs your schema against the live database and applies it with no migration file. Official guidance: **`push` for local prototyping, `generate` + `migrate` for production** — and the drizzle-kit docs do note teams running `push` in production behind blue/green deploys. Take that as a claim about their deployment model, not a default: `push` leaves no reviewable artifact, no ordering, and no record of what ran. Pick one per project and hold it; alternating between them desynchronizes the snapshots that both commands diff against.
 

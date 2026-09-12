@@ -76,6 +76,14 @@ The held state is `aria-disabled` and the handler ignores the press. `disabled` 
 **Why:** this is the trade that lets the page carry no prose — the explanation is relocated to the one moment it changes a decision, stated against real values rather than in general. An untouched field listed anyway dilutes the three lines that matter. And focus on the committing control hands the operator the answer before the question, which is worse than no dialog.
 **Applies when:** the press is hard to walk back. A save with no destructive branch reports at its control instead — and inside a dialog that has earned its place, a change with no way to hurt is still left off the list: the itemisation is what the press will **cost**, so a safe act padded in spends the read on a line to ignore and makes the destructive ones harder to count.
 
+## A confirmed destructive act reports itself by the state it leaves
+
+**Trigger:** the success branch of an act that passed a confirm — delete an account, revoke a key, purge a workspace.
+**Pattern:** land the operator in the state the act produced — the list without the row, the signed-out door, the blank page a browser leaves where the last step asks to close a tab it isn't allowed to — and let that be the report.
+**Default it corrects:** a success screen or a toast after the confirm — *Your account has been deleted* — on the rule that every mutation reports its outcome.
+**Why:** the confirm itemised the consequence against real values and the operator pressed through it, so the restatement is a second read with no decision under it and a dismiss press where nothing is left to do. It also competes with the evidence: a sentence asserting success gets read instead of the state, so a partial failure — session ended, rows still there — reads as done because the page said so. A state can't be wrong about itself.
+**Applies when:** the act leaves a state the operator lands in. One that leaves no trace — a queued deletion, a revoke whose effect is elsewhere — has something to report, and reports it at the control.
+
 ## An explanation goes on screen; `aria-describedby` points the control at it
 
 **Trigger:** a control whose effect isn't obvious from its label — a toggle that changes what other people can see, a checkbox with a consequence, a destructive action.
@@ -185,6 +193,20 @@ The held state is `aria-disabled` and the handler ignores the press. `disabled` 
 **Default it corrects:** a percentage interpolated on a timer, or a bar eased to 90% while one step runs — the number moving because time passed, not because work did.
 **Why:** an invented fraction is checkable, and the operator checks it: it reaches 100% with the job still running, or sits still through the step that was actually fastest. One bar that lied is enough — every later bar is read as decoration, and the operator goes looking for the real state in the logs. Elapsed time claims nothing and so can never be wrong.
 **Applies when:** the engine reports anything at all. A stage that genuinely emits nothing still gets its name and its elapsed clock, which beats a fabricated fraction.
+
+## The busy indicator sits on the innermost running node
+
+**Trigger:** a progress display with more than one level — stages containing steps, a run tree, a per-file batch inside a phase.
+**Pattern:** one indicator, on the deepest node the run is inside. Ancestors carry their state as a mark, a name and an elapsed clock, `aria-busy="false"`.
+**Default it corrects:** deriving busy from *contains something running*, so the stage and the step inside it both spin, three deep on a nested batch.
+**Why:** motion is the only channel that says *here, now*; repeated up the tree it locates nothing, and the operator counts spinners and reads that many concurrent runs. It also hides the thing the display exists to show — when the frontier moves to the next child, an ancestor's spinner looks identical through the whole step it was meant to report, so the one moving part is the one that never changes.
+**Shape:**
+```html
+<li aria-busy="false">Migrate schema <span>0:12</span>   <!-- ancestor: state and clock, no motion -->
+  <ul><li aria-busy="true"><span class="spinner"></span> Copying rows… <span>0:07</span></li></ul>
+</li>
+```
+**Applies when:** more than one level renders at once. A parent doing its own work between children *is* the innermost running node then, and takes the indicator for that stretch.
 
 ## An imperatively mounted prompt is cancelled by whoever raised it
 

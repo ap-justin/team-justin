@@ -63,6 +63,27 @@ db.transaction((tx) => { ... }, { behavior: 'immediate' });   // sqlite — sync
 ```
 Use `tx`, never the outer `db`, inside the callback — a stray `db` call runs on a different connection, outside the transaction, and commits independently. Nested `transaction()` calls become savepoints. Throwing rolls back; so does `tx.rollback()`. Keep network calls and other I/O out of the block — an open transaction holds locks (pg) or blocks every other writer (sqlite).
 
+## A constraint failure is asserted on its extended result code
+
+The error is the driver's, and 0.45 and 1.0 hand it over in different shapes (better-sqlite3 13, one FK violation):
+
+| | 0.45.2 | 1.0.0-rc.4 |
+|---|---|---|
+| thrown | the driver's `SqliteError`, unwrapped | `DrizzleQueryError` |
+| `.message` | `FOREIGN KEY constraint failed` | `Failed query: insert into "p" … \nparams: 2,99` |
+| `.code` | `SQLITE_CONSTRAINT_FOREIGNKEY` | `undefined` |
+| `.cause` | absent | the driver's `SqliteError`, carrying `.code` |
+
+```ts
+const code = (e: any) => e.code ?? e.cause?.code;   // 0.45 on the error, 1.0 on the cause
+let err: any; try { insert(); } catch (e) { err = e; }   // the sqlite drivers are sync
+expect(code(err)).toBe('SQLITE_CONSTRAINT_FOREIGNKEY');
+```
+
+A test that asserts on the **message** instead fails differently per version, and the 1.0 way is the expensive one. On 0.45 no message carries the extended result code, so `toThrowError(/SQLITE_CONSTRAINT_FOREIGNKEY/)` can never match and the run reads as a missing constraint. On 1.0 that same assertion passes on the wrong error: the wrapper's message is the statement, identical for every way the statement can fail, so a typo'd table name satisfies `/Failed query/`, the error class, or a snapshot exactly as the violation would.
+
+Pin the extended code rather than `SQLITE_CONSTRAINT`, which is unique, check, not-null and FK alike.
+
 ## Review checklist
 - `select()` with no columns on a wide table.
 - A query inside a loop.
@@ -72,3 +93,4 @@ Use `tx`, never the outer `db`, inside the callback — a stray `db` call runs o
 - `db` used instead of `tx` inside a transaction.
 - `.prepare()` called per request.
 - `$type<T>()` treated as validation.
+- A constraint-failure test asserting on the error's message.
